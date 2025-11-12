@@ -48,6 +48,12 @@ namespace BankApp.Client.Controllers
 
                 var result = await _httpClient.PostAsync<Result<UserResponse>>(ApiConstant.Authenticate, userRequest);
 
+                if (result == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to connect to authentication service");
+                    return View(model);
+                }
+
                 if (result.IsError)
                 {
                     foreach (var error in result.Errors)
@@ -58,7 +64,11 @@ namespace BankApp.Client.Controllers
                 }
 
                 var userResponse = result.Response;
-                var encodedData = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{model.UserName}:{model.Password}"));
+                if (userResponse == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid response from authentication service");
+                    return View(model);
+                }
 
                 var claims = new List<Claim>
                 {
@@ -66,8 +76,10 @@ namespace BankApp.Client.Controllers
                     new Claim(ClaimTypes.NameIdentifier, userResponse.Id),
                     new Claim("UserId", userResponse.Id),
                     new Claim("FullName", userResponse.FullName),
-                    new Claim("basicauth", encodedData)
+                    new Claim("jwttoken", userResponse.Token ?? "")  // ⭐ Store JWT token in claims
                 };
+
+             //   var encodedData = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{model.UserName}:{model.Password}"));
 
                 if (userResponse.Roles != null && userResponse.Roles.Any())
                 {
@@ -96,20 +108,25 @@ namespace BankApp.Client.Controllers
                     return RedirectToAction("ChangePassword");
                 }
 
-                // Redirect based on role
-                if (userResponse.Roles.Contains("Admin"))
-                    return RedirectToAction("Dashboard", "Admin");
-                else if (userResponse.Roles.Contains("Manager"))
-                    return RedirectToAction("Dashboard", "Manager");
-                else
-                    return RedirectToAction("Dashboard", "Customer");
+                return RedirectToDashboard();
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "An error occurred during login. Please try again.");
+                ModelState.AddModelError(string.Empty, $"An error occurred during login: {ex.Message}");
                 return View(model);
             }
         }
+
+        private IActionResult RedirectToDashboard()
+        {
+            if (User.IsInRole("Admin"))
+                return RedirectToAction("Dashboard", "Admin");
+            else if (User.IsInRole("Manager"))
+                return RedirectToAction("Dashboard", "Manager");
+            else
+                return RedirectToAction("Dashboard", "Customer");
+        }
+
 
         [Authorize]
         [HttpGet]

@@ -1,0 +1,183 @@
+﻿@model BankApp.Client.ViewModels.CreateAccountViewModel
+
+@{
+    ViewData["Title"] = "Create New Account";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Create New Account</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateAccount" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <input type="hidden" asp-for="CustomerID" />
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> <strong>Important:</strong> You can create one account per type. We offer three types: Savings, Current, and Fixed Deposit accounts.
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold fs-5">Select Account Type *</label>
+
+                            @if (Model.AvailableAccountTypes != null && Model.AvailableAccountTypes.Any())
+                            {
+                                <div class="row">
+                                    @foreach (var accountType in Model.AvailableAccountTypes)
+                                    {
+                                        <div class="col-md-4 mb-3">
+                                            <label class="account-type-wrapper" for="accountType@(accountType.AccountTypeID)">
+                                                <input class="form-check-input d-none" type="radio"
+                                                       asp-for="AccountTypeID"
+                                                       value="@accountType.AccountTypeID"
+                                                       id="accountType@(accountType.AccountTypeID)">
+
+                                                <div class="card account-type-card h-100">
+                                                    <div class="card-body text-center">
+                                                        @if (accountType.AccountTypeID == 1)
+                                                        {
+                                                            <div class="mb-3">
+                                                                <i class="fas fa-piggy-bank fa-4x text-primary"></i>
+                                                            </div>
+                                                            <h5 class="card-title">Savings Account</h5>
+                                                            <p class="text-muted">
+                                                                <small>Ideal for personal savings with interest benefits. Minimum balance: ₹1,000</small>
+                                                            </p>
+                                                            <ul class="list-unstyled text-start small">
+                                                                <li><i class="fas fa-check text-success"></i> Interest rate: 4% p.a.</li>
+                                                                <li><i class="fas fa-check text-success"></i> Free ATM withdrawals</li>
+                                                                <li><i class="fas fa-check text-success"></i> Online banking</li>
+                                                            </ul>
+                                                        }
+                                                        else if (accountType.AccountTypeID == 2)
+                                                        {
+                                                            <div class="mb-3">
+                                                                <i class="fas fa-briefcase fa-4x text-success"></i>
+                                                            </div>
+                                                            <h5 class="card-title">Current Account</h5>
+                                                            <p class="text-muted">
+                                                                <small>Perfect for business transactions with unlimited deposits/withdrawals</small>
+                                                            </p>
+                                                            <ul class="list-unstyled text-start small">
+                                                                <li><i class="fas fa-check text-success"></i> No transaction limits</li>
+                                                                <li><i class="fas fa-check text-success"></i> Overdraft facility</li>
+                                                                <li><i class="fas fa-check text-success"></i> Business tools</li>
+                                                            </ul>
+                                                        }
+                                                        else if (accountType.AccountTypeID == 3)
+                                                        {
+                                                            <div class="mb-3">
+                                                                <i class="fas fa-lock fa-4x text-warning"></i>
+                                                            </div>
+                                                            <h5 class="card-title">Fixed Deposit</h5>
+                                                            <p class="text-muted">
+                                                                <small>Fixed deposit with locked-in interest rates for guaranteed returns</small>
+                                                            </p>
+                                                            <ul class="list-unstyled text-start small">
+                                                                <li><i class="fas fa-check text-success"></i> Interest rate: 6.5% p.a.</li>
+                                                                <li><i class="fas fa-check text-success"></i> Fixed tenure</li>
+                                                                <li><i class="fas fa-check text-success"></i> Tax benefits</li>
+                                                            </ul>
+                                                        }
+
+                                                        <div class="mt-3">
+                                                            <span class="badge bg-primary">Select</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <span asp-validation-for="AccountTypeID" class="text-danger"></span>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle"></i> You already have all available account types (Savings, Current, and Fixed Deposit).
+                                </div>
+                            }
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg" @(Model.AvailableAccountTypes == null || !Model.AvailableAccountTypes.Any() ? "disabled" : "")>
+                                <i class="fas fa-check-circle"></i> Create Account
+                            </button>
+                            <a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <style>
+        .account-type-wrapper {
+            cursor: pointer;
+            display: block;
+            height: 100%;
+        }
+
+        .account-type-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid #dee2e6;
+            height: 100%;
+        }
+
+            .account-type-card:hover {
+                border-color: #0d6efd;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+                transform: translateY(-5px);
+            }
+
+        .form-check-input:checked ~ .account-type-card,
+        .account-type-wrapper:has(input:checked) .account-type-card {
+            border-color: #198754;
+            background-color: #f0f9f4;
+            box-shadow: 0 6px 12px rgba(25, 135, 84, 0.3);
+        }
+
+            .form-check-input:checked ~ .account-type-card .badge,
+            .account-type-wrapper:has(input:checked) .badge {
+                background-color: #198754 !important;
+            }
+
+                .account-type-wrapper:has(input:checked) .badge::after {
+                    content: 'ed';
+                }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            // Make entire card clickable
+            $('.account-type-wrapper').click(function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
+                }
+            });
+
+            // Update UI on radio change
+            $('input[type="radio"][name="AccountTypeID"]').change(function() {
+                $('.account-type-card').removeClass('border-success bg-light-success');
+                if($(this).is(':checked')) {
+                    $(this).closest('.account-type-wrapper').find('.account-type-card')
+                        .addClass('border-success bg-light-success');
+                }
+            });
+
+            // Highlight pre-selected card on page load
+            $('input[type="radio"]:checked').trigger('change');
+        });
+    </script>
+}

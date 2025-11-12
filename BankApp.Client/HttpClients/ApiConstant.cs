@@ -3,8 +3,10 @@
     public static class ApiConstant
     {
         #region Account
-        public const string Authenticate = "Account/authenticate";
+       // public const string Authenticate = "Account/authenticate";
         public const string ChangePassword = "Account/change-password";
+        public const string GetToken = "Token/GetToken";
+        public const string Authenticate = "Token/authenticate";
         #endregion
 
         #region Application

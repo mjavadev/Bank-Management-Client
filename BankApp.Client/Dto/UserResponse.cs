@@ -8,5 +8,6 @@
         public List<string> Roles { get; set; }
         public bool MustChangePassword { get; set; }
         public string TemporaryPassword { get; set; }
+        public string Token { get; set; }
     }
 }
