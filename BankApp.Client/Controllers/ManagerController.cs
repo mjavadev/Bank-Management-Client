@@ -94,6 +94,28 @@ namespace BankApp.Client.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> GetApplicationDetails(int id)
+        {
+            try
+            {
+                var url = string.Format(ApiConstant.GetApplicationById, id);
+                var result = await _httpClient.GetAsync<Result<ApplicationDto>>(url);
+
+                if (result.IsError || result.Response == null)
+                {
+                    return Json(new { success = false, message = "Application not found" });
+                }
+
+                return Json(new { success = true, application = result.Response });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> RejectApplication(int id, string reason)
         {
