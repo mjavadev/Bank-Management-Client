@@ -1,96 +1,225 @@
 ﻿@using BankApp.Client.ViewModels
-@model ApplicationViewModel
+@model DashboardViewModel
 
 @{
-    ViewData["Title"] = "Edit Application";
-    var applicationId = ViewBag.ApplicationId;
+    ViewData["Title"] = "Customer Dashboard";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-tachometer-alt"></i> Welcome, @Model.Customer.FullName
+            </h2>
+        </div>
+    </div>
+
+    <!-- Account Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Total Balance</h6>
+                            <h3 class="mb-0">₹@Model.TotalBalance.ToString("N2")</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-wallet fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Total Accounts</h6>
+                            <h3 class="mb-0">@Model.Accounts.Count</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-university fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Recent Transactions</h6>
+                            <h3 class="mb-0">@Model.RecentTransactions.Count</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-exchange-alt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Pending</h6>
+                            <h3 class="mb-0">@Model.PendingTransactionsCount</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-clock fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fas fa-edit"></i> Edit Application</h4>
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Transaction Summary</h5>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Edit" asp-route-id="@applicationId" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <canvas id="transactionChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-line"></i> Balance Overview</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="balanceChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-university"></i> My Accounts</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Accounts.Any())
+                    {
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="FullName" class="form-label">Full Name *</label>
-                                <input asp-for="FullName" class="form-control" />
-                                <span asp-validation-for="FullName" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="DateOfBirth" class="form-label">Date of Birth *</label>
-                                <input asp-for="DateOfBirth" type="date" class="form-control" />
-                                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                            </div>
+                            @foreach (var account in Model.Accounts)
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card border-primary">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@account.AccountTypeName Account</h5>
+                                            <p class="card-text">
+                                                <strong>Account Number:</strong> @account.AccountNumber<br>
+                                                <strong>Balance:</strong> ₹@account.Balance.ToString("N2")<br>
+                                                <strong>Status:</strong> <span class="badge bg-success">@account.Status</span>
+                                            </p>
+                                            <a href="@Url.Action("Transactions", new { accountId = account.AccountID })" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-list"></i> View Transactions
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No accounts found.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Gender" class="form-label">Gender *</label>
-                                <select asp-for="Gender" class="form-select">
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <span asp-validation-for="Gender" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Occupation" class="form-label">Occupation *</label>
-                                <input asp-for="Occupation" class="form-control" />
-                                <span asp-validation-for="Occupation" class="text-danger"></span>
-                            </div>
+    <!-- Recent Transactions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-history"></i> Recent Transactions</h5>
+                    <a href="@Url.Action("CreateTransaction")" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus"></i> New Transaction
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentTransactions.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="transactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Account</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var transaction in Model.RecentTransactions)
+                                    {
+                                        <tr>
+                                            <td>@transaction.TransactionDate.ToString("dd MMM yyyy HH:mm")</td>
+                                            <td>
+                                                @switch (transaction.TransactionType)
+                                                {
+                                                    case 1:
+                                                        <span class="badge bg-success">Deposit</span>
+                                                        break;
+                                                    case 2:
+                                                        <span class="badge bg-danger">Withdrawal</span>
+                                                        break;
+                                                    case 3:
+                                                        <span class="badge bg-info">Transfer</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">Other</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>@transaction.AccountNumber</td>
+                                            <td>₹@transaction.Amount.ToString("N2")</td>
+                                            <td>
+                                                @switch (transaction.Status)
+                                                {
+                                                    case 1:
+                                                        <span class="badge bg-warning">Pending</span>
+                                                        break;
+                                                    case 2:
+                                                        <span class="badge bg-success">Approved</span>
+                                                        break;
+                                                    case 3:
+                                                        <span class="badge bg-danger">Rejected</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>@transaction.Description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="MobileNumber" class="form-label">Mobile Number *</label>
-                                <input asp-for="MobileNumber" class="form-control" />
-                                <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="AadharNumber" class="form-label">Aadhar Number *</label>
-                                <input asp-for="AadharNumber" class="form-control" maxlength="12" />
-                                <span asp-validation-for="AadharNumber" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="PAN" class="form-label">PAN *</label>
-                                <input asp-for="PAN" class="form-control" maxlength="10" style="text-transform: uppercase;" />
-                                <span asp-validation-for="PAN" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="AccountTypeID" class="form-label">Account Type *</label>
-                                <select asp-for="AccountTypeID" class="form-select">
-                                    <option value="">Select Account Type</option>
-                                    <option value="1">Savings Account</option>
-                                    <option value="2">Current Account</option>
-                                </select>
-                                <span asp-validation-for="AccountTypeID" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-warning">
-                                <i class="fas fa-save"></i> Update Application
-                            </button>
-                            <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Cancel
-                            </a>
-                        </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No recent transactions.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -98,5 +227,71 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTable
+            $('#transactionsTable').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "searching": true
+            });
+
+            // Transaction Type Chart
+            var deposits = @Model.RecentTransactions.Count(t => t.TransactionType == 1);
+            var withdrawals = @Model.RecentTransactions.Count(t => t.TransactionType == 2);
+            var transfers = @Model.RecentTransactions.Count(t => t.TransactionType == 3);
+
+            var transactionCtx = document.getElementById('transactionChart').getContext('2d');
+            new Chart(transactionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Deposits', 'Withdrawals', 'Transfers'],
+                    datasets: [{
+                        data: [deposits, withdrawals, transfers],
+                        backgroundColor: ['#28a745', '#dc3545', '#17a2b8']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Balance Chart
+            var accountLabels = [@Html.Raw(string.Join(",", Model.Accounts.Select(a => "'" + a.AccountTypeName + "'")))];
+            var accountBalances = [@string.Join(",", Model.Accounts.Select(a => a.Balance))];
+
+            var balanceCtx = document.getElementById('balanceChart').getContext('2d');
+            new Chart(balanceCtx, {
+                type: 'bar',
+                data: {
+                    labels: accountLabels,
+                    datasets: [{
+                        label: 'Balance (₹)',
+                        data: accountBalances,
+                        backgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 }

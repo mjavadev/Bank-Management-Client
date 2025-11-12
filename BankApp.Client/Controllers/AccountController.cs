@@ -150,6 +150,11 @@ namespace BankApp.Client.Controllers
                 TempData["SuccessMessage"] = "Password changed successfully. Please login again.";
                 return RedirectToAction("Logout");
             }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, $"API Error: {ex.Message}");
+                return View(model);
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while changing password.");

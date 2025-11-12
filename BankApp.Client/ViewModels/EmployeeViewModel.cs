@@ -4,6 +4,8 @@ namespace BankApp.Client.ViewModels
 {
     public class EmployeeViewModel
     {
+        public string ApplicationUserId { get; set; }
+
         [Required(ErrorMessage = "Username is required")]
         public string UserName { get; set; }
 

@@ -131,9 +131,8 @@ namespace BankApp.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        3. update createTransation method in the customer controller of the clinet side
 
-public async Task<IActionResult> CreateTransaction(TransactionViewModel model)
+        public async Task<IActionResult> CreateTransaction(TransactionViewModel model)
 
         {
 

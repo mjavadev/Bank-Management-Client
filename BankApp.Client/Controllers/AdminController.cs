@@ -74,6 +74,7 @@ namespace BankApp.Client.Controllers
             {
                 var employeeDto = new EmployeeDto
                 {
+                    ApplicationUserID = model.ApplicationUserId,
                     UserName = model.UserName,
                     FullName = model.FullName,
                     Password = model.Password,
