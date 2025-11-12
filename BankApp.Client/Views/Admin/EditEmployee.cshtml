@@ -6,60 +6,338 @@
     var employeeId = ViewBag.EmployeeId;
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-warning text-dark">
-                    <h4 class="mb-0"><i class="fas fa-edit"></i> Edit Employee</h4>
-                </div>
-                <div class="card-body">
-                    <form asp-action="EditEmployee" asp-route-id="@employeeId" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-edit: #e67e22;
+        --bank-edit-dark: #d35400;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="UserName" class="form-label">Username *</label>
-                                <input asp-for="UserName" class="form-control" />
-                                <span asp-validation-for="UserName" class="text-danger"></span>
-                            </div>
+    .edit-form-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        padding: 40px 0;
+    }
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="FullName" class="form-label">Full Name *</label>
-                                <input asp-for="FullName" class="form-control" />
-                                <span asp-validation-for="FullName" class="text-danger"></span>
-                            </div>
+    .edit-form-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px var(--bank-shadow);
+        border: 1px solid var(--bank-border);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .edit-form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.12);
+        }
+
+    .edit-form-header {
+        background: linear-gradient(135deg, var(--bank-edit) 0%, var(--bank-edit-dark) 100%);
+        padding: 32px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .edit-form-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .edit-form-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .edit-form-header h4 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .edit-form-header i {
+            margin-right: 12px;
+            font-size: 1.5rem;
+            vertical-align: middle;
+        }
+
+    .edit-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.25);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-left: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    .edit-form-body {
+        padding: 40px;
+    }
+
+    .form-section {
+        margin-bottom: 24px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--bank-primary);
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-tooltip {
+        margin-left: 8px;
+        color: var(--bank-accent);
+        cursor: help;
+        font-size: 0.875rem;
+    }
+
+    .form-control {
+        border: 2px solid var(--bank-border);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #fafbfc;
+    }
+
+        .form-control:focus {
+            border-color: var(--bank-edit);
+            box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1);
+            outline: none;
+            background-color: white;
+        }
+
+        .form-control:hover {
+            border-color: var(--bank-secondary);
+            background-color: white;
+        }
+
+    .text-danger {
+        font-size: 0.875rem;
+        margin-top: 4px;
+        display: block;
+    }
+
+    .validation-summary {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+    }
+
+    .required-indicator {
+        color: #dc3545;
+        margin-left: 4px;
+    }
+
+    .readonly-note {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 4px;
+        font-style: italic;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, var(--bank-edit) 0%, var(--bank-edit-dark) 100%);
+        border: none;
+        padding: 14px 32px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.25);
+        color: white;
+    }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(230, 126, 34, 0.35);
+            background: linear-gradient(135deg, var(--bank-edit-dark) 0%, var(--bank-edit) 100%);
+            color: white;
+        }
+
+    .btn-back {
+        background: white;
+        border: 2px solid var(--bank-border);
+        color: var(--bank-primary);
+        padding: 14px 32px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-back:hover {
+            background: var(--bank-light);
+            border-color: var(--bank-secondary);
+            color: var(--bank-secondary);
+            text-decoration: none;
+        }
+
+    .btn-group-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+        .btn-group-actions button,
+        .btn-group-actions a {
+            flex: 1;
+            text-align: center;
+        }
+
+    .form-info-banner {
+        background: linear-gradient(90deg, rgba(230, 126, 34, 0.1) 0%, rgba(211, 84, 0, 0.05) 100%);
+        border-left: 4px solid var(--bank-edit);
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+    }
+
+        .form-info-banner i {
+            font-size: 1.5rem;
+            color: var(--bank-edit);
+            margin-right: 16px;
+        }
+
+        .form-info-banner p {
+            margin: 0;
+            color: var(--bank-primary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+    @@media (max-width: 768px) {
+        .edit-form-body
+
+    {
+        padding: 24px;
+    }
+
+    .edit-form-header {
+        padding: 24px;
+    }
+
+    .btn-group-actions {
+        flex-direction: column;
+    }
+
+    .edit-badge {
+        display: block;
+        margin-left: 0;
+        margin-top: 8px;
+        text-align: center;
+    }
+
+    }
+</style>
+
+<div class="edit-form-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-md-10">
+                <div class="edit-form-card">
+                    <div class="edit-form-header">
+                        <h4>
+                            <i class="fas fa-edit"></i> Edit Employee
+                            <span class="edit-badge">MODIFY MODE</span>
+                        </h4>
+                    </div>
+                    <div class="edit-form-body">
+                        <div class="form-info-banner">
+                            <i class="fas fa-info-circle"></i>
+                            <p>You are modifying existing employee information. All changes will be saved immediately upon submission.</p>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="StaffCode" class="form-label">Staff Code *</label>
-                                <input asp-for="StaffCode" class="form-control" />
-                                <span asp-validation-for="StaffCode" class="text-danger"></span>
+                        <form asp-action="EditEmployee" asp-route-id="@employeeId" method="post">
+                            <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
+
+                            <div class="row">
+                                <div class="col-md-6 form-section">
+                                    <label asp-for="UserName" class="form-label">
+                                        Username<span class="required-indicator">*</span>
+                                    </label>
+                                    <input asp-for="UserName" class="form-control" placeholder="Enter username" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-6 form-section">
+                                    <label asp-for="FullName" class="form-label">
+                                        Full Name<span class="required-indicator">*</span>
+                                    </label>
+                                    <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
+                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="JobTitle" class="form-label">Job Title *</label>
-                                <input asp-for="JobTitle" class="form-control" />
-                                <span asp-validation-for="JobTitle" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6 form-section">
+                                    <label asp-for="StaffCode" class="form-label">
+                                        Staff Code<span class="required-indicator">*</span>
+                                    </label>
+                                    <input asp-for="StaffCode" class="form-control" placeholder="Enter staff code" />
+                                    <span asp-validation-for="StaffCode" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-6 form-section">
+                                    <label asp-for="JobTitle" class="form-label">
+                                        Job Title<span class="required-indicator">*</span>
+                                    </label>
+                                    <input asp-for="JobTitle" class="form-control" placeholder="Enter job title" />
+                                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label asp-for="DateHired" class="form-label">Date Hired *</label>
-                            <input asp-for="DateHired" type="date" class="form-control" />
-                            <span asp-validation-for="DateHired" class="text-danger"></span>
-                        </div>
+                            <div class="form-section">
+                                <label asp-for="DateHired" class="form-label">
+                                    Date Hired<span class="required-indicator">*</span>
+                                </label>
+                                <input asp-for="DateHired" type="date" class="form-control" />
+                                <span asp-validation-for="DateHired" class="text-danger"></span>
+                            </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-warning btn-lg">
-                                <i class="fas fa-save"></i> Update Employee
-                            </button>
-                            <a href="@Url.Action("Employees")" class="btn btn-secondary">
-                                <i class="fas fa-arrow-left"></i> Back to Employees
-                            </a>
-                        </div>
-                    </form>
+                            <div class="btn-group-actions">
+                                <button type="submit" class="btn btn-update">
+                                    <i class="fas fa-save"></i> Update Employee
+                                </button>
+                                <a href="@Url.Action("Employees")" class="btn btn-back">
+                                    <i class="fas fa-arrow-left"></i> Back to Employees
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

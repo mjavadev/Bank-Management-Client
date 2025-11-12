@@ -4,76 +4,526 @@
     ViewData["Title"] = "All Applications";
 }
 
-<div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2><i class="fas fa-folder-open"></i> All Applications</h2>
-        </div>
-    </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-danger: #e74c3c;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    @if (Model.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="applicationsTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Full Name</th>
-                                        <th>DOB</th>
-                                        <th>Mobile</th>
-                                        <th>PAN</th>
-                                        <th>Account Type</th>
-                                        <th>Status</th>
-                                        <th>Application Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var app in Model)
-                                    {
+    .applications-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 6px solid var(--bank-accent);
+    }
+
+        .page-header h2 {
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+            .page-header h2 i {
+                color: var(--bank-accent);
+                font-size: 1.8rem;
+            }
+
+    .page-subtitle {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    /* Statistics Overview */
+    .stats-overview {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 24px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.12);
+        }
+
+        .stat-card.pending {
+            border-left-color: var(--bank-warning);
+        }
+
+        .stat-card.approved {
+            border-left-color: var(--bank-success);
+        }
+
+        .stat-card.rejected {
+            border-left-color: var(--bank-danger);
+        }
+
+        .stat-card.total {
+            border-left-color: var(--bank-accent);
+        }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .stat-value {
+        color: var(--bank-primary);
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Main Card */
+    .applications-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        overflow: hidden;
+    }
+
+    .applications-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 24px 28px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+        .applications-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .applications-card-header h5 i {
+                color: var(--bank-accent);
+            }
+
+    .applications-card-body {
+        padding: 28px;
+    }
+
+    /* Applications Table */
+    .applications-table {
+        width: 100%;
+    }
+
+        .applications-table thead th {
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 16px 12px;
+            border: none;
+            white-space: nowrap;
+        }
+
+            .applications-table thead th:first-child {
+                border-top-left-radius: 8px;
+            }
+
+            .applications-table thead th:last-child {
+                border-top-right-radius: 8px;
+            }
+
+        .applications-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--bank-border);
+        }
+
+            .applications-table tbody tr:hover {
+                background: linear-gradient(90deg, rgba(52, 152, 219, 0.05) 0%, rgba(30, 58, 95, 0.03) 100%);
+                transform: scale(1.005);
+                box-shadow: 0 2px 8px rgba(30, 58, 95, 0.08);
+            }
+
+        .applications-table tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            color: var(--bank-primary);
+            font-size: 0.95rem;
+        }
+
+        .applications-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+    /* Application ID Styling */
+    .application-id {
+        font-weight: 600;
+        color: var(--bank-accent);
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Sensitive Data Styling */
+    .sensitive-data {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        color: var(--bank-primary);
+        font-weight: 500;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .badge-pending {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--bank-warning);
+    }
+
+    .badge-approved {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+    .badge-rejected {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--bank-danger);
+    }
+
+    /* Account Type Badge */
+    .account-type-badge {
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .account-savings {
+        background: rgba(33, 150, 243, 0.1);
+        color: #1976d2;
+    }
+
+    .account-current {
+        background: rgba(39, 174, 96, 0.1);
+        color: var(--bank-success);
+    }
+
+    /* Action Button */
+    .btn-view {
+        background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+    }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+    }
+
+    .empty-state-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-state-icon i {
+            font-size: 3rem;
+            color: var(--bank-accent);
+        }
+
+    .empty-state h5 {
+        color: var(--bank-primary);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+
+    /* DataTables Custom Styling */
+    .dataTables_wrapper .dataTables_length select,
+    .dataTables_wrapper .dataTables_filter input {
+        border: 2px solid var(--bank-border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        transition: all 0.3s ease;
+    }
+
+        .dataTables_wrapper .dataTables_length select:focus,
+        .dataTables_wrapper .dataTables_filter input:focus {
+            border-color: var(--bank-accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 8px;
+        padding: 8px 16px;
+        margin: 0 4px;
+        border: 2px solid var(--bank-border);
+        background: white;
+        color: var(--bank-primary);
+        transition: all 0.3s ease;
+    }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+            color: white !important;
+            border-color: var(--bank-primary);
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+            color: white !important;
+            border-color: var(--bank-primary);
+        }
+
+    .dataTables_wrapper .dataTables_info {
+        color: #6c757d;
+        font-size: 0.9rem;
+        padding: 12px 0;
+    }
+
+    @@media (max-width: 768px) {
+        .page-header h2
+
+    {
+        font-size: 1.5rem;
+    }
+
+    .stats-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .applications-card-body {
+        padding: 16px;
+    }
+
+    }
+</style>
+
+<div class="applications-container">
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2>
+                <i class="fas fa-folder-open"></i>
+                All Applications
+            </h2>
+            <p class="page-subtitle">Review and manage all customer account applications</p>
+        </div>
+
+        <!-- Statistics Overview -->
+        @if (Model.Any())
+        {
+            var pendingCount = Model.Count(a => a.Status == 1);
+            var approvedCount = Model.Count(a => a.Status == 2);
+            var rejectedCount = Model.Count(a => a.Status == 3);
+            var totalCount = Model.Count();
+
+            <div class="stats-overview">
+                <div class="stat-card total">
+                    <div class="stat-label">
+                        <i class="fas fa-list"></i> Total Applications
+                    </div>
+                    <h3 class="stat-value">@totalCount</h3>
+                </div>
+                <div class="stat-card pending">
+                    <div class="stat-label">
+                        <i class="fas fa-clock"></i> Pending Review
+                    </div>
+                    <h3 class="stat-value">@pendingCount</h3>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-label">
+                        <i class="fas fa-check-circle"></i> Approved
+                    </div>
+                    <h3 class="stat-value">@approvedCount</h3>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-label">
+                        <i class="fas fa-times-circle"></i> Rejected
+                    </div>
+                    <h3 class="stat-value">@rejectedCount</h3>
+                </div>
+            </div>
+        }
+
+        <!-- Main Applications Card -->
+        <div class="row">
+            <div class="col-12">
+                <div class="applications-card">
+                    <div class="applications-card-header">
+                        <h5><i class="fas fa-table"></i> Applications List</h5>
+                    </div>
+                    <div class="applications-card-body">
+                        @if (Model.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="applications-table table" id="applicationsTable">
+                                    <thead>
                                         <tr>
-                                            <td>@app.ApplicationID</td>
-                                            <td>@app.FullName</td>
-                                            <td>@app.DateOfBirth.ToString("dd MMM yyyy")</td>
-                                            <td>@app.MobileNumber</td>
-                                            <td>@app.PAN</td>
-                                            <td>@(app.AccountTypeID == 1 ? "Savings" : "Current")</td>
-                                            <td>
-                                                @if (app.Status == 1)
-                                                {
-                                                    <span class="badge bg-warning">Pending</span>
-                                                }
-                                                else if (app.Status == 2)
-                                                {
-                                                    <span class="badge bg-success">Approved</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-danger">Rejected</span>
-                                                }
-                                            </td>
-                                            <td>@app.ApplicationDate.ToString("dd MMM yyyy")</td>
-                                            <td>
-                                                <a href="@Url.Action("Details", "Application", new { id = app.ApplicationID })" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-eye"></i> View
-                                                </a>
-                                            </td>
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Date of Birth</th>
+                                            <th>Mobile</th>
+                                            <th>PAN</th>
+                                            <th>Account Type</th>
+                                            <th>Status</th>
+                                            <th>Applied Date</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> No applications found.
-                        </div>
-                    }
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var app in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="application-id">#@app.ApplicationID</span>
+                                                </td>
+                                                <td>
+                                                    <strong>@app.FullName</strong>
+                                                </td>
+                                                <td>
+                                                    <span>@app.DateOfBirth.ToString("dd MMM yyyy")</span>
+                                                </td>
+                                                <td>
+                                                    <span class="sensitive-data">@app.MobileNumber</span>
+                                                </td>
+                                                <td>
+                                                    <span class="sensitive-data">@app.PAN</span>
+                                                </td>
+                                                <td>
+                                                    @if (app.AccountTypeID == 1)
+                                                    {
+                                                        <span class="account-type-badge account-savings">
+                                                            <i class="fas fa-piggy-bank"></i> Savings
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="account-type-badge account-current">
+                                                            <i class="fas fa-briefcase"></i> Current
+                                                        </span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (app.Status == 1)
+                                                    {
+                                                        <span class="status-badge badge-pending">
+                                                            <i class="fas fa-clock"></i> Pending
+                                                        </span>
+                                                    }
+                                                    else if (app.Status == 2)
+                                                    {
+                                                        <span class="status-badge badge-approved">
+                                                            <i class="fas fa-check-circle"></i> Approved
+                                                        </span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="status-badge badge-rejected">
+                                                            <i class="fas fa-times-circle"></i> Rejected
+                                                        </span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div>@app.ApplicationDate.ToString("dd MMM yyyy")</div>
+                                                    <small style="color: #6c757d;">@app.ApplicationDate.ToString("HH:mm")</small>
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("Details", "Application", new { id = app.ApplicationID })" class="btn-view">
+                                                        <i class="fas fa-eye"></i> View
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-folder-open"></i>
+                                </div>
+                                <h5>No Applications Found</h5>
+                                <p>There are currently no customer applications in the system. New applications will appear here when customers submit them.</p>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,7 +535,22 @@
         $(document).ready(function() {
             $('#applicationsTable').DataTable({
                 "pageLength": 25,
-                "order": [[7, "desc"]]
+                "order": [[7, "desc"]],
+                "language": {
+                    "search": "Search applications:",
+                    "lengthMenu": "Show _MENU_ applications per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ applications",
+                    "infoEmpty": "No applications available",
+                    "infoFiltered": "(filtered from _MAX_ total applications)",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Prev"
+                    }
+                },
+                "responsive": true,
+                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip'
             });
         });
     </script>

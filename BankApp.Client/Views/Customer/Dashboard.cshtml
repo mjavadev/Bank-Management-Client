@@ -5,288 +5,791 @@
     ViewData["Title"] = "Customer Dashboard";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4">
-                <i class="fas fa-tachometer-alt"></i> Welcome, @(Model?.Customer?.FullName ?? "Guest")
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-danger: #e74c3c;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
+
+    .dashboard-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    /* Welcome Header */
+    .dashboard-welcome {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 6px solid var(--bank-accent);
+    }
+
+        .dashboard-welcome h2 {
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+            .dashboard-welcome h2 i {
+                color: var(--bank-accent);
+                font-size: 1.8rem;
+            }
+
+    .welcome-subtitle {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    /* Alert Styling */
+    .custom-alert {
+        border-radius: 12px;
+        border: none;
+        border-left: 4px solid;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideDown 0.4s ease-out;
+    }
+
+    @@keyframes slideDown {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .custom-alert i {
+        font-size: 1.5rem;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border-left-color: var(--bank-success);
+        color: #155724;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border-left-color: var(--bank-danger);
+        color: #721c24;
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        border-left-color: var(--bank-info);
+        color: #0c5460;
+    }
+
+    /* Statistics Cards */
+    .stat-card {
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        height: 100%;
+        position: relative;
+        margin-bottom: 24px;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+    .stat-card-primary {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        color: white;
+    }
+
+    .stat-card-success {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        color: white;
+    }
+
+    .stat-card-info {
+        background: linear-gradient(135deg, #16a085 0%, #138d75 100%);
+        color: white;
+    }
+
+    .stat-card-warning {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        color: white;
+    }
+
+    .stat-card .card-body {
+        padding: 28px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .stat-icon {
+        font-size: 3.5rem;
+        opacity: 0.3;
+    }
+
+    /* Section Cards */
+    .section-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .section-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 20px 24px;
+        border-bottom: 2px solid var(--bank-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+        .section-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .section-card-header h5 i {
+                color: var(--bank-accent);
+            }
+
+    .section-card-body {
+        padding: 24px;
+    }
+
+    /* Account Cards */
+    .account-card {
+        border: 2px solid var(--bank-border);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        height: 100%;
+        background: white;
+        overflow: hidden;
+    }
+
+        .account-card:hover {
+            border-color: var(--bank-accent);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.15);
+            transform: translateY(-4px);
+        }
+
+    .account-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        padding: 20px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+    .account-card-title {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .account-card-body {
+        padding: 20px;
+    }
+
+    .account-info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--bank-border);
+    }
+
+        .account-info-row:last-child {
+            border-bottom: none;
+        }
+
+    .account-info-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .account-info-value {
+        color: var(--bank-primary);
+        font-weight: 600;
+    }
+
+    .account-balance {
+        font-size: 1.5rem;
+        color: var(--bank-success);
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+    }
+
+    .account-number {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .badge-success {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+    .badge-warning {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--bank-warning);
+    }
+
+    .badge-danger {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--bank-danger);
+    }
+
+    .badge-info {
+        background: rgba(52, 152, 219, 0.15);
+        color: var(--bank-accent);
+    }
+
+    /* Action Buttons */
+    .btn-action {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        border: none;
+        color: white;
+    }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+            color: white;
+        }
+
+    .btn-success-custom {
+        background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+        border: none;
+        color: white;
+    }
+
+        .btn-success-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            color: white;
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 32px;
+    }
+
+    .empty-state-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-state-icon i {
+            font-size: 3rem;
+            color: var(--bank-accent);
+        }
+
+    .empty-state h5 {
+        color: var(--bank-primary);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        color: #6c757d;
+        margin-bottom: 24px;
+    }
+
+    /* Transaction Table */
+    .transactions-table {
+        width: 100%;
+    }
+
+        .transactions-table thead th {
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 14px 12px;
+            border: none;
+        }
+
+        .transactions-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--bank-border);
+        }
+
+            .transactions-table tbody tr:hover {
+                background: linear-gradient(90deg, rgba(52, 152, 219, 0.05) 0%, rgba(30, 58, 95, 0.03) 100%);
+            }
+
+        .transactions-table tbody td {
+            padding: 14px 12px;
+            vertical-align: middle;
+            color: var(--bank-primary);
+            font-size: 0.95rem;
+        }
+
+    /* Chart Cards */
+    .chart-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        margin-bottom: 24px;
+    }
+
+    .chart-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 20px 24px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+        .chart-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .chart-card-header h5 i {
+                color: var(--bank-accent);
+            }
+
+    .chart-card-body {
+        padding: 24px;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-welcome h2
+
+    {
+        font-size: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container-fluid">
+        <!-- Welcome Header -->
+        <div class="dashboard-welcome">
+            <h2>
+                <i class="fas fa-tachometer-alt"></i>
+                Welcome back, @(Model?.Customer?.FullName ?? "Guest")!
             </h2>
+            <p class="welcome-subtitle">Here's an overview of your banking activity and accounts</p>
         </div>
-    </div>
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
+        <!-- Alert Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="custom-alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i>
+                <span>@TempData["SuccessMessage"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
 
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle"></i> @TempData["ErrorMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="custom-alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>@TempData["ErrorMessage"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
 
-    @if (TempData["InfoMessage"] != null)
-    {
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <i class="fas fa-info-circle"></i> @TempData["InfoMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="custom-alert alert-info alert-dismissible fade show" role="alert">
+                <i class="fas fa-info-circle"></i>
+                <span>@TempData["InfoMessage"]</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
 
-    @if (Model?.Customer != null)
-    {
-        <!-- Account Summary Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1">Total Balance</h6>
-                                <h3 class="mb-0">₹@Model.TotalBalance.ToString("N2")</h3>
+        @if (Model?.Customer != null)
+        {
+            <!-- Statistics Cards -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card stat-card-primary">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="stat-label">Total Balance</div>
+                                    <h3 class="stat-value">₹@Model.TotalBalance.ToString("N2")</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-wallet stat-icon"></i>
+                                </div>
                             </div>
-                            <div>
-                                <i class="fas fa-wallet fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card stat-card-success">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="stat-label">Total Accounts</div>
+                                    <h3 class="stat-value">@(Model.Accounts?.Count ?? 0)</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-university stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card stat-card-info">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="stat-label">Transactions</div>
+                                    <h3 class="stat-value">@(Model.RecentTransactions?.Count ?? 0)</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-exchange-alt stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card stat-card-warning">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="stat-label">Pending</div>
+                                    <h3 class="stat-value">@Model.PendingTransactionsCount</h3>
+                                </div>
+                                <div>
+                                    <i class="fas fa-clock stat-icon"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1">Total Accounts</h6>
-                                <h3 class="mb-0">@(Model.Accounts?.Count ?? 0)</h3>
-                            </div>
-                            <div>
-                                <i class="fas fa-university fa-3x opacity-50"></i>
-                            </div>
+            <!-- My Accounts Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <h5><i class="fas fa-university"></i> My Accounts</h5>
+                            <a href="@Url.Action("CreateAccount")" class="btn-action btn-success-custom">
+                                <i class="fas fa-plus-circle"></i> Create New Account
+                            </a>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card bg-info text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1">Recent Transactions</h6>
-                                <h3 class="mb-0">@(Model.RecentTransactions?.Count ?? 0)</h3>
-                            </div>
-                            <div>
-                                <i class="fas fa-exchange-alt fa-3x opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase mb-1">Pending</h6>
-                                <h3 class="mb-0">@Model.PendingTransactionsCount</h3>
-                            </div>
-                            <div>
-                                <i class="fas fa-clock fa-3x opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Accounts Section -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-university"></i> My Accounts</h5>
-                        <!-- ⭐ NEW: Create Account Button -->
-                        <a href="@Url.Action("CreateAccount")" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus-circle"></i> Create New Account
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        @if (Model.Accounts != null && Model.Accounts.Any())
-                        {
-                            <div class="row">
-                                @foreach (var account in Model.Accounts)
-                                {
-                                    <div class="col-md-6 mb-3">
-                                        <div class="card border-primary">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    @if (account.AccountTypeID == 1)
-                                                    {
-                                                        <i class="fas fa-piggy-bank text-primary"></i>
-                                                    }
-                                                    else if (account.AccountTypeID == 2)
-                                                    {
-                                                        <i class="fas fa-briefcase text-success"></i>
-                                                    }
-                                                    else if (account.AccountTypeID == 3)
-                                                    {
-                                                        <i class="fas fa-lock text-warning"></i>
-                                                    }
-                                                    else
-                                                    {
-                                                        <i class="fas fa-calendar-alt text-info"></i>
-                                                    }
-                                                    @account.AccountTypeName Account
-                                                </h5>
-                                                <p class="card-text">
-                                                    <strong>Account Number:</strong> @account.AccountNumber<br>
-                                                    <strong>Balance:</strong> <span class="text-success fw-bold">₹@account.Balance.ToString("N2")</span><br>
-                                                    <strong>Status:</strong> <span class="badge bg-success">@account.Status</span><br>
-                                                    <strong>Opened:</strong> @account.OpenDate.ToString("dd MMM yyyy")
-                                                </p>
-                                                <a href="@Url.Action("Transactions", new { accountId = account.AccountID })" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-list"></i> View Transactions
-                                                </a>
+                        <div class="section-card-body">
+                            @if (Model.Accounts != null && Model.Accounts.Any())
+                            {
+                                <div class="row">
+                                    @foreach (var account in Model.Accounts)
+                                    {
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="account-card">
+                                                <div class="account-card-header">
+                                                    <div class="account-card-title">
+                                                        @if (account.AccountTypeID == 1)
+                                                        {
+                                                            <i class="fas fa-piggy-bank" style="color: #2196f3;"></i>
+                                                        }
+                                                        else if (account.AccountTypeID == 2)
+                                                        {
+                                                            <i class="fas fa-briefcase" style="color: #27ae60;"></i>
+                                                        }
+                                                        else if (account.AccountTypeID == 3)
+                                                        {
+                                                            <i class="fas fa-lock" style="color: #f39c12;"></i>
+                                                        }
+                                                        @account.AccountTypeName Account
+                                                    </div>
+                                                </div>
+                                                <div class="account-card-body">
+                                                    <div class="account-info-row">
+                                                        <span class="account-info-label">Account Number</span>
+                                                        <span class="account-info-value account-number">@account.AccountNumber</span>
+                                                    </div>
+                                                    <div class="account-info-row">
+                                                        <span class="account-info-label">Balance</span>
+                                                        <span class="account-balance">₹@account.Balance.ToString("N2")</span>
+                                                    </div>
+                                                    <div class="account-info-row">
+                                                        <span class="account-info-label">Status</span>
+                                                        <span class="status-badge badge-success">
+                                                            <i class="fas fa-check-circle"></i>@account.Status
+                                                        </span>
+                                                    </div>
+                                                    <div class="account-info-row">
+                                                        <span class="account-info-label">Opened</span>
+                                                        <span class="account-info-value">@account.OpenDate.ToString("dd MMM yyyy")</span>
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <a href="@Url.Action("Transactions", new { accountId = account.AccountID })" class="btn-action btn-primary-custom w-100">
+                                                            <i class="fas fa-list"></i> View Transactions
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-university"></i>
                                     </div>
-                                }
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-info mb-0">
-                                <i class="fas fa-info-circle"></i> No accounts found. Click "Create New Account" to get started!
-                            </div>
-                        }
+                                    <h5>No Accounts Yet</h5>
+                                    <p>Get started by creating your first bank account!</p>
+                                    <a href="@Url.Action("CreateAccount")" class="btn-action btn-success-custom">
+                                        <i class="fas fa-plus-circle"></i> Create New Account
+                                    </a>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Charts Row -->
-        @if (Model.RecentTransactions != null && Model.RecentTransactions.Any() && Model.Accounts != null && Model.Accounts.Any())
-        {
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Transaction Summary</h5>
+            <!-- Charts Section -->
+            @if (Model.RecentTransactions != null && Model.RecentTransactions.Any() && Model.Accounts != null && Model.Accounts.Any())
+            {
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h5><i class="fas fa-chart-pie"></i> Transaction Summary</h5>
+                            </div>
+                            <div class="chart-card-body">
+                                <canvas id="transactionChart" height="200"></canvas>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <canvas id="transactionChart" height="200"></canvas>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="chart-card">
+                            <div class="chart-card-header">
+                                <h5><i class="fas fa-chart-bar"></i> Balance Overview</h5>
+                            </div>
+                            <div class="chart-card-body">
+                                <canvas id="balanceChart" height="200"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
+            }
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-chart-line"></i> Balance Overview</h5>
+            <!-- Recent Transactions -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-card">
+                        <div class="section-card-header">
+                            <h5><i class="fas fa-history"></i> Recent Transactions</h5>
+                            <a href="@Url.Action("CreateTransaction")" class="btn-action btn-primary-custom">
+                                <i class="fas fa-plus"></i> New Transaction
+                            </a>
                         </div>
-                        <div class="card-body">
-                            <canvas id="balanceChart" height="200"></canvas>
+                        <div class="section-card-body">
+                            @if (Model.RecentTransactions != null && Model.RecentTransactions.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="transactions-table table" id="transactionsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Type</th>
+                                                <th>Account</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var transaction in Model.RecentTransactions)
+                                            {
+                                                <tr>
+                                                    <td>@transaction.TransactionDate.ToString("dd MMM yyyy HH:mm")</td>
+                                                    <td>
+                                                        @switch (transaction.TransactionType)
+                                                        {
+                                                            case 1:
+                                                                <span class="status-badge badge-success"><i class="fas fa-plus-circle"></i> Deposit</span>
+                                                                break;
+                                                            case 2:
+                                                                <span class="status-badge badge-danger"><i class="fas fa-minus-circle"></i> Withdrawal</span>
+                                                                break;
+                                                            case 3:
+                                                                <span class="status-badge badge-info"><i class="fas fa-exchange-alt"></i> Transfer</span>
+                                                                break;
+                                                            default:
+                                                                <span class="status-badge badge-secondary">Other</span>
+                                                                break;
+                                                        }
+                                                    </td>
+                                                    <td class="account-number">@transaction.AccountNumber</td>
+                                                    <td style="font-weight: 700; font-family: 'Courier New', monospace;">₹@transaction.Amount.ToString("N2")</td>
+                                                    <td>
+                                                        @switch (transaction.Status)
+                                                        {
+                                                            case 1:
+                                                                <span class="status-badge badge-warning"><i class="fas fa-clock"></i> Pending</span>
+                                                                break;
+                                                            case 2:
+                                                                <span class="status-badge badge-success"><i class="fas fa-check-circle"></i> Approved</span>
+                                                                break;
+                                                            case 3:
+                                                                <span class="status-badge badge-danger"><i class="fas fa-times-circle"></i> Rejected</span>
+                                                                break;
+                                                        }
+                                                    </td>
+                                                    <td>@transaction.Description</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-receipt"></i>
+                                    </div>
+                                    <h5>No Transactions Yet</h5>
+                                    <p>Start by creating a new transaction</p>
+                                    <a href="@Url.Action("CreateTransaction")" class="btn-action btn-primary-custom">
+                                        <i class="fas fa-plus"></i> New Transaction
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         }
-
-        <!-- Recent Transactions -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0"><i class="fas fa-history"></i> Recent Transactions</h5>
-                        <a href="@Url.Action("CreateTransaction")" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> New Transaction
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        @if (Model.RecentTransactions != null && Model.RecentTransactions.Any())
-                        {
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="transactionsTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Type</th>
-                                            <th>Account</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var transaction in Model.RecentTransactions)
-                                        {
-                                            <tr>
-                                                <td>@transaction.TransactionDate.ToString("dd MMM yyyy HH:mm")</td>
-                                                <td>
-                                                    @switch (transaction.TransactionType)
-                                                    {
-                                                        case 1:
-                                                            <span class="badge bg-success">Deposit</span>
-                                                            break;
-                                                        case 2:
-                                                            <span class="badge bg-danger">Withdrawal</span>
-                                                            break;
-                                                        case 3:
-                                                            <span class="badge bg-info">Transfer</span>
-                                                            break;
-                                                        default:
-                                                            <span class="badge bg-secondary">Other</span>
-                                                            break;
-                                                    }
-                                                </td>
-                                                <td>@transaction.AccountNumber</td>
-                                                <td class="fw-bold">₹@transaction.Amount.ToString("N2")</td>
-                                                <td>
-                                                    @switch (transaction.Status)
-                                                    {
-                                                        case 1:
-                                                            <span class="badge bg-warning">Pending</span>
-                                                            break;
-                                                        case 2:
-                                                            <span class="badge bg-success">Approved</span>
-                                                            break;
-                                                        case 3:
-                                                            <span class="badge bg-danger">Rejected</span>
-                                                            break;
-                                                    }
-                                                </td>
-                                                <td>@transaction.Description</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-info mb-0">
-                                <i class="fas fa-info-circle"></i> No recent transactions found.
-                            </div>
-                        }
-                    </div>
-                </div>
+        else
+        {
+            <div class="custom-alert alert-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Failed to load dashboard data. Please refresh the page or contact support.</span>
             </div>
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-danger">
-            <i class="fas fa-exclamation-triangle"></i> Failed to load dashboard data. Please refresh the page or contact support.
-        </div>
-    }
+        }
+    </div>
 </div>
 
 @section Scripts {
@@ -298,7 +801,16 @@
                 $('#transactionsTable').DataTable({
                     "pageLength": 10,
                     "ordering": true,
-                    "searching": true
+                    "searching": true,
+                    "language": {
+                        "search": "Search transactions:",
+                        "lengthMenu": "Show _MENU_ transactions",
+                        "info": "Showing _START_ to _END_ of _TOTAL_ transactions",
+                        "paginate": {
+                            "next": "Next",
+                            "previous": "Prev"
+                        }
+                    }
                 });
 
                 // Transaction Type Chart
@@ -313,7 +825,9 @@
                         labels: ['Deposits', 'Withdrawals', 'Transfers'],
                         datasets: [{
                             data: [deposits, withdrawals, transfers],
-                            backgroundColor: ['#28a745', '#dc3545', '#17a2b8']
+                            backgroundColor: ['#27ae60', '#e74c3c', '#3498db'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
                         }]
                     },
                     options: {
@@ -321,7 +835,14 @@
                         maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                position: 'bottom'
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    font: {
+                                        size: 12,
+                                        weight: '600'
+                                    }
+                                }
                             }
                         }
                     }
@@ -339,7 +860,8 @@
                         datasets: [{
                             label: 'Balance (₹)',
                             data: accountBalances,
-                            backgroundColor: '#007bff'
+                            backgroundColor: '#1e3a5f',
+                            borderRadius: 8
                         }]
                     },
                     options: {
@@ -352,7 +874,12 @@
                         },
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '₹' + value.toLocaleString('en-IN');
+                                    }
+                                }
                             }
                         }
                     }

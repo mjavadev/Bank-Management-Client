@@ -5,103 +5,401 @@
     var pendingApplications = ViewBag.PendingApplications;
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4"><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
-        </div>
-    </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+        --bank-text-muted: #6c757d;
+    }
 
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Total Employees</h6>
-                            <h3 class="mb-0">@totalEmployees</h3>
-                        </div>
-                        <div>
-                            <i class="fas fa-users-cog fa-3x opacity-50"></i>
-                        </div>
-                    </div>
-                    <a href="@Url.Action("Employees")" class="btn btn-sm btn-light mt-3">
-                        Manage Employees <i class="fas fa-arrow-right"></i>
-                    </a>
+    .dashboard-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    .dashboard-header {
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 3px solid var(--bank-primary);
+    }
+
+        .dashboard-header h2 {
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .dashboard-header i {
+            margin-right: 12px;
+            color: var(--bank-accent);
+        }
+
+    /* Statistics Cards */
+    .stat-card {
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        height: 100%;
+        position: relative;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+    .stat-card-primary {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        color: white;
+    }
+
+    .stat-card-success {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        color: white;
+    }
+
+    .stat-card-warning {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        color: white;
+    }
+
+    .stat-card .card-body {
+        padding: 28px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0;
+        line-height: 1;
+    }
+
+    .stat-icon {
+        font-size: 3.5rem;
+        opacity: 0.3;
+    }
+
+    .stat-card .btn-light {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card-primary .btn-light {
+        color: var(--bank-primary);
+    }
+
+    .stat-card-success .btn-light {
+        color: var(--bank-success);
+    }
+
+    .stat-card-warning .btn-light {
+        color: var(--bank-warning);
+    }
+
+    .stat-card .btn-light:hover {
+        background: white;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Action Cards */
+    .action-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        transition: all 0.3s ease;
+        height: 100%;
+        overflow: hidden;
+    }
+
+        .action-card:hover {
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.12);
+        }
+
+    .action-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 20px 24px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+        .action-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .action-card-header i {
+            margin-right: 10px;
+            color: var(--bank-accent);
+        }
+
+    .action-card .card-body {
+        padding: 0;
+    }
+
+    /* Action List Items */
+    .action-list-item {
+        border: none;
+        border-bottom: 1px solid var(--bank-border);
+        padding: 18px 24px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        color: var(--bank-primary);
+        text-decoration: none;
+    }
+
+        .action-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .action-list-item:hover {
+            background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
+            padding-left: 32px;
+            color: var(--bank-accent);
+        }
+
+        .action-list-item i {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-right: 16px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .action-list-item:hover i {
+            transform: scale(1.1);
+        }
+
+    .icon-primary {
+        background: rgba(30, 58, 95, 0.1);
+        color: var(--bank-primary);
+    }
+
+    .icon-info {
+        background: rgba(22, 160, 133, 0.1);
+        color: var(--bank-info);
+    }
+
+    .icon-success {
+        background: rgba(39, 174, 96, 0.1);
+        color: var(--bank-success);
+    }
+
+    .icon-warning {
+        background: rgba(243, 156, 18, 0.1);
+        color: var(--bank-warning);
+    }
+
+    /* Admin Info Card */
+    .admin-info-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border: 2px solid var(--bank-border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 48px 32px;
+    }
+
+        .admin-info-card .shield-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-accent) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.2);
+        }
+
+            .admin-info-card .shield-icon i {
+                font-size: 3rem;
+                color: white;
+            }
+
+        .admin-info-card h4 {
+            color: var(--bank-primary);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .admin-info-card p {
+            color: var(--bank-text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .stat-value
+
+    {
+        font-size: 2rem;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+
+    .dashboard-header h2 {
+        font-size: 1.5rem;
+    }
+
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Total Customers</h6>
-                            <h3 class="mb-0">@totalCustomers</h3>
+        <div class="row mb-4 g-4">
+            <div class="col-md-4">
+                <div class="stat-card stat-card-primary">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="stat-label">Total Employees</div>
+                                <h3 class="stat-value">@totalEmployees</h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-users-cog stat-icon"></i>
+                            </div>
                         </div>
-                        <div>
-                            <i class="fas fa-users fa-3x opacity-50"></i>
-                        </div>
+                        <a href="@Url.Action("Employees")" class="btn btn-light">
+                            Manage Employees <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
                     </div>
-                    <a href="@Url.Action("Customers", "Manager")" class="btn btn-sm btn-light mt-3">
-                        View Customers <i class="fas fa-arrow-right"></i>
-                    </a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Pending Applications</h6>
-                            <h3 class="mb-0">@pendingApplications</h3>
+            <div class="col-md-4">
+                <div class="stat-card stat-card-success">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="stat-label">Total Customers</div>
+                                <h3 class="stat-value">@totalCustomers</h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-users stat-icon"></i>
+                            </div>
                         </div>
-                        <div>
-                            <i class="fas fa-file-alt fa-3x opacity-50"></i>
-                        </div>
+                        <a href="@Url.Action("Customers", "Manager")" class="btn btn-light">
+                            View Customers <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
                     </div>
-                    <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-sm btn-light mt-3">
-                        Review Applications <i class="fas fa-arrow-right"></i>
-                    </a>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-cog"></i> Management Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        <a href="@Url.Action("CreateEmployee")" class="list-group-item list-group-item-action">
-                            <i class="fas fa-user-plus text-primary"></i> Create New Employee
-                        </a>
-                        <a href="@Url.Action("Employees")" class="list-group-item list-group-item-action">
-                            <i class="fas fa-list text-info"></i> View All Employees
-                        </a>
-                        <a href="@Url.Action("Applications", "Manager")" class="list-group-item list-group-item-action">
-                            <i class="fas fa-folder-open text-success"></i> View All Applications
-                        </a>
-                        <a href="@Url.Action("Transactions", "Manager")" class="list-group-item list-group-item-action">
-                            <i class="fas fa-exchange-alt text-warning"></i> View All Transactions
+            <div class="col-md-4">
+                <div class="stat-card stat-card-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <div class="stat-label">Pending Applications</div>
+                                <h3 class="stat-value">@pendingApplications</h3>
+                            </div>
+                            <div>
+                                <i class="fas fa-file-alt stat-icon"></i>
+                            </div>
+                        </div>
+                        <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-light">
+                            Review Applications <i class="fas fa-arrow-right ms-2"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-shield-alt fa-5x text-primary mb-3"></i>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="action-card">
+                    <div class="action-card-header">
+                        <h5><i class="fas fa-cog"></i> Management Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="@Url.Action("CreateEmployee")" class="action-list-item">
+                            <i class="fas fa-user-plus icon-primary"></i>
+                            <span>Create New Employee</span>
+                        </a>
+                        <a href="@Url.Action("Employees")" class="action-list-item">
+                            <i class="fas fa-list icon-info"></i>
+                            <span>View All Employees</span>
+                        </a>
+                        <a href="@Url.Action("Applications", "Manager")" class="action-list-item">
+                            <i class="fas fa-folder-open icon-success"></i>
+                            <span>View All Applications</span>
+                        </a>
+                        <a href="@Url.Action("Transactions", "Manager")" class="action-list-item">
+                            <i class="fas fa-exchange-alt icon-warning"></i>
+                            <span>View All Transactions</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="action-card admin-info-card">
+                    <div class="shield-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
                     <h4>System Administrator</h4>
-                    <p class="text-muted">You have full access to all system features and data.</p>
+                    <p>You have full access to all system features and data. Manage employees, review applications, and monitor all transactions from this central dashboard.</p>
                 </div>
             </div>
         </div>

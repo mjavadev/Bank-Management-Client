@@ -4,99 +4,682 @@
     ViewData["Title"] = "Pending Transactions";
 }
 
-<div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2><i class="fas fa-hourglass-half"></i> Pending Transactions</h2>
-        </div>
-    </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-danger: #e74c3c;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    @if (Model.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="transactionsTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Date</th>
-                                        <th>Type</th>
-                                        <th>Account</th>
-                                        <th>Amount</th>
-                                        <th>Recipient</th>
-                                        <th>Description</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var txn in Model)
-                                    {
+    .pending-transactions-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 6px solid var(--bank-info);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .page-header-content h2 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 2rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+        .page-header-content h2 i {
+            color: var(--bank-info);
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0%, 100%
+
+    {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+
+    }
+
+    .page-subtitle {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    .pending-count-badge {
+        background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Statistics Cards */
+    .transaction-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 24px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.12);
+        }
+
+        .stat-card.deposit {
+            border-left-color: var(--bank-success);
+        }
+
+        .stat-card.withdrawal {
+            border-left-color: var(--bank-danger);
+        }
+
+        .stat-card.transfer {
+            border-left-color: var(--bank-accent);
+        }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .stat-value {
+        color: var(--bank-primary);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    /* Main Card */
+    .pending-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        overflow: hidden;
+    }
+
+    .pending-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 24px 28px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+        .pending-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .pending-card-header h5 i {
+                color: var(--bank-info);
+            }
+
+    .pending-card-body {
+        padding: 28px;
+    }
+
+    /* Transactions Table */
+    .transactions-table {
+        width: 100%;
+    }
+
+        .transactions-table thead th {
+            background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 16px 12px;
+            border: none;
+            white-space: nowrap;
+        }
+
+            .transactions-table thead th:first-child {
+                border-top-left-radius: 8px;
+            }
+
+            .transactions-table thead th:last-child {
+                border-top-right-radius: 8px;
+            }
+
+        .transactions-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--bank-border);
+        }
+
+            .transactions-table tbody tr:hover {
+                background: linear-gradient(90deg, rgba(22, 160, 133, 0.05) 0%, rgba(19, 141, 117, 0.03) 100%);
+                transform: scale(1.005);
+                box-shadow: 0 2px 8px rgba(22, 160, 133, 0.1);
+            }
+
+        .transactions-table tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            color: var(--bank-primary);
+            font-size: 0.95rem;
+        }
+
+    /* Transaction ID */
+    .transaction-id {
+        font-weight: 600;
+        color: var(--bank-accent);
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Account Number */
+    .account-number {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        color: var(--bank-primary);
+        font-weight: 500;
+    }
+
+    /* Amount Styling */
+    .amount-cell {
+        font-weight: 700;
+        font-family: 'Courier New', monospace;
+        font-size: 1.05rem;
+    }
+
+    .amount-deposit {
+        color: var(--bank-success);
+    }
+
+    .amount-withdrawal {
+        color: var(--bank-danger);
+    }
+
+    .amount-transfer {
+        color: var(--bank-accent);
+    }
+
+    /* Transaction Type Badges */
+    .transaction-type-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .badge-deposit {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+    .badge-withdrawal {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--bank-danger);
+    }
+
+    .badge-transfer {
+        background: rgba(52, 152, 219, 0.15);
+        color: var(--bank-accent);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .btn-view-action {
+        background: rgba(22, 160, 133, 0.15);
+        color: var(--bank-info);
+    }
+
+        .btn-view-action:hover {
+            background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+        }
+
+    .btn-approve-action {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+        .btn-approve-action:hover {
+            background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+    .btn-reject-action {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--bank-danger);
+    }
+
+        .btn-reject-action:hover {
+            background: linear-gradient(135deg, var(--bank-danger) 0%, #c0392b 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-state-icon i {
+            font-size: 3.5rem;
+            color: var(--bank-success);
+        }
+
+    .empty-state h5 {
+        color: var(--bank-primary);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        color: #6c757d;
+        font-size: 1.05rem;
+    }
+
+    /* Modal Enhancements */
+    .modal-backdrop.show {
+        backdrop-filter: blur(4px);
+        background-color: rgba(30, 58, 95, 0.5);
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+        padding: 24px 32px;
+        border-bottom: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .modal-header.bg-info {
+            background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%) !important;
+        }
+
+        .modal-header .modal-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+    .modal-body {
+        padding: 32px;
+    }
+
+    .transaction-detail-card {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border: 2px solid var(--bank-border);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+        .transaction-detail-card dl.row {
+            margin-bottom: 0;
+        }
+
+        .transaction-detail-card dt {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 12px 0;
+        }
+
+        .transaction-detail-card dd {
+            color: var(--bank-primary);
+            font-weight: 600;
+            padding: 12px 0;
+            font-size: 1.05rem;
+        }
+
+            .transaction-detail-card dd code {
+                background: white;
+                color: var(--bank-primary);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-family: 'Courier New', monospace;
+                font-weight: 600;
+                font-size: 1rem;
+            }
+
+    .modal-footer {
+        padding: 20px 32px;
+        background: #f8f9fa;
+        border-top: 2px solid var(--bank-border);
+    }
+
+        .modal-footer .btn {
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+    @@media (max-width: 768px) {
+        .page-header
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .transaction-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .pending-card-body {
+        padding: 16px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    }
+</style>
+
+<div class="pending-transactions-container">
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-content">
+                <h2>
+                    <i class="fas fa-hourglass-half"></i>
+                    Pending Transactions
+                </h2>
+                <p class="page-subtitle">Review and approve customer transaction requests awaiting manager approval</p>
+            </div>
+            @if (Model.Any())
+            {
+                <div class="pending-count-badge">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>@Model.Count</span>
+                </div>
+            }
+        </div>
+
+        <!-- Transaction Statistics -->
+        @if (Model.Any())
+        {
+            var deposits = Model.Where(t => t.TransactionType == 1).Count();
+            var withdrawals = Model.Where(t => t.TransactionType == 2).Count();
+            var transfers = Model.Where(t => t.TransactionType == 3).Count();
+
+            <div class="transaction-stats">
+                <div class="stat-card deposit">
+                    <div class="stat-label">
+                        <i class="fas fa-arrow-down"></i> Deposits
+                    </div>
+                    <h3 class="stat-value">@deposits</h3>
+                </div>
+                <div class="stat-card withdrawal">
+                    <div class="stat-label">
+                        <i class="fas fa-arrow-up"></i> Withdrawals
+                    </div>
+                    <h3 class="stat-value">@withdrawals</h3>
+                </div>
+                <div class="stat-card transfer">
+                    <div class="stat-label">
+                        <i class="fas fa-exchange-alt"></i> Transfers
+                    </div>
+                    <h3 class="stat-value">@transfers</h3>
+                </div>
+            </div>
+        }
+
+        <!-- Main Pending Card -->
+        <div class="row">
+            <div class="col-12">
+                <div class="pending-card">
+                    <div class="pending-card-header">
+                        <h5><i class="fas fa-clipboard-list"></i> Transactions Awaiting Review</h5>
+                    </div>
+                    <div class="pending-card-body">
+                        @if (Model.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="transactions-table table" id="transactionsTable">
+                                    <thead>
                                         <tr>
-                                            <td>@txn.TransactionID</td>
-                                            <td>@txn.TransactionDate.ToString("dd MMM yyyy HH:mm")</td>
-                                            <td>
-                                                @switch (txn.TransactionType)
-                                                {
-                                                    case 1:
-                                                        <span class="badge bg-success">Deposit</span>
-                                                        break;
-                                                    case 2:
-                                                        <span class="badge bg-danger">Withdrawal</span>
-                                                        break;
-                                                    case 3:
-                                                        <span class="badge bg-info">Transfer</span>
-                                                        break;
-                                                }
-                                            </td>
-                                            <td>@txn.AccountNumber</td>
-                                            <td class="fw-bold">₹@txn.Amount.ToString("N2")</td>
-                                            <td>@(txn.RecipientAccountNumber ?? "N/A")</td>
-                                            <td>@txn.Description</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-info" onclick="viewTransaction(@txn.TransactionID)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-success" onclick="approveTransaction(@txn.TransactionID)">
-                                                    <i class="fas fa-check"></i> Approve
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" onclick="rejectTransaction(@txn.TransactionID)">
-                                                    <i class="fas fa-times"></i> Reject
-                                                </button>
-                                            </td>
+                                            <th>ID</th>
+                                            <th>Date & Time</th>
+                                            <th>Type</th>
+                                            <th>Account</th>
+                                            <th>Amount</th>
+                                            <th>Recipient</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> No pending transactions found.
-                        </div>
-                    }
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var txn in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="transaction-id">#@txn.TransactionID</span>
+                                                </td>
+                                                <td>
+                                                    <div>@txn.TransactionDate.ToString("dd MMM yyyy")</div>
+                                                    <small style="color: #6c757d;">@txn.TransactionDate.ToString("HH:mm")</small>
+                                                </td>
+                                                <td>
+                                                    @switch (txn.TransactionType)
+                                                    {
+                                                        case 1:
+                                                            <span class="transaction-type-badge badge-deposit">
+                                                                <i class="fas fa-arrow-down"></i> Deposit
+                                                            </span>
+                                                            break;
+                                                        case 2:
+                                                            <span class="transaction-type-badge badge-withdrawal">
+                                                                <i class="fas fa-arrow-up"></i> Withdrawal
+                                                            </span>
+                                                            break;
+                                                        case 3:
+                                                            <span class="transaction-type-badge badge-transfer">
+                                                                <i class="fas fa-exchange-alt"></i> Transfer
+                                                            </span>
+                                                            break;
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <span class="account-number">@txn.AccountNumber</span>
+                                                </td>
+                                                <td>
+                                                    <span class="amount-cell @(txn.TransactionType == 1 ? "amount-deposit" : txn.TransactionType == 2 ? "amount-withdrawal" : "amount-transfer")">
+                                                        @(txn.TransactionType == 1 ? "+" : txn.TransactionType == 2 ? "-" : "")₹@txn.Amount.ToString("N2")
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(txn.RecipientAccountNumber))
+                                                    {
+                                                        <span class="account-number">@txn.RecipientAccountNumber</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="color: #6c757d; font-style: italic;">N/A</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(txn.Description))
+                                                    {
+                                                        @txn.Description
+                                                    }
+                                                    else
+                                                    {
+                                                        <span style="color: #6c757d; font-style: italic;">No description</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn-action btn-view-action" onclick="viewTransaction(@txn.TransactionID)">
+                                                            <i class="fas fa-eye"></i> View
+                                                        </button>
+                                                        <button class="btn-action btn-approve-action" onclick="approveTransaction(@txn.TransactionID)">
+                                                            <i class="fas fa-check"></i> Approve
+                                                        </button>
+                                                        <button class="btn-action btn-reject-action" onclick="rejectTransaction(@txn.TransactionID)">
+                                                            <i class="fas fa-times"></i> Reject
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-check-double"></i>
+                                </div>
+                                <h5>All Caught Up!</h5>
+                                <p>There are no pending transactions at this time. All transactions have been processed.</p>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Transaction Details Modal -->
+<!-- Enhanced Transaction Details Modal -->
 <div class="modal fade" id="transactionModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title">Transaction Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title"><i class="fas fa-receipt"></i> Transaction Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="transactionDetails">
                 <!-- Details will be loaded here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Close
+                </button>
             </div>
         </div>
     </div>
@@ -107,7 +690,19 @@
         $(document).ready(function() {
             $('#transactionsTable').DataTable({
                 "pageLength": 25,
-                "order": [[1, "desc"]]
+                "order": [[1, "desc"]],
+                "language": {
+                    "search": "Search transactions:",
+                    "lengthMenu": "Show _MENU_ transactions per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ pending transactions",
+                    "infoEmpty": "No pending transactions",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Prev"
+                    }
+                }
             });
         });
 
@@ -119,66 +714,94 @@
                     if(response.success) {
                         var txn = response.transaction;
                         var typeText = '';
+                        var typeColor = '';
+                        var typeIcon = '';
+
                         switch(txn.transactionType) {
-                            case 1: typeText = 'Deposit'; break;
-                            case 2: typeText = 'Withdrawal'; break;
-                            case 3: typeText = 'Transfer'; break;
+                            case 1:
+                                typeText = 'Deposit';
+                                typeColor = 'success';
+                                typeIcon = 'arrow-down';
+                                break;
+                            case 2:
+                                typeText = 'Withdrawal';
+                                typeColor = 'danger';
+                                typeIcon = 'arrow-up';
+                                break;
+                            case 3:
+                                typeText = 'Transfer';
+                                typeColor = 'info';
+                                typeIcon = 'exchange-alt';
+                                break;
                         }
 
-                        var html = '<dl class="row">';
-                        html += '<dt class="col-sm-4">Transaction ID:</dt><dd class="col-sm-8">' + txn.transactionID + '</dd>';
-                        html += '<dt class="col-sm-4">Type:</dt><dd class="col-sm-8">' + typeText + '</dd>';
-                        html += '<dt class="col-sm-4">Account:</dt><dd class="col-sm-8">' + txn.accountNumber + '</dd>';
-                        html += '<dt class="col-sm-4">Amount:</dt><dd class="col-sm-8">₹' + txn.amount.toFixed(2) + '</dd>';
+                        var html = '<div class="transaction-detail-card">';
+                        html += '<dl class="row">';
+                        html += '<dt class="col-sm-5">Transaction ID:</dt><dd class="col-sm-7"><code>#' + txn.transactionID + '</code></dd>';
+                        html += '<dt class="col-sm-5">Type:</dt><dd class="col-sm-7"><span class="transaction-type-badge badge-' + (typeText.toLowerCase()) + '"><i class="fas fa-' + typeIcon + '"></i> ' + typeText + '</span></dd>';
+                        html += '<dt class="col-sm-5">Account:</dt><dd class="col-sm-7"><code>' + txn.accountNumber + '</code></dd>';
+                        html += '<dt class="col-sm-5">Amount:</dt><dd class="col-sm-7"><strong style="color: var(--bank-' + typeColor + '); font-size: 1.3rem; font-family: Courier New;">₹' + txn.amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</strong></dd>';
+
                         if(txn.recipientAccountNumber) {
-                            html += '<dt class="col-sm-4">Recipient:</dt><dd class="col-sm-8">' + txn.recipientAccountNumber + '</dd>';
+                            html += '<dt class="col-sm-5">Recipient:</dt><dd class="col-sm-7"><code>' + txn.recipientAccountNumber + '</code></dd>';
                         }
-                        html += '<dt class="col-sm-4">Description:</dt><dd class="col-sm-8">' + (txn.description || 'N/A') + '</dd>';
-                        html += '<dt class="col-sm-4">Date:</dt><dd class="col-sm-8">' + new Date(txn.transactionDate).toLocaleString() + '</dd>';
+
+                        html += '<dt class="col-sm-5">Description:</dt><dd class="col-sm-7">' + (txn.description || '<em style="color: #6c757d;">No description provided</em>') + '</dd>';
+                        html += '<dt class="col-sm-5">Date & Time:</dt><dd class="col-sm-7"><i class="far fa-calendar-alt"></i> ' + new Date(txn.transactionDate).toLocaleString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) + '</dd>';
                         html += '</dl>';
+                        html += '</div>';
 
                         $('#transactionDetails').html(html);
                         $('#transactionModal').modal('show');
                     } else {
-                        toastr.error(response.message);
+                        toastr.error(response.message || 'Failed to load transaction details');
                     }
+                },
+                error: function() {
+                    toastr.error('An error occurred while loading transaction details');
                 }
             });
         }
 
         function approveTransaction(id) {
-            if(confirm('Are you sure you want to approve this transaction?')) {
+            if(confirm('Are you sure you want to approve this transaction? This action cannot be undone.')) {
                 $.ajax({
                     url: '@Url.Action("ApproveTransaction")/' + id,
                     type: 'POST',
                     success: function(response) {
                         if(response.success) {
-                            toastr.success(response.message);
+                            toastr.success(response.message || 'Transaction approved successfully');
                             setTimeout(function() {
                                 location.reload();
                             }, 1500);
                         } else {
-                            toastr.error(response.message);
+                            toastr.error(response.message || 'Failed to approve transaction');
                         }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred while approving the transaction');
                     }
                 });
             }
         }
 
         function rejectTransaction(id) {
-            if(confirm('Are you sure you want to reject this transaction?')) {
+            if(confirm('Are you sure you want to reject this transaction? This action cannot be undone.')) {
                 $.ajax({
                     url: '@Url.Action("RejectTransaction")/' + id,
                     type: 'POST',
                     success: function(response) {
                         if(response.success) {
-                            toastr.success(response.message);
+                            toastr.success(response.message || 'Transaction rejected successfully');
                             setTimeout(function() {
                                 location.reload();
                             }, 1500);
                         } else {
-                            toastr.error(response.message);
+                            toastr.error(response.message || 'Failed to reject transaction');
                         }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred while rejecting the transaction');
                     }
                 });
             }

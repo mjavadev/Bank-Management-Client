@@ -4,104 +4,997 @@
     ViewData["Title"] = "Pending Applications";
 }
 
-<div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2><i class="fas fa-hourglass-half"></i> Pending Applications</h2>
-        </div>
-    </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-danger: #e74c3c;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    @if (Model.Any())
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover" id="applicationsTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Photo</th>
-                                        <th>Full Name</th>
-                                        <th>DOB</th>
-                                        <th>Mobile</th>
-                                        <th>Aadhar</th>
-                                        <th>PAN</th>
-                                        <th>Account Type</th>
-                                        <th>Application Date</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var app in Model)
-                                    {
+    .pending-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    /* Page Header */
+    .page-header {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 6px solid var(--bank-warning);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .page-header-content h2 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 2rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+        .page-header-content h2 i {
+            color: var(--bank-warning);
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+    @@keyframes pulse {
+        0%, 100%
+
+    {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+
+    }
+
+    .page-subtitle {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    .pending-count-badge {
+        background: linear-gradient(135deg, var(--bank-warning) 0%, #e67e22 100%);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Main Card */
+    .pending-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        overflow: hidden;
+    }
+
+    .pending-card-header {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
+        padding: 24px 28px;
+        border-bottom: 2px solid var(--bank-border);
+    }
+
+        .pending-card-header h5 {
+            margin: 0;
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .pending-card-header h5 i {
+                color: var(--bank-warning);
+            }
+
+    .pending-card-body {
+        padding: 28px;
+    }
+
+    /* Applications Table */
+    .applications-table {
+        width: 100%;
+    }
+
+        .applications-table thead th {
+            background: linear-gradient(135deg, var(--bank-warning) 0%, #e67e22 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 16px 12px;
+            border: none;
+            white-space: nowrap;
+        }
+
+            .applications-table thead th:first-child {
+                border-top-left-radius: 8px;
+            }
+
+            .applications-table thead th:last-child {
+                border-top-right-radius: 8px;
+            }
+
+        .applications-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--bank-border);
+        }
+
+            .applications-table tbody tr:hover {
+                background: linear-gradient(90deg, rgba(243, 156, 18, 0.05) 0%, rgba(230, 126, 34, 0.03) 100%);
+                transform: scale(1.005);
+                box-shadow: 0 2px 8px rgba(243, 156, 18, 0.1);
+            }
+
+        .applications-table tbody td {
+            padding: 16px 12px;
+            vertical-align: middle;
+            color: var(--bank-primary);
+            font-size: 0.95rem;
+        }
+
+    /* Customer Photo */
+    .customer-photo {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 3px solid white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+        .customer-photo:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+    .photo-placeholder {
+        font-size: 2.5rem;
+        color: var(--bank-border);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .photo-placeholder:hover {
+            color: var(--bank-accent);
+            transform: scale(1.1);
+        }
+
+    /* Application ID */
+    .application-id {
+        font-weight: 600;
+        color: var(--bank-accent);
+        font-family: 'Courier New', monospace;
+    }
+
+    /* Account Type Badges */
+    .account-type-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .badge-savings {
+        background: rgba(33, 150, 243, 0.15);
+        color: #1976d2;
+    }
+
+    .badge-current {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+    .badge-fixed {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--bank-warning);
+    }
+
+    /* Sensitive Data */
+    .sensitive-data {
+        font-family: 'Courier New', monospace;
+        letter-spacing: 1px;
+        color: var(--bank-primary);
+        font-weight: 500;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+    }
+
+    .btn-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-view-action {
+        background: rgba(22, 160, 133, 0.15);
+        color: var(--bank-info);
+    }
+
+        .btn-view-action:hover {
+            background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.3);
+        }
+
+    .btn-approve-action {
+        background: rgba(39, 174, 96, 0.15);
+        color: var(--bank-success);
+    }
+
+        .btn-approve-action:hover {
+            background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+    .btn-reject-action {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--bank-danger);
+    }
+
+        .btn-reject-action:hover {
+            background: linear-gradient(135deg, var(--bank-danger) 0%, #c0392b 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .empty-state-icon i {
+            font-size: 3.5rem;
+            color: var(--bank-success);
+        }
+
+    .empty-state h5 {
+        color: var(--bank-primary);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .empty-state p {
+        color: #6c757d;
+        font-size: 1.05rem;
+    }
+
+    /* Modal Enhancements */
+    .modal-header.bg-info {
+        background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%) !important;
+    }
+
+    .modal-header.bg-success {
+        background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%) !important;
+    }
+
+    .modal-header.bg-danger {
+        background: linear-gradient(135deg, var(--bank-danger) 0%, #c0392b 100%) !important;
+    }
+
+    .application-detail-photo {
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .detail-card-header {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    @@media (max-width: 768px) {
+        .page-header
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .pending-card-body {
+        padding: 16px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+<style>
+    /* ... your existing styles ... */
+
+    /* ========== ENHANCED MODAL STYLING ========== */
+
+    /* Modal Overlay */
+    .modal-backdrop.show {
+        backdrop-filter: blur(4px);
+        background-color: rgba(30, 58, 95, 0.5);
+    }
+
+    /* Modal Container */
+    .modal-content {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    /* Modal Headers */
+    .modal-header {
+        padding: 24px 32px;
+        border-bottom: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .modal-header .modal-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .modal-header .modal-title i {
+                font-size: 1.4rem;
+            }
+
+        .modal-header .btn-close {
+            position: relative;
+            z-index: 1;
+            opacity: 1;
+        }
+
+    /* View Details Modal */
+    .modal-xl .modal-body {
+        padding: 32px;
+        background: #f8f9fa;
+    }
+
+    .application-detail-card {
+        background: white;
+        border-radius: 12px;
+        border: 2px solid;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .application-detail-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .application-detail-card .card-header {
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid;
+        }
+
+        .application-detail-card .card-body {
+            padding: 20px;
+        }
+
+        .application-detail-card.border-primary .card-header {
+            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+            color: white;
+            border-bottom-color: var(--bank-primary);
+        }
+
+        .application-detail-card.border-success .card-header {
+            background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+            color: white;
+            border-bottom-color: var(--bank-success);
+        }
+
+    /* Photo Card in Modal */
+    .photo-detail-card {
+        background: white;
+        border: 2px solid var(--bank-border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+        .photo-detail-card .card-header {
+            background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+            color: white;
+            padding: 16px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .photo-detail-card .card-body {
+            padding: 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+    .application-detail-photo {
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+        .application-detail-photo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+    .no-photo-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+        .no-photo-placeholder i {
+            font-size: 5rem;
+            color: #cbd5e0;
+            margin-bottom: 16px;
+        }
+
+        .no-photo-placeholder p {
+            color: #6c757d;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+    /* Detail List Styling */
+    .application-detail-card dl.row {
+        margin-bottom: 0;
+    }
+
+    .application-detail-card dt {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 8px 0;
+    }
+
+    .application-detail-card dd {
+        color: var(--bank-primary);
+        font-weight: 500;
+        padding: 8px 0;
+    }
+
+        .application-detail-card dd code {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--bank-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+    /* Loading State in Modal */
+    .modal-loading {
+        padding: 60px 40px;
+        text-align: center;
+    }
+
+        .modal-loading .spinner-border {
+            width: 4rem;
+            height: 4rem;
+            border-width: 0.4rem;
+        }
+
+        .modal-loading p {
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 20px 32px;
+        background: #f8f9fa;
+        border-top: 2px solid var(--bank-border);
+    }
+
+        .modal-footer .btn {
+            padding: 12px 28px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-footer .btn-success {
+            background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+            border: none;
+        }
+
+            .modal-footer .btn-success:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            }
+
+        .modal-footer .btn-danger {
+            background: linear-gradient(135deg, var(--bank-danger) 0%, #c0392b 100%);
+            border: none;
+        }
+
+            .modal-footer .btn-danger:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+            }
+
+        .modal-footer .btn-secondary {
+            background: white;
+            border: 2px solid var(--bank-border);
+            color: var(--bank-primary);
+        }
+
+            .modal-footer .btn-secondary:hover {
+                background: var(--bank-light);
+                border-color: var(--bank-secondary);
+                color: var(--bank-secondary);
+            }
+
+    /* Approval Success Modal */
+    .approval-success-alert {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border: 2px solid var(--bank-success);
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+        .approval-success-alert h5 {
+            color: var(--bank-success);
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+            .approval-success-alert h5 i {
+                font-size: 1.8rem;
+            }
+
+    .credentials-card {
+        background: white;
+        border: 2px solid var(--bank-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+        .credentials-card .card-body {
+            padding: 28px;
+        }
+
+        .credentials-card .card-subtitle {
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .credentials-card .card-subtitle::before {
+                content: '';
+                flex: 1;
+                height: 2px;
+                background: linear-gradient(90deg, var(--bank-border) 0%, transparent 100%);
+            }
+
+            .credentials-card .card-subtitle::after {
+                content: '';
+                flex: 1;
+                height: 2px;
+                background: linear-gradient(90deg, transparent 0%, var(--bank-border) 100%);
+            }
+
+        .credentials-card dt {
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 12px 0;
+        }
+
+        .credentials-card dd {
+            padding: 12px 0;
+        }
+
+        .credentials-card .badge {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+            .credentials-card .badge.bg-primary {
+                background: linear-gradient(135deg, var(--bank-accent) 0%, var(--bank-secondary) 100%) !important;
+            }
+
+            .credentials-card .badge.bg-secondary {
+                background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
+            }
+
+    .security-warning {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border-left: 4px solid var(--bank-warning);
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-top: 24px;
+        margin-bottom: 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+        .security-warning i {
+            color: var(--bank-warning);
+            font-size: 1.5rem;
+            margin-top: 2px;
+        }
+
+    .security-warning-content {
+        flex: 1;
+    }
+
+    .security-warning strong {
+        color: #856404;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    /* Reject Modal Enhancements */
+    .reject-modal-body {
+        padding: 32px;
+    }
+
+    .reject-reason-field {
+        margin-bottom: 0;
+    }
+
+        .reject-reason-field label {
+            color: var(--bank-primary);
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .reject-reason-field label i {
+                color: var(--bank-danger);
+            }
+
+        .reject-reason-field textarea {
+            border: 2px solid var(--bank-border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+            .reject-reason-field textarea:focus {
+                border-color: var(--bank-danger);
+                box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+                outline: none;
+            }
+
+        .reject-reason-field .form-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+            .reject-reason-field .form-text i {
+                font-size: 0.85rem;
+            }
+
+    /* Badge Enhancements in Details */
+    .modal-body .badge {
+        padding: 8px 16px;
+        font-weight: 600;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .modal-body .badge.bg-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%) !important;
+        }
+
+        .modal-body .badge.bg-primary {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%) !important;
+        }
+
+        .modal-body .badge.bg-success {
+            background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%) !important;
+        }
+
+        .modal-body .badge.bg-warning {
+            background: linear-gradient(135deg, var(--bank-warning) 0%, #e67e22 100%) !important;
+        }
+
+    /* Responsive Modal */
+    @@media (max-width: 768px) {
+        .modal-header
+
+    {
+        padding: 20px 24px;
+    }
+
+    .modal-header .modal-title {
+        font-size: 1.25rem;
+    }
+
+    .modal-xl .modal-body {
+        padding: 20px;
+    }
+
+    .modal-footer {
+        padding: 16px 24px;
+    }
+
+        .modal-footer .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+    }
+</style>
+
+
+<div class="pending-container">
+    <div class="container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-header-content">
+                <h2>
+                    <i class="fas fa-hourglass-half"></i>
+                    Pending Applications
+                </h2>
+                <p class="page-subtitle">Review and approve customer account applications awaiting manager approval</p>
+            </div>
+            @if (Model.Any())
+            {
+                <div class="pending-count-badge">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>@Model.Count</span>
+                </div>
+            }
+        </div>
+
+        <!-- Main Pending Card -->
+        <div class="row">
+            <div class="col-12">
+                <div class="pending-card">
+                    <div class="pending-card-header">
+                        <h5><i class="fas fa-clipboard-list"></i> Applications Awaiting Review</h5>
+                    </div>
+                    <div class="pending-card-body">
+                        @if (Model.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="applications-table table" id="applicationsTable">
+                                    <thead>
                                         <tr>
-                                            <td>@app.ApplicationID</td>
-                                            <td>
-                                                @if (!string.IsNullOrEmpty(app.CustomerImageURL))
-                                                {
-                                                    <img src="http://localhost:5266/@app.CustomerImageURL"
-                                                         alt="Photo"
-                                                         class="img-thumbnail rounded-circle"
-                                                         style="width: 40px; height: 40px; object-fit: cover; cursor: pointer;"
-                                                         onclick="viewApplication(@app.ApplicationID)">
-                                                }
-                                                else
-                                                {
-                                                    <i class="fas fa-user-circle fa-2x text-muted"></i>
-                                                }
-                                            </td>
-                                            <td>@app.FullName</td>
-                                            <td>@app.DateOfBirth.ToString("dd MMM yyyy")</td>
-                                            <td>@app.MobileNumber</td>
-                                            <td>@app.AadharNumber</td>
-                                            <td>@app.PAN</td>
-                                            <td>
-                                                @if (app.AccountTypeID == 1)
-                                                {
-                                                    <span class="badge bg-primary">Savings</span>
-                                                }
-                                                else if (app.AccountTypeID == 2)
-                                                {
-                                                    <span class="badge bg-success">Current</span>
-                                                }
-                                                else if (app.AccountTypeID == 3)
-                                                {
-                                                    <span class="badge bg-warning text-dark">Fixed Deposit</span>
-                                                }
-                                            </td>
-                                            <td>@app.ApplicationDate.ToString("dd MMM yyyy")</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-info" onclick="viewApplication(@app.ApplicationID)" title="View Details">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-success" onclick="approveApplication(@app.ApplicationID)" title="Approve">
-                                                    <i class="fas fa-check"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" onclick="rejectApplication(@app.ApplicationID)" title="Reject">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </td>
+                                            <th>ID</th>
+                                            <th>Photo</th>
+                                            <th>Full Name</th>
+                                            <th>Date of Birth</th>
+                                            <th>Mobile</th>
+                                            <th>Aadhar</th>
+                                            <th>PAN</th>
+                                            <th>Account Type</th>
+                                            <th>Applied Date</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> No pending applications found.
-                        </div>
-                    }
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var app in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="application-id">#@app.ApplicationID</span>
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(app.CustomerImageURL))
+                                                    {
+                                                        <img src="http://localhost:5266/@app.CustomerImageURL"
+                                                             alt="@app.FullName"
+                                                             class="img-thumbnail rounded-circle customer-photo"
+                                                             onclick="viewApplication(@app.ApplicationID)"
+                                                             title="Click to view details">
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fas fa-user-circle photo-placeholder"
+                                                           onclick="viewApplication(@app.ApplicationID)"
+                                                           title="Click to view details"></i>
+                                                    }
+                                                </td>
+                                                <td><strong>@app.FullName</strong></td>
+                                                <td>@app.DateOfBirth.ToString("dd MMM yyyy")</td>
+                                                <td>
+                                                    <span class="sensitive-data">@app.MobileNumber</span>
+                                                </td>
+                                                <td>
+                                                    <span class="sensitive-data">@app.AadharNumber</span>
+                                                </td>
+                                                <td>
+                                                    <span class="sensitive-data">@app.PAN</span>
+                                                </td>
+                                                <td>
+                                                    @if (app.AccountTypeID == 1)
+                                                    {
+                                                        <span class="account-type-badge badge-savings">
+                                                            <i class="fas fa-piggy-bank"></i> Savings
+                                                        </span>
+                                                    }
+                                                    else if (app.AccountTypeID == 2)
+                                                    {
+                                                        <span class="account-type-badge badge-current">
+                                                            <i class="fas fa-briefcase"></i> Current
+                                                        </span>
+                                                    }
+                                                    else if (app.AccountTypeID == 3)
+                                                    {
+                                                        <span class="account-type-badge badge-fixed">
+                                                            <i class="fas fa-lock"></i> Fixed Deposit
+                                                        </span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div>@app.ApplicationDate.ToString("dd MMM yyyy")</div>
+                                                    <small style="color: #6c757d;">@app.ApplicationDate.ToString("HH:mm")</small>
+                                                </td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button class="btn-action btn-view-action"
+                                                                onclick="viewApplication(@app.ApplicationID)"
+                                                                title="View Details">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-approve-action"
+                                                                onclick="approveApplication(@app.ApplicationID)"
+                                                                title="Approve">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                        <button class="btn-action btn-reject-action"
+                                                                onclick="rejectApplication(@app.ApplicationID)"
+                                                                title="Reject">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-check-double"></i>
+                                </div>
+                                <h5>All Caught Up!</h5>
+                                <p>There are no pending applications at this time. All applications have been processed.</p>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ⭐ View Application Details Modal with Enhanced Photo Display -->
+<!-- Enhanced View Application Modal -->
 <div class="modal fade" id="viewModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -110,12 +1003,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="applicationDetailsBody">
-                <div class="text-center py-4">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2">Loading application details...</p>
-                </div>
+                <!-- Content loaded via AJAX -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -132,103 +1020,126 @@
     </div>
 </div>
 
-<!-- Approval Modal -->
+<!-- Enhanced Approval Success Modal -->
 <div class="modal fade" id="approvalModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title"><i class="fas fa-check-circle"></i> Application Approved</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <div class="alert alert-success">
+            <div class="modal-body" style="padding: 32px;">
+                <div class="approval-success-alert">
                     <h5><i class="fas fa-check-circle"></i> Account Created Successfully!</h5>
                 </div>
-                <div class="card">
+                <div class="credentials-card">
                     <div class="card-body">
-                        <h6 class="card-subtitle mb-3 text-muted">Login Credentials</h6>
+                        <h6 class="card-subtitle"><i class="fas fa-key"></i> Login Credentials</h6>
                         <dl class="row mb-0">
                             <dt class="col-sm-4">Username:</dt>
-                            <dd class="col-sm-8"><span id="modalUsername" class="badge bg-primary fs-6"></span></dd>
+                            <dd class="col-sm-8"><span id="modalUsername" class="badge bg-primary"></span></dd>
 
                             <dt class="col-sm-4">Password:</dt>
-                            <dd class="col-sm-8"><span id="modalPassword" class="badge bg-secondary fs-6"></span></dd>
+                            <dd class="col-sm-8"><span id="modalPassword" class="badge bg-secondary"></span></dd>
 
                             <dt class="col-sm-4">Full Name:</dt>
-                            <dd class="col-sm-8"><strong><span id="modalFullName"></span></strong></dd>
+                            <dd class="col-sm-8"><strong style="color: var(--bank-primary); font-size: 1.05rem;"><span id="modalFullName"></span></strong></dd>
                         </dl>
                     </div>
                 </div>
-                <div class="alert alert-warning mt-3 mb-0">
-                    <i class="fas fa-exclamation-triangle"></i> <strong>Important:</strong> Please share these credentials with the customer securely.
+                <div class="security-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="security-warning-content">
+                        <strong>Important Security Notice</strong>
+                        Please share these credentials with the customer through a secure channel.
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Reject Modal -->
-<div class="modal fade" id="rejectModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title"><i class="fas fa-times-circle"></i> Reject Application</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="rejectApplicationId" />
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Rejection Reason *</label>
-                    <textarea id="rejectionReason" class="form-control" rows="4" placeholder="Enter detailed reason for rejection" required></textarea>
-                    <div class="form-text">Provide a clear reason for rejecting this application.</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" onclick="confirmReject()">
-                    <i class="fas fa-times"></i> Reject Application
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="fas fa-check"></i> Got it
                 </button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Enhanced Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-times-circle"></i> Reject Application</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body reject-modal-body">
+                <input type="hidden" id="rejectApplicationId" />
+                <div class="reject-reason-field">
+                    <label class="form-label">
+                        <i class="fas fa-comment-alt"></i> Rejection Reason
+                    </label>
+                    <textarea id="rejectionReason" 
+                              class="form-control" 
+                              rows="4" 
+                              placeholder="Enter a clear and detailed reason for rejecting this application..."
+                              required></textarea>
+                    <div class="form-text">
+                        <i class="fas fa-info-circle"></i>
+                        Provide a specific reason to help the applicant understand the decision.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-arrow-left"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger" onclick="confirmReject()">
+                    <i class="fas fa-times"></i> Confirm Rejection
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     <script>
         $(document).ready(function() {
             $('#applicationsTable').DataTable({
                 "pageLength": 25,
-                "order": [[8, "desc"]], // Sort by Application Date
+                "order": [[8, "desc"]],
                 "language": {
-                    "search": "Search applications:"
+                    "search": "Search applications:",
+                    "lengthMenu": "Show _MENU_ applications per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ pending applications",
+                    "infoEmpty": "No pending applications",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Prev"
+                    }
                 },
                 "columnDefs": [
-                    { "orderable": false, "targets": [1, 9] } // Photo and Actions columns not sortable
+                    { "orderable": false, "targets": [1, 9] }
                 ]
             });
         });
 
-        // ⭐ View Application Details in Modal with Photo
-        function viewApplication(id) {
-            // Show modal with loading state
+             function viewApplication(id) {
             $('#viewModal').modal('show');
             $('#applicationDetailsBody').html(`
-                <div class="text-center py-4">
+                <div class="modal-loading">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <p class="mt-2">Loading application details...</p>
+                    <p>Loading application details...</p>
                 </div>
             `);
 
-            // Hide action buttons initially
             $('#approveFromModal').hide();
             $('#rejectFromModal').hide();
 
-            // Fetch application details
             $.ajax({
                 url: '@Url.Action("GetApplicationDetails", "Manager")/' + id,
                 type: 'GET',
@@ -236,44 +1147,44 @@
                     if(response.success && response.application) {
                         var app = response.application;
 
-                        // Determine account type
                         var accountTypeBadge = '';
                         if(app.accountTypeID == 1) {
-                            accountTypeBadge = '<span class="badge bg-primary fs-6"><i class="fas fa-piggy-bank"></i> Savings Account</span>';
+                            accountTypeBadge = '<span class="badge bg-primary"><i class="fas fa-piggy-bank"></i> Savings Account</span>';
                         } else if(app.accountTypeID == 2) {
-                            accountTypeBadge = '<span class="badge bg-success fs-6"><i class="fas fa-briefcase"></i> Current Account</span>';
+                            accountTypeBadge = '<span class="badge bg-success"><i class="fas fa-briefcase"></i> Current Account</span>';
                         } else if(app.accountTypeID == 3) {
-                            accountTypeBadge = '<span class="badge bg-warning text-dark fs-6"><i class="fas fa-lock"></i> Fixed Deposit</span>';
+                            accountTypeBadge = '<span class="badge bg-warning text-dark"><i class="fas fa-lock"></i> Fixed Deposit</span>';
                         }
 
-                        // Photo section
                         var photoSection = '';
                         if(app.customerImageURL) {
                             photoSection = `
-                                <div class="col-md-4 text-center">
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0"><i class="fas fa-image"></i> Customer Photo</h6>
+                                <div class="col-md-4 mb-3">
+                                    <div class="photo-detail-card">
+                                        <div class="card-header">
+                                            <i class="fas fa-camera"></i> Customer Photo
                                         </div>
                                         <div class="card-body">
                                             <img src="http://localhost:5266/${app.customerImageURL}"
                                                  alt="Customer Photo"
-                                                 class="img-fluid rounded shadow"
-                                                 style="max-height: 350px; object-fit: cover;">
+                                                 class="img-fluid application-detail-photo"
+                                                 style="width: 100%; max-height: 350px; object-fit: cover;">
                                         </div>
                                     </div>
                                 </div>
                             `;
                         } else {
                             photoSection = `
-                                <div class="col-md-4 text-center">
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h6 class="mb-0"><i class="fas fa-image"></i> Customer Photo</h6>
+                                <div class="col-md-4 mb-3">
+                                    <div class="photo-detail-card">
+                                        <div class="card-header">
+                                            <i class="fas fa-camera"></i> Customer Photo
                                         </div>
                                         <div class="card-body">
-                                            <i class="fas fa-user-circle fa-10x text-muted"></i>
-                                            <p class="text-muted mt-2">No photo uploaded</p>
+                                            <div class="no-photo-placeholder">
+                                                <i class="fas fa-user-circle"></i>
+                                                <p>No photo uploaded</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -286,18 +1197,18 @@
 
                                 <div class="${app.customerImageURL ? 'col-md-8' : 'col-md-12'}">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="card mb-3 border-primary">
-                                                <div class="card-header bg-primary text-white">
-                                                    <h6 class="mb-0"><i class="fas fa-user"></i> Personal Information</h6>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="application-detail-card border-primary">
+                                                <div class="card-header">
+                                                    <i class="fas fa-user"></i> Personal Information
                                                 </div>
                                                 <div class="card-body">
-                                                    <dl class="row mb-0">
+                                                    <dl class="row">
                                                         <dt class="col-sm-5">Application ID:</dt>
                                                         <dd class="col-sm-7"><span class="badge bg-secondary">#${app.applicationID}</span></dd>
 
                                                         <dt class="col-sm-5">Full Name:</dt>
-                                                        <dd class="col-sm-7"><strong class="text-primary">${app.fullName}</strong></dd>
+                                                        <dd class="col-sm-7"><strong style="color: var(--bank-primary); font-size: 1.05rem;">${app.fullName}</strong></dd>
 
                                                         <dt class="col-sm-5">Date of Birth:</dt>
                                                         <dd class="col-sm-7">${new Date(app.dateOfBirth).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</dd>
@@ -312,15 +1223,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
-                                            <div class="card mb-3 border-success">
-                                                <div class="card-header bg-success text-white">
-                                                    <h6 class="mb-0"><i class="fas fa-id-card"></i> Contact & Documents</h6>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="application-detail-card border-success">
+                                                <div class="card-header">
+                                                    <i class="fas fa-id-card"></i> Contact & Documents
                                                 </div>
                                                 <div class="card-body">
-                                                    <dl class="row mb-0">
+                                                    <dl class="row">
                                                         <dt class="col-sm-5">Mobile Number:</dt>
-                                                        <dd class="col-sm-7"><i class="fas fa-phone text-success"></i> ${app.mobileNumber}</dd>
+                                                        <dd class="col-sm-7"><i class="fas fa-phone" style="color: var(--bank-success);"></i> ${app.mobileNumber}</dd>
 
                                                         <dt class="col-sm-5">Aadhar Number:</dt>
                                                         <dd class="col-sm-7"><code>${app.aadharNumber}</code></dd>
@@ -332,7 +1243,7 @@
                                                         <dd class="col-sm-7">${accountTypeBadge}</dd>
 
                                                         <dt class="col-sm-5">Applied On:</dt>
-                                                        <dd class="col-sm-7"><i class="far fa-calendar-alt"></i> ${new Date(app.applicationDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</dd>
+                                                        <dd class="col-sm-7"><i class="far fa-calendar-alt"></i> ${new Date(app.applicationDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</dd>
                                                     </dl>
                                                 </div>
                                             </div>
@@ -344,8 +1255,7 @@
 
                         $('#applicationDetailsBody').html(html);
 
-                        // Show action buttons and bind events
-                        if(app.status == 1) { // Pending
+                        if(app.status == 1) {
                             $('#approveFromModal').show().off('click').on('click', function() {
                                 $('#viewModal').modal('hide');
                                 approveApplication(app.applicationID);
@@ -358,7 +1268,7 @@
                         }
                     } else {
                         $('#applicationDetailsBody').html(`
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger" style="margin: 40px;">
                                 <i class="fas fa-exclamation-circle"></i> Failed to load application details.
                             </div>
                         `);
@@ -366,13 +1276,14 @@
                 },
                 error: function() {
                     $('#applicationDetailsBody').html(`
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger" style="margin: 40px;">
                             <i class="fas fa-exclamation-circle"></i> An error occurred while loading application details.
                         </div>
                     `);
                 }
             });
         }
+
 
         function approveApplication(id) {
             if(confirm('Are you sure you want to approve this application? This will create a customer account.')) {

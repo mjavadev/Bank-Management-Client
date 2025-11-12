@@ -2,49 +2,418 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="container">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-10">
-            <div class="jumbotron bg-light p-5 rounded">
-                <h1 class="display-4">Welcome to Banking Application</h1>
-                <p class="lead">Manage your finances with ease and security</p>
-                <hr class="my-4">
-                <p>Apply for a new bank account or login to access your existing account.</p>
-                <div class="mt-4">
-                    <a class="btn btn-primary btn-lg me-3" href="@Url.Action("Login", "Account")" role="button">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </a>
-                    <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Application")" role="button">
-                        <i class="fas fa-user-plus"></i> Apply for Bank Account
-                    </a>
-                </div>
-            </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-            <div class="row mt-5">
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
-                            <h5 class="card-title">Secure Banking</h5>
-                            <p class="card-text">Your transactions are protected with advanced security measures.</p>
+    .home-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: calc(100vh - 56px);
+        padding: 60px 0;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: white;
+        border-radius: 24px;
+        padding: 60px 50px;
+        box-shadow: 0 20px 60px var(--bank-shadow);
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--bank-border);
+    }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(30, 58, 95, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3);
+    }
+
+        .hero-icon i {
+            font-size: 40px;
+            color: white;
+        }
+
+    .hero-title {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 42px;
+        margin-bottom: 16px;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        color: #6b7280;
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 24px;
+    }
+
+    .hero-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--bank-accent), transparent);
+        border: none;
+        margin: 24px 0;
+    }
+
+    .hero-description {
+        color: #6b7280;
+        font-size: 17px;
+        line-height: 1.6;
+        margin-bottom: 36px;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .btn-action {
+        padding: 16px 36px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        color: white;
+        box-shadow: 0 8px 24px rgba(30, 58, 95, 0.3);
+    }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.4);
+            color: white;
+        }
+
+    .btn-success-custom {
+        background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+        color: white;
+        box-shadow: 0 8px 24px rgba(39, 174, 96, 0.3);
+    }
+
+        .btn-success-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(39, 174, 96, 0.4);
+            color: white;
+        }
+
+    /* Features Section */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid var(--bank-border);
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(52, 152, 219, 0.05) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scale(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--bank-accent);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.15);
+        }
+
+    .feature-icon-wrapper {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 24px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .feature-icon {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-icon.primary {
+        background: linear-gradient(135deg, rgba(30, 58, 95, 0.1) 0%, rgba(44, 95, 141, 0.1) 100%);
+    }
+
+    .feature-icon.success {
+        background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(34, 153, 84, 0.1) 100%);
+    }
+
+    .feature-icon.info {
+        background: linear-gradient(135deg, rgba(22, 160, 133, 0.1) 0%, rgba(19, 141, 117, 0.1) 100%);
+    }
+
+    .feature-icon i {
+        font-size: 45px;
+    }
+
+    .feature-icon.primary i {
+        color: var(--bank-primary);
+    }
+
+    .feature-icon.success i {
+        color: var(--bank-success);
+    }
+
+    .feature-icon.info i {
+        color: var(--bank-info);
+    }
+
+    .feature-card h5 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 20px;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .feature-card p {
+        color: #6b7280;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        border-radius: 20px;
+        padding: 50px 40px;
+        margin-top: 50px;
+        box-shadow: 0 20px 60px rgba(30, 58, 95, 0.2);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        text-align: center;
+    }
+
+    .stat-item h3 {
+        color: white;
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .stat-item p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 15px;
+        margin: 0;
+        font-weight: 500;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .home-container
+
+    {
+        padding: 30px 0;
+    }
+
+    .hero-section {
+        padding: 40px 30px;
+        margin-bottom: 30px;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-section {
+        padding: 40px 30px;
+        margin-top: 30px;
+    }
+
+    .stats-grid {
+        gap: 30px;
+    }
+
+    }
+</style>
+
+<div class="home-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <div class="hero-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h1 class="hero-title">Welcome to Secure Banking</h1>
+                        <p class="hero-subtitle">Manage your finances with ease and security</p>
+                        <hr class="hero-divider">
+                        <p class="hero-description">
+                            Experience modern banking at your fingertips. Apply for a new bank account or login to access your existing account and explore our comprehensive suite of financial services.
+                        </p>
+                        <div class="action-buttons">
+                            <a class="btn-action btn-primary-custom" href="@Url.Action("Login", "Account")">
+                                <i class="fas fa-sign-in-alt"></i> Login to Account
+                            </a>
+                            <a class="btn-action btn-success-custom" href="@Url.Action("Create", "Application")">
+                                <i class="fas fa-user-plus"></i> Apply for Bank Account
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-clock fa-3x text-success mb-3"></i>
-                            <h5 class="card-title">24/7 Access</h5>
-                            <p class="card-text">Access your account anytime, anywhere with our online platform.</p>
+
+                <!-- Features Section -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon primary">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
                         </div>
+                        <h5>Secure Banking</h5>
+                        <p>Your transactions are protected with advanced encryption and multi-layer security measures to ensure complete safety.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon success">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                        </div>
+                        <h5>24/7 Access</h5>
+                        <p>Access your account anytime, anywhere with our reliable online banking platform available round the clock.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon info">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                        </div>
+                        <h5>Customer Support</h5>
+                        <p>Our dedicated support team is here to help you with any queries or concerns you may have.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <i class="fas fa-headset fa-3x text-info mb-3"></i>
-                            <h5 class="card-title">Customer Support</h5>
-                            <p class="card-text">Our dedicated team is here to help you with any queries.</p>
+
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3><i class="fas fa-users"></i></h3>
+                            <p>Trusted by Thousands</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3><i class="fas fa-lock"></i></h3>
+                            <p>Bank-Level Security</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3><i class="fas fa-bolt"></i></h3>
+                            <p>Instant Transactions</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3><i class="fas fa-award"></i></h3>
+                            <p>Award-Winning Service</p>
                         </div>
                     </div>
                 </div>

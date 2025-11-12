@@ -1,6 +1,147 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-border: #e1e8ed;
+        --bank-light: #f8f9fa;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
+
+    .privacy-container {
+        min-height: calc(100vh - 56px);
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        padding: 64px 0 48px 0;
+    }
+
+    .privacy-card {
+        background: white;
+        border-radius: 22px;
+        box-shadow: 0 12px 32px var(--bank-shadow);
+        border: 1px solid var(--bank-border);
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 40px;
+    }
+
+    .privacy-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+
+        .privacy-header i {
+            font-size: 38px;
+            color: var(--bank-accent);
+        }
+
+    .privacy-title {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 32px;
+        letter-spacing: -1px;
+        margin: 0;
+    }
+
+    .privacy-section-title {
+        margin-top: 36px;
+        color: var(--bank-secondary);
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .privacy-section {
+        margin-bottom: 24px;
+    }
+
+        .privacy-section ul {
+            margin: 0 0 0 18px;
+            color: #4b5563;
+        }
+
+        .privacy-section p, .privacy-card li {
+            color: #4b5563;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+    @@media (max-width: 768px) {
+        .privacy-card
+
+    {
+        padding: 30px 14px;
+    }
+
+    .privacy-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .privacy-title {
+        font-size: 24px;
+    }
+
+    }
+</style>
+
+<div class="privacy-container">
+    <div class="privacy-card">
+        <div class="privacy-header">
+            <i class="fas fa-user-shield"></i>
+            <h1 class="privacy-title">@ViewData["Title"]</h1>
+        </div>
+        <div class="privacy-section">
+            <p>
+                This Privacy Policy describes how Secure Banking ("we", "our", or "us") collects, uses, shares, and protects your personal information when you interact with our banking platform.
+            </p>
+        </div>
+
+        <div class="privacy-section">
+            <h2 class="privacy-section-title">What Information We Collect</h2>
+            <ul>
+                <li>Personal identification details (e.g., name, account number, PAN, contact info, etc.)</li>
+                <li>Login credentials and security data</li>
+                <li>Transaction records and banking activity</li>
+                <li>Device, usage, and browser information</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2 class="privacy-section-title">How We Use Your Information</h2>
+            <ul>
+                <li>To provide banking services and verify identity</li>
+                <li>To protect your account and prevent fraud</li>
+                <li>To improve our platform and customer experience</li>
+                <li>To comply with legal obligations and regulatory requirements</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2 class="privacy-section-title">How We Protect Your Information</h2>
+            <p>
+                We employ industry-standard security measures including encryption, multi-factor authentication, and regular audits to safeguard your privacy and data.
+            </p>
+        </div>
+
+        <div class="privacy-section">
+            <h2 class="privacy-section-title">Your Rights and Choices</h2>
+            <ul>
+                <li>You can access, update, or correct your information via your account dashboard.</li>
+                <li>You can request deletion of your account, subject to legal retention requirements.</li>
+                <li>Contact our support for privacy-related questions or requests.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h2 class="privacy-section-title">Contact Us</h2>
+            <p>
+                If you have any questions or concerns regarding your privacy or this policy, please contact our dedicated privacy support team at <a href="mailto:support@yourbank.com">support@yourbank.com</a>.
+            </p>
+        </div>
+    </div>
+</div>

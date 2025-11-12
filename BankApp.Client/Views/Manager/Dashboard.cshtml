@@ -4,98 +4,471 @@
     var pendingTransactions = ViewBag.PendingTransactions;
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Manager Dashboard</h2>
-        </div>
-    </div>
+<style>
+    :root {
+        --bank-primary: #1e3a5f;
+        --bank-secondary: #2c5f8d;
+        --bank-accent: #3498db;
+        --bank-success: #27ae60;
+        --bank-warning: #f39c12;
+        --bank-danger: #e74c3c;
+        --bank-info: #16a085;
+        --bank-light: #f8f9fa;
+        --bank-border: #e1e8ed;
+        --bank-shadow: rgba(30, 58, 95, 0.08);
+    }
 
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
+    .manager-dashboard-container {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        padding: 32px 0;
+    }
+
+    /* Welcome Header */
+    .dashboard-welcome {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-left: 6px solid var(--bank-accent);
+    }
+
+        .dashboard-welcome h2 {
+            color: var(--bank-primary);
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+            .dashboard-welcome h2 i {
+                color: var(--bank-accent);
+                font-size: 1.8rem;
+            }
+
+    .welcome-subtitle {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 1rem;
+    }
+
+    /* Action Cards Grid */
+    .action-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+
+    .action-card {
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        position: relative;
+        background: white;
+    }
+
+        .action-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.15);
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+
+    .action-card-warning {
+        background: linear-gradient(135deg, var(--bank-warning) 0%, #e67e22 100%);
+        color: white;
+    }
+
+    .action-card-info {
+        background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
+        color: white;
+    }
+
+    .action-card-success {
+        background: linear-gradient(135deg, var(--bank-success) 0%, #229954 100%);
+        color: white;
+    }
+
+    .action-card-primary {
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
+        color: white;
+    }
+
+    .action-card .card-body {
+        padding: 28px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card-content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .card-info h6 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+
+    .card-info h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .card-icon {
+        font-size: 3.5rem;
+        opacity: 0.3;
+    }
+
+    .action-card .btn-light {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .action-card-warning .btn-light {
+        color: var(--bank-warning);
+    }
+
+    .action-card-info .btn-light {
+        color: var(--bank-info);
+    }
+
+    .action-card-success .btn-light {
+        color: var(--bank-success);
+    }
+
+    .action-card-primary .btn-light {
+        color: var(--bank-primary);
+    }
+
+    .action-card .btn-light:hover {
+        background: white;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+
+    /* Quick Actions Section */
+    .quick-actions-section {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
+        text-align: center;
+        border: 1px solid var(--bank-border);
+    }
+
+    .quick-actions-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+        .quick-actions-icon i {
+            font-size: 3.5rem;
+            color: var(--bank-accent);
+        }
+
+    .quick-actions-section h4 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .quick-actions-section p {
+        color: #6c757d;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto 32px;
+    }
+
+    /* Quick Links */
+    .quick-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 32px;
+    }
+
+    .quick-link-card {
+        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
+        border: 2px solid var(--bank-border);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .quick-link-card:hover {
+            border-color: var(--bank-accent);
+            background: white;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.15);
+            text-decoration: none;
+        }
+
+    .quick-link-icon {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .quick-link-card:hover .quick-link-icon {
+        background: linear-gradient(135deg, var(--bank-accent) 0%, var(--bank-secondary) 100%);
+    }
+
+    .quick-link-icon i {
+        font-size: 1.8rem;
+        color: var(--bank-accent);
+        transition: all 0.3s ease;
+    }
+
+    .quick-link-card:hover .quick-link-icon i {
+        color: white;
+    }
+
+    .quick-link-text {
+        color: var(--bank-primary);
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .quick-link-card:hover .quick-link-text {
+        color: var(--bank-accent);
+    }
+
+    /* Alert Badge */
+    .alert-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        z-index: 2;
+    }
+
+    @@media (max-width: 768px) {
+        .dashboard-welcome h2
+
+    {
+        font-size: 1.5rem;
+    }
+
+    .action-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-links {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-info h3 {
+        font-size: 2rem;
+    }
+
+    .card-icon {
+        font-size: 2.5rem;
+    }
+
+    }
+</style>
+
+<div class="manager-dashboard-container">
+    <div class="container-fluid">
+        <!-- Welcome Header -->
+        <div class="dashboard-welcome">
+            <h2>
+                <i class="fas fa-tachometer-alt"></i>
+                Manager Dashboard
+            </h2>
+            <p class="welcome-subtitle">Oversee applications, transactions, and customer management operations</p>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="action-cards-grid">
+            <div class="action-card action-card-warning">
+                @if (pendingApplications > 0)
+                {
+                    <span class="alert-badge">@pendingApplications Pending</span>
+                }
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Pending Applications</h6>
-                            <h3 class="mb-0">@pendingApplications</h3>
+                    <div class="card-content-wrapper">
+                        <div class="card-info">
+                            <h6>Pending Applications</h6>
+                            <h3>@pendingApplications</h3>
                         </div>
                         <div>
-                            <i class="fas fa-file-alt fa-3x opacity-50"></i>
+                            <i class="fas fa-file-alt card-icon"></i>
                         </div>
                     </div>
-                    <a href="@Url.Action("PendingApplications")" class="btn btn-sm btn-light mt-3">
+                    <a href="@Url.Action("PendingApplications")" class="btn btn-light">
                         View Applications <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card bg-info text-white">
+            <div class="action-card action-card-info">
+                @if (pendingTransactions > 0)
+                {
+                    <span class="alert-badge">@pendingTransactions Pending</span>
+                }
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Pending Transactions</h6>
-                            <h3 class="mb-0">@pendingTransactions</h3>
+                    <div class="card-content-wrapper">
+                        <div class="card-info">
+                            <h6>Pending Transactions</h6>
+                            <h3>@pendingTransactions</h3>
                         </div>
                         <div>
-                            <i class="fas fa-exchange-alt fa-3x opacity-50"></i>
+                            <i class="fas fa-exchange-alt card-icon"></i>
                         </div>
                     </div>
-                    <a href="@Url.Action("PendingTransactions")" class="btn btn-sm btn-light mt-3">
+                    <a href="@Url.Action("PendingTransactions")" class="btn btn-light">
                         View Transactions <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
+            <div class="action-card action-card-success">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">All Applications</h6>
-                            <h3 class="mb-0"><i class="fas fa-list"></i></h3>
+                    <div class="card-content-wrapper">
+                        <div class="card-info">
+                            <h6>All Applications</h6>
+                            <h3><i class="fas fa-list"></i></h3>
                         </div>
                         <div>
-                            <i class="fas fa-folder-open fa-3x opacity-50"></i>
+                            <i class="fas fa-folder-open card-icon"></i>
                         </div>
                     </div>
-                    <a href="@Url.Action("Applications")" class="btn btn-sm btn-light mt-3">
+                    <a href="@Url.Action("Applications")" class="btn btn-light">
                         View All <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card bg-primary text-white">
+            <div class="action-card action-card-primary">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="text-uppercase mb-1">Customers</h6>
-                            <h3 class="mb-0"><i class="fas fa-users"></i></h3>
+                    <div class="card-content-wrapper">
+                        <div class="card-info">
+                            <h6>Customers</h6>
+                            <h3><i class="fas fa-users"></i></h3>
                         </div>
                         <div>
-                            <i class="fas fa-user-tie fa-3x opacity-50"></i>
+                            <i class="fas fa-user-tie card-icon"></i>
                         </div>
                     </div>
-                    <a href="@Url.Action("Customers")" class="btn btn-sm btn-light mt-3">
+                    <a href="@Url.Action("Customers")" class="btn btn-light">
                         View Customers <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <i class="fas fa-tasks fa-5x text-muted mb-3"></i>
-                    <h4>Quick Actions</h4>
-                    <p class="text-muted">Use the navigation menu above to manage applications, transactions, and customers.</p>
+        <!-- Quick Actions Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="quick-actions-section">
+                    <div class="quick-actions-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h4>Management Hub</h4>
+                    <p>Access all management functions from this central dashboard. Use the cards above for quick access to pending items, or explore additional options below.</p>
+
+                    <div class="quick-links">
+                        <a href="@Url.Action("PendingApplications")" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <span class="quick-link-text">Review Applications</span>
+                        </a>
+
+                        <a href="@Url.Action("PendingTransactions")" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-money-check-alt"></i>
+                            </div>
+                            <span class="quick-link-text">Approve Transactions</span>
+                        </a>
+
+                        <a href="@Url.Action("Applications")" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-archive"></i>
+                            </div>
+                            <span class="quick-link-text">All Applications</span>
+                        </a>
+
+                        <a href="@Url.Action("Customers")" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <span class="quick-link-text">Customer Directory</span>
+                        </a>
+
+                        <a href="@Url.Action("Transactions", "Manager")" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <span class="quick-link-text">All Transactions</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <span class="quick-link-text">Reports & Analytics</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
