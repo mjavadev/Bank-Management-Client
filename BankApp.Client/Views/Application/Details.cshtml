@@ -1,0 +1,107 @@
+﻿@using BankApp.Client.Dto
+@model ApplicationDto
+
+@{
+    ViewData["Title"] = "Application Details";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-info-circle"></i> Application Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Application ID:</strong>
+                            <p>@Model.ApplicationID</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Full Name:</strong>
+                            <p>@Model.FullName</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Date of Birth:</strong>
+                            <p>@Model.DateOfBirth.ToString("dd MMM yyyy")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Gender:</strong>
+                            <p>@Model.Gender</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Occupation:</strong>
+                            <p>@Model.Occupation</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Mobile Number:</strong>
+                            <p>@Model.MobileNumber</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Aadhar Number:</strong>
+                            <p>@Model.AadharNumber</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>PAN:</strong>
+                            <p>@Model.PAN</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Account Type:</strong>
+                            <p>@(Model.AccountTypeID == 1 ? "Savings" : "Current")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Status:</strong>
+                            <p>
+                                @if (Model.Status == 1)
+                                {
+                                    <span class="badge bg-warning">Pending</span>
+                                }
+                                else if (Model.Status == 2)
+                                {
+                                    <span class="badge bg-success">Approved</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Rejected</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Application Date:</strong>
+                            <p>@Model.ApplicationDate.ToString("dd MMM yyyy HH:mm")</p>
+                        </div>
+                    </div>
+
+                    @if (Model.Status == 3 && !string.IsNullOrEmpty(Model.RejectionReason))
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Rejection Reason:</strong> @Model.RejectionReason
+                        </div>
+                    }
+
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Applications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

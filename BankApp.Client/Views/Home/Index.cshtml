@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="jumbotron bg-light p-5 rounded">
+                <h1 class="display-4">Welcome to Banking Application</h1>
+                <p class="lead">Manage your finances with ease and security</p>
+                <hr class="my-4">
+                <p>Apply for a new bank account or login to access your existing account.</p>
+                <div class="mt-4">
+                    <a class="btn btn-primary btn-lg me-3" href="@Url.Action("Login", "Account")" role="button">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a class="btn btn-success btn-lg" href="@Url.Action("Create", "Application")" role="button">
+                        <i class="fas fa-user-plus"></i> Apply for Bank Account
+                    </a>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Secure Banking</h5>
+                            <p class="card-text">Your transactions are protected with advanced security measures.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-clock fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">24/7 Access</h5>
+                            <p class="card-text">Access your account anytime, anywhere with our online platform.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <i class="fas fa-headset fa-3x text-info mb-3"></i>
+                            <h5 class="card-title">Customer Support</h5>
+                            <p class="card-text">Our dedicated team is here to help you with any queries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿@model List<BankApp.Client.Dto.CustomerDto>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-users"></i> All Customers</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="customersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>DOB</th>
+                                        <th>Mobile</th>
+                                        <th>PAN</th>
+                                        <th>Approval Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var customer in Model)
+                                    {
+                                        <tr>
+                                            <td>@customer.CustomerID</td>
+                                            <td>@customer.UserName</td>
+                                            <td>@customer.FullName</td>
+                                            <td>@customer.DateOfBirth.ToString("dd MMM yyyy")</td>
+                                            <td>@customer.MobileNumber</td>
+                                            <td>@customer.PAN</td>
+                                            <td>@(customer.ApprovalDate?.ToString("dd MMM yyyy") ?? "N/A")</td>
+                                            <td>
+                                                @if (customer.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Inactive</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No customers found.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#customersTable').DataTable({
+                "pageLength": 25,
+                "order": [[0, "desc"]]
+            });
+        });
+    </script>
+}

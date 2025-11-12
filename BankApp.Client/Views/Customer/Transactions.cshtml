@@ -1,0 +1,112 @@
+﻿@model List<BankApp.Client.Dto.TransactionDto>
+
+@{
+    ViewData["Title"] = "Transactions";
+    var accountId = ViewBag.AccountId;
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-list"></i> Account Transactions</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">All Transactions</h5>
+                    <a href="@Url.Action("Dashboard")" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="transactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Account Number</th>
+                                        <th>Amount</th>
+                                        <th>Recipient</th>
+                                        <th>Status</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var transaction in Model)
+                                    {
+                                        <tr>
+                                            <td>@transaction.TransactionID</td>
+                                            <td>@transaction.TransactionDate.ToString("dd MMM yyyy HH:mm")</td>
+                                            <td>
+                                                @switch (transaction.TransactionType)
+                                                {
+                                                    case 1:
+                                                        <span class="badge bg-success"><i class="fas fa-arrow-down"></i> Deposit</span>
+                                                        break;
+                                                    case 2:
+                                                        <span class="badge bg-danger"><i class="fas fa-arrow-up"></i> Withdrawal</span>
+                                                        break;
+                                                    case 3:
+                                                        <span class="badge bg-info"><i class="fas fa-exchange-alt"></i> Transfer</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">Other</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>@transaction.AccountNumber</td>
+                                            <td class="fw-bold">₹@transaction.Amount.ToString("N2")</td>
+                                            <td>@(transaction.RecipientAccountNumber ?? "N/A")</td>
+                                            <td>
+                                                @switch (transaction.Status)
+                                                {
+                                                    case 1:
+                                                        <span class="badge bg-warning"><i class="fas fa-clock"></i> Pending</span>
+                                                        break;
+                                                    case 2:
+                                                        <span class="badge bg-success"><i class="fas fa-check"></i> Approved</span>
+                                                        break;
+                                                    case 3:
+                                                        <span class="badge bg-danger"><i class="fas fa-times"></i> Rejected</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>@transaction.Description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No transactions found for this account.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#transactionsTable').DataTable({
+                "pageLength": 25,
+                "order": [[1, "desc"]],
+                "language": {
+                    "search": "Search transactions:"
+                }
+            });
+        });
+    </script>
+}

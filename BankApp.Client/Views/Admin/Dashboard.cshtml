@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    var totalEmployees = ViewBag.TotalEmployees;
+    var totalCustomers = ViewBag.TotalCustomers;
+    var pendingApplications = ViewBag.PendingApplications;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Total Employees</h6>
+                            <h3 class="mb-0">@totalEmployees</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-users-cog fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Employees")" class="btn btn-sm btn-light mt-3">
+                        Manage Employees <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Total Customers</h6>
+                            <h3 class="mb-0">@totalCustomers</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-users fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Customers", "Manager")" class="btn btn-sm btn-light mt-3">
+                        View Customers <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Pending Applications</h6>
+                            <h3 class="mb-0">@pendingApplications</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-file-alt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-sm btn-light mt-3">
+                        Review Applications <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-cog"></i> Management Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="@Url.Action("CreateEmployee")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-user-plus text-primary"></i> Create New Employee
+                        </a>
+                        <a href="@Url.Action("Employees")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-list text-info"></i> View All Employees
+                        </a>
+                        <a href="@Url.Action("Applications", "Manager")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-folder-open text-success"></i> View All Applications
+                        </a>
+                        <a href="@Url.Action("Transactions", "Manager")" class="list-group-item list-group-item-action">
+                            <i class="fas fa-exchange-alt text-warning"></i> View All Transactions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-shield-alt fa-5x text-primary mb-3"></i>
+                    <h4>System Administrator</h4>
+                    <p class="text-muted">You have full access to all system features and data.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

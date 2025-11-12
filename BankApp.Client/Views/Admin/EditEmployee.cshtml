@@ -1,0 +1,71 @@
+﻿@using BankApp.Client.ViewModels
+@model EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Edit Employee";
+    var employeeId = ViewBag.EmployeeId;
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-edit"></i> Edit Employee</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditEmployee" asp-route-id="@employeeId" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UserName" class="form-label">Username *</label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FullName" class="form-label">Full Name *</label>
+                                <input asp-for="FullName" class="form-control" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StaffCode" class="form-label">Staff Code *</label>
+                                <input asp-for="StaffCode" class="form-control" />
+                                <span asp-validation-for="StaffCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="JobTitle" class="form-label">Job Title *</label>
+                                <input asp-for="JobTitle" class="form-control" />
+                                <span asp-validation-for="JobTitle" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DateHired" class="form-label">Date Hired *</label>
+                            <input asp-for="DateHired" type="date" class="form-control" />
+                            <span asp-validation-for="DateHired" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="fas fa-save"></i> Update Employee
+                            </button>
+                            <a href="@Url.Action("Employees")" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Employees
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

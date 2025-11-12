@@ -1,0 +1,202 @@
+﻿@model BankApp.Client.ViewModels.TransactionViewModel
+ 
+@{
+
+    ViewData["Title"] = "New Transaction";
+
+    var accounts = ViewBag.Accounts as List<BankApp.Client.Dto.AccountDto>;
+
+}
+ 
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header bg-primary text-white">
+<h4 class="mb-0"><i class="fas fa-exchange-alt"></i> New Transaction</h4>
+</div>
+<div class="card-body">
+<form asp-action="CreateTransaction" method="post" id="transactionForm">
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+ 
+                        <div class="mb-3">
+<label asp-for="AccountID" class="form-label">Select Account *</label>
+<select asp-for="AccountID" class="form-select" id="accountSelect" required>
+<option value="">-- Select Account --</option>
+
+                                @if (accounts != null)
+
+                                {
+
+                                    @foreach (var account in accounts)
+
+                                    {
+<option value="@account.AccountID" data-balance="@account.Balance" data-number="@account.AccountNumber">
+
+                                            @account.AccountTypeName - @account.AccountNumber (Balance: ₹@account.Balance.ToString("N2"))
+</option>
+
+                                    }
+
+                                }
+</select>
+<span asp-validation-for="AccountID" class="text-danger"></span>
+</div>
+ 
+                        <input type="hidden" asp-for="AccountNumber" id="accountNumber" />
+<input type="hidden" asp-for="CurrentBalance" id="currentBalance" />
+ 
+                        <div class="mb-3">
+<label asp-for="TransactionType" class="form-label">Transaction Type *</label>
+<select asp-for="TransactionType" class="form-select" id="transactionType" required>
+<option value="">-- Select Type --</option>
+<option value="1">Deposit</option>
+<option value="2">Withdrawal</option>
+<option value="3">Transfer</option>
+</select>
+<span asp-validation-for="TransactionType" class="text-danger"></span>
+</div>
+ 
+                        <div class="mb-3" id="recipientSection" style="display:none;">
+<label asp-for="RecipientAccountNumber" class="form-label">Recipient Account Number *</label>
+<input asp-for="RecipientAccountNumber" class="form-control" id="recipientAccountNumber" placeholder="Enter recipient account number" />
+<span asp-validation-for="RecipientAccountNumber" class="text-danger"></span>
+</div>
+ 
+                        <div class="mb-3">
+<label asp-for="Amount" class="form-label">Amount *</label>
+<input asp-for="Amount" type="number" step="0.01" class="form-control" placeholder="Enter amount" required />
+<span asp-validation-for="Amount" class="text-danger"></span>
+<small class="text-muted" id="balanceInfo"></small>
+</div>
+ 
+                        <div class="mb-3">
+<label asp-for="Description" class="form-label">Description</label>
+<textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter transaction description"></textarea>
+</div>
+ 
+                        <div class="d-grid gap-2">
+<button type="submit" class="btn btn-primary btn-lg">
+<i class="fas fa-paper-plane"></i> Submit Transaction
+</button>
+<a href="@Url.Action("Dashboard")" class="btn btn-secondary">
+<i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+
+        $(document).ready(function() {
+
+            // Handle account selection
+
+            $('#accountSelect').change(function() {
+
+                var selectedOption = $(this).find('option:selected');
+
+                var accountNumber = selectedOption.data('number');
+
+                var balance = selectedOption.data('balance');
+ 
+                $('#accountNumber').val(accountNumber);
+
+                $('#currentBalance').val(balance);
+ 
+                if(balance !== undefined) {
+
+                    $('#balanceInfo').text('Available balance: ₹' + parseFloat(balance).toFixed(2));
+
+                }
+
+            });
+ 
+            // Show/hide recipient field based on transaction type
+
+            $('#transactionType').change(function() {
+
+                var transactionType = $(this).val();
+ 
+                if(transactionType == '3') { // Transfer
+
+                    $('#recipientSection').show();
+
+                    $('#recipientAccountNumber').attr('required', true);
+
+                } else {
+
+                    $('#recipientSection').hide();
+
+                    $('#recipientAccountNumber').attr('required', false);
+
+                    $('#recipientAccountNumber').val('');
+
+                }
+
+            });
+ 
+            // Form validation before submit
+
+            $('#transactionForm').submit(function(e) {
+
+                var transactionType = $('#transactionType').val();
+
+                var amount = parseFloat($('#Amount').val());
+
+                var balance = parseFloat($('#currentBalance').val());
+
+                var recipientAccount = $('#recipientAccountNumber').val();
+ 
+                // Validate transfer has recipient
+
+                if(transactionType == '3' && !recipientAccount) {
+
+                    e.preventDefault();
+
+                    toastr.error('Please enter recipient account number for transfer');
+
+                    return false;
+
+                }
+ 
+                // Validate withdrawal/transfer doesn't exceed balance
+
+                if((transactionType == '2' || transactionType == '3') && amount > balance) {
+
+                    e.preventDefault();
+
+                    toastr.error('Insufficient balance. Available: ₹' + balance.toFixed(2));
+
+                    return false;
+
+                }
+ 
+                // Validate amount is positive
+
+                if(amount <= 0) {
+
+                    e.preventDefault();
+
+                    toastr.error('Amount must be greater than zero');
+
+                    return false;
+
+                }
+ 
+                return true;
+
+            });
+
+        });
+</script>
+
+}
+
+ 

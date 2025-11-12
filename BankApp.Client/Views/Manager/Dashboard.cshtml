@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Manager Dashboard";
+    var pendingApplications = ViewBag.PendingApplications;
+    var pendingTransactions = ViewBag.PendingTransactions;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Manager Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Pending Applications</h6>
+                            <h3 class="mb-0">@pendingApplications</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-file-alt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("PendingApplications")" class="btn btn-sm btn-light mt-3">
+                        View Applications <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Pending Transactions</h6>
+                            <h3 class="mb-0">@pendingTransactions</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-exchange-alt fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("PendingTransactions")" class="btn btn-sm btn-light mt-3">
+                        View Transactions <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">All Applications</h6>
+                            <h3 class="mb-0"><i class="fas fa-list"></i></h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-folder-open fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Applications")" class="btn btn-sm btn-light mt-3">
+                        View All <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase mb-1">Customers</h6>
+                            <h3 class="mb-0"><i class="fas fa-users"></i></h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-user-tie fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Customers")" class="btn btn-sm btn-light mt-3">
+                        View Customers <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-tasks fa-5x text-muted mb-3"></i>
+                    <h4>Quick Actions</h4>
+                    <p class="text-muted">Use the navigation menu above to manage applications, transactions, and customers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
