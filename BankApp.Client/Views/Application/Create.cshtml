@@ -396,8 +396,9 @@
                                     <label asp-for="DateOfBirth" class="form-label">
                                         Date of Birth<span class="required-indicator">*</span>
                                     </label>
-                                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" min="1920-01-01" max="@DateTime.Now.AddYears(-10).ToString("yyyy-MM-dd")" required />
                                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                    <div class="form-text">You must be at least 10 years old</div>
                                 </div>
                             </div>
 
