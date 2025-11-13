@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BankApp.Client.Dto;
+using System.ComponentModel.DataAnnotations;
 
 namespace BankApp.Client.ViewModels
 {
@@ -33,6 +34,8 @@ namespace BankApp.Client.ViewModels
         public int AccountTypeID { get; set; }
 
         public IFormFile ImageFile { get; set; }
+        public List<AccountTypeDto> AvailableAccountTypes { get; set; } = new List<AccountTypeDto>();
+
     }
 
 }

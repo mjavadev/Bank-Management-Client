@@ -477,10 +477,13 @@
                                     </label>
                                     <select asp-for="AccountTypeID" class="form-select">
                                         <option value="">Select Account Type</option>
-                                        <option value="1">Savings Account</option>
-                                        <option value="2">Current Account</option>
+                                        @foreach (var type in Model.AvailableAccountTypes)
+                                        {
+                                            <option value="@type.AccountTypeID">@type.TypeName</option>
+                                        }
                                     </select>
                                     <span asp-validation-for="AccountTypeID" class="text-danger"></span>
+
                                 </div>
                             </div>
 

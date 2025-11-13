@@ -16,17 +16,30 @@ namespace BankApp.Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var typesResult = await _httpClient.GetAsync<List<AccountTypeDto>>("AccountType");
+            var viewModel = new ApplicationViewModel
+            {
+                AvailableAccountTypes = typesResult ?? new List<AccountTypeDto>()
+            };
+            return View(viewModel);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ApplicationViewModel model)
         {
+            async Task ReloadAccountTypes()
+            {
+                var typesResult = await _httpClient.GetAsync<List<AccountTypeDto>>("AccountType");
+                model.AvailableAccountTypes = typesResult ?? new List<AccountTypeDto>();
+            }
+
             if (!ModelState.IsValid)
             {
+                await ReloadAccountTypes();
                 return View(model);
             }
 
@@ -56,21 +69,23 @@ namespace BankApp.Client.Controllers
                 if (result.IsError)
                 {
                     foreach (var error in result.Errors)
-                    {
                         ModelState.AddModelError(string.Empty, error.ErrorMessage);
-                    }
+
+                    await ReloadAccountTypes();
                     return View(model);
                 }
 
                 TempData["SuccessMessage"] = "Application submitted successfully! Please wait for approval.";
                 return RedirectToAction("Success");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while submitting the application.");
+                await ReloadAccountTypes();
                 return View(model);
             }
         }
+
 
         public IActionResult Success()
         {
