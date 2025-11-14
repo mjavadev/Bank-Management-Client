@@ -19,28 +19,21 @@
     }
 
     .application-container {
-        min-height: 100vh;
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        padding: 40px 0;
+        padding: 15px 0;
     }
 
     .application-card {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px var(--bank-shadow);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
         border: 1px solid var(--bank-border);
         overflow: hidden;
-        transition: transform 0.3s ease;
     }
-
-        .application-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.12);
-        }
 
     .application-header {
         background: linear-gradient(135deg, var(--bank-success) 0%, var(--bank-success-dark) 100%);
-        padding: 32px;
+        padding: 16px 24px;
         position: relative;
         overflow: hidden;
     }
@@ -50,26 +43,15 @@
             position: absolute;
             top: -50%;
             right: -10%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-        }
-
-        .application-header::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -5%;
             width: 150px;
             height: 150px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
         }
 
         .application-header h4 {
             margin: 0;
-            font-size: 1.75rem;
+            font-size: 1.35rem;
             font-weight: 600;
             color: white;
             position: relative;
@@ -77,142 +59,139 @@
         }
 
         .application-header i {
-            margin-right: 12px;
-            font-size: 1.5rem;
+            margin-right: 8px;
+            font-size: 1.2rem;
             vertical-align: middle;
         }
 
     .application-subtitle {
-        margin: 8px 0 0 0;
+        margin: 4px 0 0 0;
         color: rgba(255, 255, 255, 0.95);
-        font-size: 0.95rem;
+        font-size: 0.8rem;
         position: relative;
         z-index: 1;
     }
 
     .application-body {
-        padding: 40px;
+        padding: 20px 24px;
     }
 
-    /* Progress Indicator */
+    /* Compact Progress Indicator */
     .form-progress {
         background: linear-gradient(90deg, rgba(39, 174, 96, 0.1) 0%, rgba(34, 153, 84, 0.05) 100%);
-        border-left: 4px solid var(--bank-success);
-        padding: 20px 24px;
-        border-radius: 8px;
-        margin-bottom: 32px;
+        border-left: 3px solid var(--bank-success);
+        padding: 10px 14px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
         .form-progress h6 {
             color: var(--bank-primary);
             font-weight: 600;
-            margin-bottom: 12px;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .form-progress i {
+            color: var(--bank-success);
             font-size: 1rem;
         }
 
     .progress-text {
         color: #6c757d;
-        font-size: 0.9rem;
+        font-size: 0.75rem;
         margin: 0;
-        line-height: 1.6;
+        line-height: 1.4;
     }
 
-    /* Form Sections */
+    /* Compact Form Sections */
     .form-section-divider {
         display: flex;
         align-items: center;
-        margin: 32px 0 24px 0;
+        margin: 16px 0 12px 0;
     }
 
         .form-section-divider::before,
         .form-section-divider::after {
             content: '';
             flex: 1;
-            height: 2px;
-            background: linear-gradient(90deg, var(--bank-border) 0%, transparent 100%);
-        }
-
-        .form-section-divider::after {
-            background: linear-gradient(90deg, transparent 0%, var(--bank-border) 100%);
+            height: 1px;
+            background: var(--bank-border);
         }
 
     .form-section-title {
-        padding: 0 16px;
+        padding: 0 12px;
         color: var(--bank-primary);
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 0.85rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
         .form-section-title i {
             color: var(--bank-success);
+            font-size: 0.9rem;
         }
 
     .form-group-custom {
-        margin-bottom: 24px;
+        margin-bottom: 12px;
     }
 
     .form-label {
         font-weight: 600;
         color: var(--bank-primary);
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-        letter-spacing: 0.3px;
+        margin-bottom: 4px;
+        font-size: 0.8rem;
+        letter-spacing: 0.2px;
         display: flex;
         align-items: center;
     }
 
     .required-indicator {
         color: #dc3545;
-        margin-left: 4px;
+        margin-left: 3px;
     }
 
     .form-control,
     .form-select {
-        border: 2px solid var(--bank-border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
+        border: 1px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
         background-color: #fafbfc;
+        height: 32px;
     }
 
         .form-control:focus,
         .form-select:focus {
             border-color: var(--bank-success);
-            box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1);
+            box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.1);
             outline: none;
-            background-color: white;
-        }
-
-        .form-control:hover,
-        .form-select:hover {
-            border-color: var(--bank-secondary);
             background-color: white;
         }
 
     .form-select {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%231e3a5f' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-size: 12px;
     }
 
-    /* File Upload Styling */
-    .file-upload-wrapper {
-        position: relative;
-    }
-
+    /* Compact File Upload */
     .file-upload-label {
         display: block;
-        padding: 20px;
+        padding: 10px;
         background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 100%);
-        border: 2px dashed var(--bank-border);
-        border-radius: 8px;
+        border: 1px dashed var(--bank-border);
+        border-radius: 6px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
 
         .file-upload-label:hover {
@@ -221,84 +200,116 @@
         }
 
         .file-upload-label i {
-            font-size: 2rem;
+            font-size: 1.3rem;
             color: var(--bank-success);
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             display: block;
         }
 
     .file-upload-text {
         color: var(--bank-primary);
         font-weight: 600;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
+        font-size: 0.8rem;
     }
 
     .file-upload-hint {
         color: #6c757d;
-        font-size: 0.875rem;
+        font-size: 0.7rem;
     }
 
     input[type="file"] {
         display: none;
     }
 
-    /* Helper Text */
+    /* Profile Picture Preview Styles */
+    .image-preview-container {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid var(--bank-success);
+        overflow: hidden;
+        background: #fafbfc;
+        box-shadow: 0 4px 12px var(--bank-shadow);
+        margin: 0 auto;
+    }
+
+    #imagePreview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-label {
+        display: none;
+    }
+
+    /* Compact Helper Text */
     .field-helper {
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         color: #6c757d;
-        margin-top: 4px;
+        margin-top: 2px;
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
     }
 
         .field-helper i {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
+    .form-text {
+        font-size: 0.7rem;
+        color: #6c757d;
+        margin-top: 2px;
+    }
+
     .text-danger {
-        font-size: 0.875rem;
-        margin-top: 4px;
+        font-size: 0.7rem;
+        margin-top: 2px;
         display: block;
     }
 
     .validation-summary {
         background: #fff3cd;
-        border-left: 4px solid #ffc107;
-        padding: 16px;
-        border-radius: 8px;
-        margin-bottom: 24px;
+        border-left: 3px solid #ffc107;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        font-size: 0.8rem;
     }
 
-    /* Buttons */
+    /* Compact Buttons */
     .btn-submit {
         background: linear-gradient(135deg, var(--bank-success) 0%, var(--bank-success-dark) 100%);
         border: none;
-        padding: 14px 32px;
-        font-size: 1.1rem;
+        padding: 8px 20px;
+        font-size: 0.9rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(39, 174, 96, 0.25);
         color: white;
     }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(39, 174, 96, 0.35);
-            background: linear-gradient(135deg, var(--bank-success-dark) 0%, var(--bank-success) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.35);
             color: white;
         }
 
     .btn-back {
         background: white;
-        border: 2px solid var(--bank-border);
+        border: 1px solid var(--bank-border);
         color: var(--bank-primary);
-        padding: 14px 32px;
-        font-size: 1rem;
+        padding: 8px 20px;
+        font-size: 0.9rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-block;
     }
@@ -312,8 +323,8 @@
 
     .btn-group-actions {
         display: flex;
-        gap: 16px;
-        margin-top: 32px;
+        gap: 12px;
+        margin-top: 16px;
     }
 
         .btn-group-actions button,
@@ -322,196 +333,188 @@
             text-align: center;
         }
 
-    /* Security Badge */
-    .security-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px 16px;
-        background: rgba(39, 174, 96, 0.1);
-        border-radius: 8px;
-        margin-top: 24px;
-        font-size: 0.9rem;
-        color: var(--bank-success-dark);
+    /* Multi-column layout for fields */
+    .row-compact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 
-        .security-badge i {
-            font-size: 1.2rem;
+    .row-compact-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    @@media (max-width: 992px) {
+        .row-compact {
+            grid-template-columns: repeat(2, 1fr);
         }
+    }
 
     @@media (max-width: 768px) {
-        .application-body
+        .row-compact,
+        .row-compact-2 {
+            grid-template-columns: 1fr;
+        }
 
-    {
-        padding: 24px;
-    }
+        .application-body {
+            padding: 16px;
+        }
 
-    .application-header {
-        padding: 24px;
-    }
+        .application-header {
+            padding: 12px 16px;
+        }
 
-    .btn-group-actions {
-        flex-direction: column;
-    }
-
+        .btn-group-actions {
+            flex-direction: column;
+        }
     }
 </style>
 
 <div class="application-container">
-    <div class="container">
+    <div class="container-fluid px-3">
         <div class="row justify-content-center">
-            <div class="col-lg-9 col-md-10">
+            <div class="col-12 col-xl-10">
                 <div class="application-card">
                     <div class="application-header">
                         <h4><i class="fas fa-user-plus"></i> Bank Account Application</h4>
-                        <p class="application-subtitle">Complete the form below to open your new bank account</p>
+                        <p class="application-subtitle">Complete all required fields marked with (*)</p>
                     </div>
                     <div class="application-body">
-                        <div class="form-progress">
-                            <h6><i class="fas fa-clipboard-list"></i> Application Requirements</h6>
-                            <p class="progress-text">Please ensure all required fields marked with (*) are filled accurately. Your information is secured and encrypted.</p>
-                        </div>
+                        @* <div class="form-progress">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h6>Secure Application</h6>
+                                <p class="progress-text">Your information is encrypted and secured</p>
+                            </div>
+                        </div> *@
 
                         <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
 
-                            <!-- Personal Information Section -->
+                            <!-- Personal Information -->
                             <div class="form-section-divider">
                                 <span class="form-section-title">
                                     <i class="fas fa-user"></i> Personal Information
                                 </span>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 form-group-custom">
+                            <div class="row-compact">
+                                <div class="form-group-custom">
                                     <label asp-for="FullName" class="form-label">
                                         Full Name<span class="required-indicator">*</span>
                                     </label>
-                                    <input asp-for="FullName" class="form-control" placeholder="Enter your full name as per ID" />
+                                    <input asp-for="FullName" class="form-control" placeholder="Full name as per ID" />
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-6 form-group-custom">
+                                <div class="form-group-custom">
                                     <label asp-for="DateOfBirth" class="form-label">
                                         Date of Birth<span class="required-indicator">*</span>
                                     </label>
                                     <input asp-for="DateOfBirth" type="date" class="form-control" min="1920-01-01" max="@DateTime.Now.AddYears(-10).ToString("yyyy-MM-dd")" required />
                                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                    <div class="form-text">You must be at least 10 years old</div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6 form-group-custom">
+                                <div class="form-group-custom">
                                     <label asp-for="Gender" class="form-label">
                                         Gender<span class="required-indicator">*</span>
                                     </label>
                                     <select asp-for="Gender" class="form-select">
-                                        <option value="">Select Gender</option>
+                                        <option value="">Select</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
                                     <span asp-validation-for="Gender" class="text-danger"></span>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6 form-group-custom">
+                            <div class="row-compact-2">
+                                <div class="form-group-custom">
                                     <label asp-for="Occupation" class="form-label">
                                         Occupation<span class="required-indicator">*</span>
                                     </label>
-                                    <input asp-for="Occupation" class="form-control" placeholder="Enter your occupation" />
+                                    <input asp-for="Occupation" class="form-control" placeholder="Your occupation" />
                                     <span asp-validation-for="Occupation" class="text-danger"></span>
                                 </div>
-                            </div>
 
-                            <!-- Contact & Identification Section -->
-                            <div class="form-section-divider">
-                                <span class="form-section-title">
-                                    <i class="fas fa-id-card"></i> Contact & Identification
-                                </span>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 form-group-custom">
+                                <div class="form-group-custom">
                                     <label asp-for="MobileNumber" class="form-label">
                                         Mobile Number<span class="required-indicator">*</span>
                                     </label>
                                     <input asp-for="MobileNumber" class="form-control" placeholder="+91 XXXXX XXXXX" />
                                     <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                                    <div class="field-helper">
-                                        <i class="fas fa-info-circle"></i>
-                                        <span>This will be used for OTP verification</span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 form-group-custom">
-                                    <label asp-for="AadharNumber" class="form-label">
-                                        Aadhar Number<span class="required-indicator">*</span>
-                                    </label>
-                                    <input asp-for="AadharNumber" class="form-control" maxlength="12" placeholder="XXXX XXXX XXXX" />
-                                    <span asp-validation-for="AadharNumber" class="text-danger"></span>
-                                    <div class="field-helper">
-                                        <i class="fas fa-info-circle"></i>
-                                        <span>12-digit Aadhar number</span>
-                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-6 form-group-custom">
+                            <!-- Contact & Identification -->
+                            <div class="form-section-divider">
+                                <span class="form-section-title">
+                                    <i class="fas fa-id-card"></i> Identification
+                                </span>
+                            </div>
+
+                            <div class="row-compact">
+                                <div class="form-group-custom">
+                                    <label asp-for="AadharNumber" class="form-label">
+                                        Aadhar Number<span class="required-indicator">*</span>
+                                    </label>
+                                    <input asp-for="AadharNumber" class="form-control" maxlength="12" placeholder="12-digit Aadhar" />
+                                    <span asp-validation-for="AadharNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group-custom">
                                     <label asp-for="PAN" class="form-label">
                                         PAN<span class="required-indicator">*</span>
                                     </label>
                                     <input asp-for="PAN" class="form-control" maxlength="10" style="text-transform: uppercase;" placeholder="ABCDE1234F" />
                                     <span asp-validation-for="PAN" class="text-danger"></span>
-                                    <div class="field-helper">
-                                        <i class="fas fa-info-circle"></i>
-                                        <span>10-character PAN number</span>
-                                    </div>
                                 </div>
 
-                                <div class="col-md-6 form-group-custom">
+                                <div class="form-group-custom">
                                     <label asp-for="AccountTypeID" class="form-label">
                                         Account Type<span class="required-indicator">*</span>
                                     </label>
                                     <select asp-for="AccountTypeID" class="form-select">
-                                        <option value="">Select Account Type</option>
+                                        <option value="">Select Type</option>
                                         @foreach (var type in Model.AvailableAccountTypes)
                                         {
                                             <option value="@type.AccountTypeID">@type.TypeName</option>
                                         }
                                     </select>
                                     <span asp-validation-for="AccountTypeID" class="text-danger"></span>
-
                                 </div>
                             </div>
 
-                            <!-- Document Upload Section -->
+                            <!-- Document Upload -->
                             <div class="form-section-divider">
                                 <span class="form-section-title">
                                     <i class="fas fa-upload"></i> Document Upload
                                 </span>
                             </div>
 
-                            <div class="form-group-custom">
-                                <label class="form-label">
-                                    Profile Image
-                                </label>
-                                <div class="file-upload-wrapper">
-                                    <label for="imageFile" class="file-upload-label">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        <div class="file-upload-text">Click to upload or drag and drop</div>
-                                        <div class="file-upload-hint">PNG, JPG or JPEG (Max 5MB)</div>
-                                    </label>
-                                    <input asp-for="ImageFile" type="file" id="imageFile" class="form-control" accept="image/*" />
-                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            <div class="row-compact-2">
+                                <div class="form-group-custom">
+                                    <label class="form-label">Profile Image</label>
+                                    <div class="file-upload-wrapper">
+                                        <label for="imageFile" class="file-upload-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <div class="file-upload-text">Upload Photo</div>
+                                            <div class="file-upload-hint">PNG, JPG (Max 5MB)</div>
+                                        </label>
+                                        <input asp-for="ImageFile" type="file" id="imageFile" class="form-control" accept="image/*" />
+                                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="security-badge">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Your information is encrypted and secured with bank-level security</span>
+                                <div class="form-group-custom">
+                                    <label class="form-label preview-label" id="previewLabel">Preview</label>
+                                    <div class="image-preview-container" id="previewContainer">
+                                        <img id="imagePreview" alt="Profile Preview" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="btn-group-actions">
@@ -533,13 +536,34 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // File upload preview
-        document.getElementById('imageFile').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name;
-            if (fileName) {
-                const label = document.querySelector('.file-upload-text');
-                label.textContent = fileName;
-            }
+        $(document).ready(function() {
+            $('#imageFile').on('change', function(e) {
+                var file = e.target.files[0];
+                
+                if (file) {
+                    // Update upload label text
+                    $('.file-upload-text').text(file.name);
+                    
+                    // Show image preview
+                    if (file.type.startsWith('image/')) {
+                        var reader = new FileReader();
+                        
+                        reader.onload = function(event) {
+                            $('#imagePreview').attr('src', event.target.result);
+                            $('#previewContainer').css('display', 'flex');
+                            $('#previewLabel').show();
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    }
+                } else {
+                    // Reset if no file selected
+                    $('#previewContainer').hide();
+                    $('#previewLabel').hide();
+                    $('#imagePreview').attr('src', '');
+                    $('.file-upload-text').text('Upload Photo');
+                }
+            });
         });
     </script>
 }
