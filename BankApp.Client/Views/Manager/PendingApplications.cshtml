@@ -20,16 +20,17 @@
 
     .pending-container {
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-        padding: 32px 0;
+        min-height: calc(100vh - 56px - 50px);
+        padding: 20px 0;
     }
+
 
     /* Page Header */
     .page-header {
         background: white;
-        border-radius: 16px;
-        padding: 32px;
-        margin-bottom: 32px;
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
         box-shadow: 0 4px 16px var(--bank-shadow);
         border-left: 6px solid var(--bank-warning);
         display: flex;
@@ -42,7 +43,7 @@
     .page-header-content h2 {
         color: var(--bank-primary);
         font-weight: 700;
-        font-size: 2rem;
+        font-size: 1.4rem;
         margin: 0;
         display: flex;
         align-items: center;
@@ -51,7 +52,7 @@
 
         .page-header-content h2 i {
             color: var(--bank-warning);
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             animation: pulse 2s ease-in-out infinite;
         }
 
@@ -100,7 +101,7 @@
 
     .pending-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
-        padding: 24px 28px;
+        padding: 14px 18px;
         border-bottom: 2px solid var(--bank-border);
     }
 
@@ -108,7 +109,7 @@
             margin: 0;
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -125,6 +126,7 @@
     /* Applications Table */
     .applications-table {
         width: 100%;
+        font-size: 0.85rem;
     }
 
         .applications-table thead th {
@@ -132,9 +134,9 @@
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            padding: 16px 12px;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            padding: 10px 8px;
             border: none;
             white-space: nowrap;
         }
@@ -159,7 +161,7 @@
             }
 
         .applications-table tbody td {
-            padding: 16px 12px;
+            padding: 10px 8px;
             vertical-align: middle;
             color: var(--bank-primary);
             font-size: 0.95rem;
@@ -167,8 +169,8 @@
 
     /* Customer Photo */
     .customer-photo {
-        width: 50px;
-        height: 50px;
+        width: 42px;
+        height: 42px;
         object-fit: cover;
         cursor: pointer;
         border: 3px solid white;
@@ -202,10 +204,10 @@
 
     /* Account Type Badges */
     .account-type-badge {
-        padding: 6px 14px;
-        border-radius: 20px;
+        padding: 4px 10px;
+        border-radius: 14px;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -241,8 +243,8 @@
     }
 
     .btn-action {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: 8px;
         border: none;
         display: flex;
@@ -292,12 +294,12 @@
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 80px 32px;
+        padding: 50px 24px;
     }
 
     .empty-state-icon {
-        width: 120px;
-        height: 120px;
+        width: 90px;
+        height: 90px;
         background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
         border-radius: 50%;
         display: flex;
@@ -356,7 +358,7 @@
     }
 
     .page-header-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .pending-card-body {
@@ -391,7 +393,7 @@
 
     /* Modal Headers */
     .modal-header {
-        padding: 24px 32px;
+        padding: 16px 24px;
         border-bottom: none;
         position: relative;
         overflow: hidden;
@@ -430,7 +432,7 @@
 
     /* View Details Modal */
     .modal-xl .modal-body {
-        padding: 32px;
+        padding: 24px;
         background: #f8f9fa;
     }
 
@@ -1065,23 +1067,26 @@
 </div>
 
 <!-- Enhanced Reject Modal -->
-<div class="modal fade" id="rejectModal" tabindex="-1">
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title"><i class="fas fa-times-circle"></i> Reject Application</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="rejectModalLabel">
+                    <i class="fas fa-times-circle"></i> Reject Application
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body reject-modal-body">
-                <input type="hidden" id="rejectApplicationId" />
-                <div class="reject-reason-field">
-                    <label class="form-label">
+            <div class="modal-body">
+                <input type="hidden" id="rejectApplicationId" value="" />
+                <div class="mb-3">
+                    <label for="rejectionReason" class="form-label">
                         <i class="fas fa-comment-alt"></i> Rejection Reason
                     </label>
-                    <textarea id="rejectionReason" 
-                              class="form-control" 
-                              rows="4" 
-                              placeholder="Enter a clear and detailed reason for rejecting this application..."
+                    <textarea id="rejectionReason"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter reason for rejection..."
                               required></textarea>
                     <div class="form-text">
                         <i class="fas fa-info-circle"></i>
@@ -1093,7 +1098,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                     <i class="fas fa-arrow-left"></i> Cancel
                 </button>
-                <button type="button" class="btn btn-danger" onclick="confirmReject()">
+                <button type="button" class="btn btn-danger" id="btnConfirmReject">
                     <i class="fas fa-times"></i> Confirm Rejection
                 </button>
             </div>
@@ -1102,9 +1107,14 @@
 </div>
 
 
+
 @section Scripts {
     <script>
+        console.log('Script section loaded');
+
         $(document).ready(function() {
+            console.log('jQuery ready');
+
             $('#applicationsTable').DataTable({
                 "pageLength": 25,
                 "order": [[8, "desc"]],
@@ -1124,16 +1134,23 @@
                     { "orderable": false, "targets": [1, 9] }
                 ]
             });
+
+            // Attach click handler to reject button
+            $(document).on('click', '#btnConfirmReject', function() {
+                console.log('Confirm reject button clicked!');
+                confirmReject();
+            });
         });
 
-             function viewApplication(id) {
+        function viewApplication(id) {
+            console.log('viewApplication called with id:', id);
             $('#viewModal').modal('show');
             $('#applicationDetailsBody').html(`
                 <div class="modal-loading">
-                    <div class="spinner-border text-primary" role="status">
+                    <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem;">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <p>Loading application details...</p>
+                    <p style="margin-top: 12px; color: #6c757d; font-size: 0.9rem;">Loading application details...</p>
                 </div>
             `);
 
@@ -1149,26 +1166,26 @@
 
                         var accountTypeBadge = '';
                         if(app.accountTypeID == 1) {
-                            accountTypeBadge = '<span class="badge bg-primary"><i class="fas fa-piggy-bank"></i> Savings Account</span>';
+                            accountTypeBadge = '<span class="badge bg-primary" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-piggy-bank"></i> Savings</span>';
                         } else if(app.accountTypeID == 2) {
-                            accountTypeBadge = '<span class="badge bg-success"><i class="fas fa-briefcase"></i> Current Account</span>';
+                            accountTypeBadge = '<span class="badge bg-success" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-briefcase"></i> Current</span>';
                         } else if(app.accountTypeID == 3) {
-                            accountTypeBadge = '<span class="badge bg-warning text-dark"><i class="fas fa-lock"></i> Fixed Deposit</span>';
+                            accountTypeBadge = '<span class="badge bg-warning text-dark" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-lock"></i> Fixed Deposit</span>';
                         }
 
                         var photoSection = '';
                         if(app.customerImageURL) {
                             photoSection = `
                                 <div class="col-md-4 mb-3">
-                                    <div class="photo-detail-card">
-                                        <div class="card-header">
+                                    <div class="photo-detail-card" style="height: 100%;">
+                                        <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
                                             <i class="fas fa-camera"></i> Customer Photo
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body" style="padding: 14px; display: flex; align-items: center; justify-content: center;">
                                             <img src="http://localhost:5266/${app.customerImageURL}"
                                                  alt="Customer Photo"
                                                  class="img-fluid application-detail-photo"
-                                                 style="width: 100%; max-height: 350px; object-fit: cover;">
+                                                 style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px;">
                                         </div>
                                     </div>
                                 </div>
@@ -1176,14 +1193,14 @@
                         } else {
                             photoSection = `
                                 <div class="col-md-4 mb-3">
-                                    <div class="photo-detail-card">
-                                        <div class="card-header">
+                                    <div class="photo-detail-card" style="height: 100%;">
+                                        <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
                                             <i class="fas fa-camera"></i> Customer Photo
                                         </div>
-                                        <div class="card-body">
-                                            <div class="no-photo-placeholder">
-                                                <i class="fas fa-user-circle"></i>
-                                                <p>No photo uploaded</p>
+                                        <div class="card-body" style="padding: 14px; display: flex; align-items: center; justify-content: center;">
+                                            <div class="no-photo-placeholder" style="padding: 20px 12px; text-align: center;">
+                                                <i class="fas fa-user-circle" style="font-size: 3rem; color: #cbd5e0;"></i>
+                                                <p style="font-size: 0.85rem; margin: 8px 0 0 0; color: #6c757d;">No photo uploaded</p>
                                             </div>
                                         </div>
                                     </div>
@@ -1194,56 +1211,46 @@
                         var html = `
                             <div class="row">
                                 ${photoSection}
-
                                 <div class="${app.customerImageURL ? 'col-md-8' : 'col-md-12'}">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <div class="application-detail-card border-primary">
-                                                <div class="card-header">
+                                                <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
                                                     <i class="fas fa-user"></i> Personal Information
                                                 </div>
-                                                <div class="card-body">
-                                                    <dl class="row">
-                                                        <dt class="col-sm-5">Application ID:</dt>
-                                                        <dd class="col-sm-7"><span class="badge bg-secondary">#${app.applicationID}</span></dd>
-
-                                                        <dt class="col-sm-5">Full Name:</dt>
-                                                        <dd class="col-sm-7"><strong style="color: var(--bank-primary); font-size: 1.05rem;">${app.fullName}</strong></dd>
-
-                                                        <dt class="col-sm-5">Date of Birth:</dt>
-                                                        <dd class="col-sm-7">${new Date(app.dateOfBirth).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</dd>
-
-                                                        <dt class="col-sm-5">Gender:</dt>
-                                                        <dd class="col-sm-7">${app.gender}</dd>
-
-                                                        <dt class="col-sm-5">Occupation:</dt>
-                                                        <dd class="col-sm-7">${app.occupation || '<em class="text-muted">Not specified</em>'}</dd>
+                                                <div class="card-body" style="padding: 14px;">
+                                                    <dl class="row mb-0">
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Application ID:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><span class="badge bg-secondary" style="padding: 4px 10px; font-size: 0.75rem;">#${app.applicationID}</span></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Full Name:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><strong style="color: var(--bank-primary); font-size: 0.95rem;">${app.fullName}</strong></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Date of Birth:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${new Date(app.dateOfBirth).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Gender:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${app.gender}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Occupation:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${app.occupation || '<em class="text-muted" style="font-size: 0.75rem;">Not specified</em>'}</dd>
                                                     </dl>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-md-6 mb-3">
                                             <div class="application-detail-card border-success">
-                                                <div class="card-header">
+                                                <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
                                                     <i class="fas fa-id-card"></i> Contact & Documents
                                                 </div>
-                                                <div class="card-body">
-                                                    <dl class="row">
-                                                        <dt class="col-sm-5">Mobile Number:</dt>
-                                                        <dd class="col-sm-7"><i class="fas fa-phone" style="color: var(--bank-success);"></i> ${app.mobileNumber}</dd>
-
-                                                        <dt class="col-sm-5">Aadhar Number:</dt>
-                                                        <dd class="col-sm-7"><code>${app.aadharNumber}</code></dd>
-
-                                                        <dt class="col-sm-5">PAN Number:</dt>
-                                                        <dd class="col-sm-7"><code>${app.pan}</code></dd>
-
-                                                        <dt class="col-sm-5">Account Type:</dt>
-                                                        <dd class="col-sm-7">${accountTypeBadge}</dd>
-
-                                                        <dt class="col-sm-5">Applied On:</dt>
-                                                        <dd class="col-sm-7"><i class="far fa-calendar-alt"></i> ${new Date(app.applicationDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</dd>
+                                                <div class="card-body" style="padding: 14px;">
+                                                    <dl class="row mb-0">
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Mobile Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><i class="fas fa-phone" style="color: var(--bank-success); font-size: 0.75rem;"></i> ${app.mobileNumber}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Aadhar Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><code style="font-size: 0.75rem; padding: 3px 7px;">${app.aadharNumber}</code></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">PAN Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><code style="font-size: 0.75rem; padding: 3px 7px;">${app.pan}</code></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Account Type:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${accountTypeBadge}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Applied On:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><i class="far fa-calendar-alt" style="font-size: 0.75rem;"></i> ${new Date(app.applicationDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</dd>
                                                     </dl>
                                                 </div>
                                             </div>
@@ -1266,27 +1273,21 @@
                                 rejectApplication(app.applicationID);
                             });
                         }
-                    } else {
-                        $('#applicationDetailsBody').html(`
-                            <div class="alert alert-danger" style="margin: 40px;">
-                                <i class="fas fa-exclamation-circle"></i> Failed to load application details.
-                            </div>
-                        `);
                     }
                 },
                 error: function() {
                     $('#applicationDetailsBody').html(`
-                        <div class="alert alert-danger" style="margin: 40px;">
-                            <i class="fas fa-exclamation-circle"></i> An error occurred while loading application details.
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> An error occurred.
                         </div>
                     `);
                 }
             });
         }
 
-
         function approveApplication(id) {
-            if(confirm('Are you sure you want to approve this application? This will create a customer account.')) {
+            console.log('approveApplication called with id:', id);
+            if(confirm('Are you sure you want to approve this application?')) {
                 $.ajax({
                     url: '@Url.Action("ApproveApplication", "Manager")/' + id,
                     type: 'POST',
@@ -1296,57 +1297,65 @@
                             $('#modalPassword').text(response.password);
                             $('#modalFullName').text(response.fullName);
                             $('#approvalModal').modal('show');
-
-                            setTimeout(function() {
-                                location.reload();
-                            }, 5000);
+                            setTimeout(function() { location.reload(); }, 5000);
                         } else {
-                            toastr.error(response.message || 'Failed to approve application');
+                            alert('Failed: ' + response.message);
                         }
                     },
                     error: function() {
-                        toastr.error('An error occurred while approving the application');
+                        alert('An error occurred while approving');
                     }
                 });
             }
         }
 
         function rejectApplication(id) {
+            console.log('rejectApplication called with id:', id);
+            alert('Opening reject modal for ID: ' + id);
             $('#rejectApplicationId').val(id);
             $('#rejectionReason').val('');
             $('#rejectModal').modal('show');
         }
 
         function confirmReject() {
+            console.log('confirmReject called');
             var id = $('#rejectApplicationId').val();
             var reason = $('#rejectionReason').val().trim();
 
+            console.log('Application ID:', id);
+            console.log('Rejection reason:', reason);
+            alert('Confirming rejection for ID: ' + id + '\nReason: ' + reason);
+
             if(!reason) {
-                toastr.warning('Please enter rejection reason');
+                alert('Please enter rejection reason');
                 $('#rejectionReason').focus();
                 return;
             }
 
+            console.log('Sending AJAX request...');
             $.ajax({
                 url: '@Url.Action("RejectApplication", "Manager")/' + id,
                 type: 'POST',
                 data: JSON.stringify({ reason: reason }),
                 contentType: 'application/json',
                 success: function(response) {
+                    console.log('Success response:', response);
                     if(response.success) {
-                        toastr.success(response.message || 'Application rejected successfully');
+                        alert('Application rejected successfully');
                         $('#rejectModal').modal('hide');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1500);
+                        setTimeout(function() { location.reload(); }, 1500);
                     } else {
-                        toastr.error(response.message || 'Failed to reject application');
+                        alert('Failed: ' + response.message);
                     }
                 },
-                error: function() {
-                    toastr.error('An error occurred while rejecting the application');
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    console.error('Status:', status);
+                    console.error('Response:', xhr.responseText);
+                    alert('Error: ' + error + '\nStatus: ' + status);
                 }
             });
         }
     </script>
 }
+

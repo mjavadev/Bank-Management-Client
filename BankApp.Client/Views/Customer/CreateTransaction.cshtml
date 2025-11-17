@@ -19,22 +19,22 @@
     }
 
     .transaction-container {
-        min-height: 100vh;
+        min-height: calc(100vh - 56px - 50px);
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        padding: 40px 0;
+        padding: 25px 0;
     }
 
     .transaction-card {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px var(--bank-shadow);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px var(--bank-shadow);
         border: 1px solid var(--bank-border);
         overflow: hidden;
     }
 
     .transaction-header {
         background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
-        padding: 32px;
+        padding: 20px 24px;
         position: relative;
         overflow: hidden;
     }
@@ -44,15 +44,15 @@
             position: absolute;
             top: -50%;
             right: -10%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.08);
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.06);
             border-radius: 50%;
         }
 
         .transaction-header h4 {
             margin: 0;
-            font-size: 1.75rem;
+            font-size: 1.35rem;
             font-weight: 600;
             color: white;
             position: relative;
@@ -60,49 +60,49 @@
         }
 
         .transaction-header i {
-            margin-right: 12px;
-            font-size: 1.5rem;
+            margin-right: 10px;
+            font-size: 1.2rem;
             vertical-align: middle;
         }
 
     .transaction-body {
-        padding: 40px;
+        padding: 24px;
     }
 
     /* Form Groups */
     .form-group-custom {
-        margin-bottom: 28px;
+        margin-bottom: 18px;
     }
 
     .form-label {
         font-weight: 600;
         color: var(--bank-primary);
-        margin-bottom: 8px;
-        font-size: 0.95rem;
-        letter-spacing: 0.3px;
+        margin-bottom: 6px;
+        font-size: 0.85rem;
+        letter-spacing: 0.2px;
         display: flex;
         align-items: center;
     }
 
     .required-indicator {
         color: #dc3545;
-        margin-left: 4px;
+        margin-left: 3px;
     }
 
     /* Account Selection Card */
     .account-selector {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         border: 2px solid var(--bank-border);
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 28px;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 18px;
     }
 
     .account-selector-title {
         color: var(--bank-primary);
         font-weight: 700;
-        font-size: 1.1rem;
-        margin-bottom: 16px;
+        font-size: 0.95rem;
+        margin-bottom: 12px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -110,22 +110,24 @@
 
         .account-selector-title i {
             color: var(--bank-accent);
+            font-size: 1rem;
         }
 
     .form-select,
     .form-control {
-        border: 2px solid var(--bank-border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
+        border: 1px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
         background-color: white;
+        height: 36px;
     }
 
         .form-select:focus,
         .form-control:focus {
             border-color: var(--bank-accent);
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
             outline: none;
         }
 
@@ -137,52 +139,36 @@
     /* Balance Display */
     .balance-display {
         background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
-        border-left: 4px solid var(--bank-accent);
-        border-radius: 8px;
-        padding: 16px 20px;
-        margin-top: 12px;
+        border-left: 3px solid var(--bank-accent);
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin-top: 10px;
         display: none;
-        animation: slideDown 0.3s ease-out;
     }
 
-    @@keyframes slideDown {
-        from
+        .balance-display.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
-
-    .balance-display.active {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .balance-display i {
-        font-size: 1.5rem;
-        color: var(--bank-accent);
-    }
+        .balance-display i {
+            font-size: 1.2rem;
+            color: var(--bank-accent);
+        }
 
     .balance-text {
         flex: 1;
     }
 
     .balance-label {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: #6c757d;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
     }
 
     .balance-amount {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: var(--bank-primary);
         font-family: 'Courier New', monospace;
@@ -192,38 +178,38 @@
     .transaction-types {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-top: 12px;
+        gap: 12px;
+        margin-top: 10px;
     }
 
     .transaction-type-card {
         cursor: pointer;
         background: white;
         border: 2px solid var(--bank-border);
-        border-radius: 12px;
-        padding: 20px 16px;
+        border-radius: 10px;
+        padding: 14px 12px;
         text-align: center;
         transition: all 0.3s ease;
     }
 
         .transaction-type-card:hover {
             border-color: var(--bank-accent);
-            transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.12);
         }
 
         .transaction-type-card.selected {
             border-color: var(--bank-accent);
             background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
-            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
         }
 
     .transaction-type-icon {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 12px;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 10px;
         background: var(--bank-light);
-        border-radius: 12px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -235,7 +221,7 @@
     }
 
     .transaction-type-icon i {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         transition: all 0.3s ease;
     }
 
@@ -258,24 +244,23 @@
     .transaction-type-label {
         color: var(--bank-primary);
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
 
     /* Recipient Section */
     .recipient-section {
         background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(52, 152, 219, 0.02) 100%);
         border: 2px dashed var(--bank-accent);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 28px;
-        animation: slideDown 0.3s ease-out;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 18px;
     }
 
     .recipient-section-title {
         color: var(--bank-primary);
         font-weight: 600;
-        font-size: 1rem;
-        margin-bottom: 16px;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -292,76 +277,78 @@
 
     .currency-symbol {
         position: absolute;
-        left: 16px;
+        left: 12px;
         top: 50%;
         transform: translateY(-50%);
         font-weight: 700;
         color: var(--bank-primary);
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .amount-input-wrapper .form-control {
-        padding-left: 40px;
-        font-size: 1.1rem;
+        padding-left: 35px;
+        font-size: 0.95rem;
         font-weight: 600;
         font-family: 'Courier New', monospace;
     }
 
     /* Validation Helper */
     .validation-helper {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         color: #6c757d;
-        margin-top: 6px;
+        margin-top: 4px;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
     }
 
         .validation-helper i {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
 
     .text-danger {
-        font-size: 0.875rem;
-        margin-top: 4px;
+        font-size: 0.75rem;
+        margin-top: 3px;
         display: block;
     }
 
     /* Description Field */
     textarea.form-control {
         resize: vertical;
-        min-height: 100px;
+        min-height: 80px;
+        height: auto;
+        padding: 8px 12px;
     }
 
     /* Action Buttons */
     .btn-submit {
         background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
         border: none;
-        padding: 14px 32px;
-        font-size: 1.1rem;
+        padding: 10px 24px;
+        font-size: 0.95rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 10px rgba(30, 58, 95, 0.2);
         color: white;
     }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(30, 58, 95, 0.35);
+            box-shadow: 0 5px 14px rgba(30, 58, 95, 0.3);
             background: linear-gradient(135deg, var(--bank-secondary) 0%, var(--bank-primary) 100%);
             color: white;
         }
 
     .btn-back {
         background: white;
-        border: 2px solid var(--bank-border);
+        border: 1px solid var(--bank-border);
         color: var(--bank-primary);
-        padding: 14px 32px;
-        font-size: 1rem;
+        padding: 10px 24px;
+        font-size: 0.95rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-block;
     }
@@ -375,8 +362,8 @@
 
     .btn-group-actions {
         display: flex;
-        gap: 16px;
-        margin-top: 32px;
+        gap: 12px;
+        margin-top: 20px;
     }
 
         .btn-group-actions button,
@@ -386,10 +373,14 @@
         }
 
     @@media (max-width: 768px) {
-        .transaction-body
+        .transaction-container
 
     {
-        padding: 24px;
+        padding: 15px 0;
+    }
+
+    .transaction-body {
+        padding: 20px;
     }
 
     .transaction-types {
@@ -398,6 +389,10 @@
 
     .btn-group-actions {
         flex-direction: column;
+    }
+
+    .transaction-header h4 {
+        font-size: 1.2rem;
     }
 
     }

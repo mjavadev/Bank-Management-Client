@@ -21,72 +21,56 @@
 
     .dashboard-container {
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-        padding: 32px 0;
+        min-height: calc(100vh - 56px - 50px);
+        padding: 20px 0;
     }
 
     /* Welcome Header */
     .dashboard-welcome {
         background: white;
-        border-radius: 16px;
-        padding: 32px;
-        margin-bottom: 32px;
-        box-shadow: 0 4px 16px var(--bank-shadow);
-        border-left: 6px solid var(--bank-accent);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px var(--bank-shadow);
+        border-left: 4px solid var(--bank-accent);
     }
 
         .dashboard-welcome h2 {
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 2rem;
+            font-size: 1.4rem;
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 10px;
         }
 
             .dashboard-welcome h2 i {
                 color: var(--bank-accent);
-                font-size: 1.8rem;
+                font-size: 1.3rem;
             }
 
     .welcome-subtitle {
         color: #6c757d;
-        margin-top: 8px;
-        font-size: 1rem;
+        margin-top: 4px;
+        font-size: 0.85rem;
     }
 
     /* Alert Styling */
     .custom-alert {
-        border-radius: 12px;
+        border-radius: 8px;
         border: none;
-        border-left: 4px solid;
-        padding: 16px 20px;
-        margin-bottom: 24px;
+        border-left: 3px solid;
+        padding: 10px 14px;
+        margin-bottom: 16px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        animation: slideDown 0.4s ease-out;
+        gap: 10px;
     }
 
-    @@keyframes slideDown {
-        from
-
-    {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
-
-    .custom-alert i {
-        font-size: 1.5rem;
-    }
+        .custom-alert i {
+            font-size: 1.2rem;
+        }
 
     .alert-success {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
@@ -108,31 +92,19 @@
 
     /* Statistics Cards */
     .stat-card {
-        border-radius: 16px;
+        border-radius: 10px;
         border: none;
         overflow: hidden;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 16px var(--bank-shadow);
+        box-shadow: 0 2px 10px var(--bank-shadow);
         height: 100%;
         position: relative;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
     }
 
         .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15);
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(30, 58, 95, 0.12);
         }
 
     .stat-card-primary {
@@ -156,61 +128,61 @@
     }
 
     .stat-card .card-body {
-        padding: 28px;
+        padding: 16px;
         position: relative;
         z-index: 1;
     }
 
     .stat-label {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         opacity: 0.9;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .stat-value {
-        font-size: 2.2rem;
+        font-size: 1.6rem;
         font-weight: 700;
         margin: 0;
         line-height: 1;
     }
 
     .stat-icon {
-        font-size: 3.5rem;
+        font-size: 2.5rem;
         opacity: 0.3;
     }
 
     /* Section Cards */
     .section-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 10px;
         border: 1px solid var(--bank-border);
-        box-shadow: 0 4px 16px var(--bank-shadow);
-        margin-bottom: 24px;
+        box-shadow: 0 2px 10px var(--bank-shadow);
+        margin-bottom: 16px;
         overflow: hidden;
     }
 
     .section-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
-        padding: 20px 24px;
+        padding: 12px 16px;
         border-bottom: 2px solid var(--bank-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
     }
 
         .section-card-header h5 {
             margin: 0;
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
             .section-card-header h5 i {
@@ -218,13 +190,13 @@
             }
 
     .section-card-body {
-        padding: 24px;
+        padding: 16px;
     }
 
     /* Account Cards */
     .account-card {
         border: 2px solid var(--bank-border);
-        border-radius: 12px;
+        border-radius: 10px;
         transition: all 0.3s ease;
         height: 100%;
         background: white;
@@ -233,35 +205,35 @@
 
         .account-card:hover {
             border-color: var(--bank-accent);
-            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.15);
-            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.12);
+            transform: translateY(-3px);
         }
 
     .account-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
-        padding: 20px;
+        padding: 12px 14px;
         border-bottom: 2px solid var(--bank-border);
     }
 
     .account-card-title {
         color: var(--bank-primary);
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         margin: 0;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
     }
 
     .account-card-body {
-        padding: 20px;
+        padding: 14px;
     }
 
     .account-info-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 0;
+        padding: 8px 0;
         border-bottom: 1px solid var(--bank-border);
     }
 
@@ -271,17 +243,18 @@
 
     .account-info-label {
         color: #6c757d;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 600;
     }
 
     .account-info-value {
         color: var(--bank-primary);
         font-weight: 600;
+        font-size: 0.85rem;
     }
 
     .account-balance {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         color: var(--bank-success);
         font-weight: 700;
         font-family: 'Courier New', monospace;
@@ -289,18 +262,19 @@
 
     .account-number {
         font-family: 'Courier New', monospace;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
+        font-size: 0.85rem;
     }
 
     /* Status Badges */
     .status-badge {
-        padding: 6px 14px;
-        border-radius: 20px;
+        padding: 4px 10px;
+        border-radius: 16px;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
     }
 
     .badge-success {
@@ -325,14 +299,14 @@
 
     /* Action Buttons */
     .btn-action {
-        padding: 10px 20px;
-        border-radius: 8px;
+        padding: 8px 16px;
+        border-radius: 6px;
         font-weight: 600;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
+        gap: 6px;
+        font-size: 0.85rem;
     }
 
     .btn-primary-custom {
@@ -343,7 +317,7 @@
 
         .btn-primary-custom:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+            box-shadow: 0 3px 10px rgba(30, 58, 95, 0.25);
             color: white;
         }
 
@@ -355,46 +329,49 @@
 
         .btn-success-custom:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 3px 10px rgba(39, 174, 96, 0.25);
             color: white;
         }
 
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 60px 32px;
+        padding: 40px 20px;
     }
 
     .empty-state-icon {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 24px;
+        margin: 0 auto 16px;
     }
 
         .empty-state-icon i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--bank-accent);
         }
 
     .empty-state h5 {
         color: var(--bank-primary);
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
     }
 
     .empty-state p {
         color: #6c757d;
-        margin-bottom: 24px;
+        margin-bottom: 16px;
+        font-size: 0.9rem;
     }
 
     /* Transaction Table */
     .transactions-table {
         width: 100%;
+        font-size: 0.85rem;
     }
 
         .transactions-table thead th {
@@ -402,14 +379,14 @@
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            padding: 14px 12px;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            padding: 10px 8px;
             border: none;
         }
 
         .transactions-table tbody tr {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border-bottom: 1px solid var(--bank-border);
         }
 
@@ -418,24 +395,23 @@
             }
 
         .transactions-table tbody td {
-            padding: 14px 12px;
+            padding: 10px 8px;
             vertical-align: middle;
             color: var(--bank-primary);
-            font-size: 0.95rem;
         }
 
     /* Chart Cards */
     .chart-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 10px;
         border: 1px solid var(--bank-border);
-        box-shadow: 0 4px 16px var(--bank-shadow);
-        margin-bottom: 24px;
+        box-shadow: 0 2px 10px var(--bank-shadow);
+        margin-bottom: 16px;
     }
 
     .chart-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
-        padding: 20px 24px;
+        padding: 12px 16px;
         border-bottom: 2px solid var(--bank-border);
     }
 
@@ -443,10 +419,10 @@
             margin: 0;
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
             .chart-card-header h5 i {
@@ -454,22 +430,30 @@
             }
 
     .chart-card-body {
-        padding: 24px;
+        padding: 16px;
     }
 
     @@media (max-width: 768px) {
-        .dashboard-welcome h2
+        .dashboard-container
 
     {
-        font-size: 1.5rem;
+        padding: 15px 0;
+    }
+
+    .dashboard-welcome h2 {
+        font-size: 1.2rem;
     }
 
     .stat-value {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
     }
 
     .stat-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+
+    .section-card-body {
+        padding: 12px;
     }
 
     }
@@ -599,7 +583,7 @@
                                 <div class="row">
                                     @foreach (var account in Model.Accounts)
                                     {
-                                        <div class="col-lg-6 mb-4">
+                                        <div class="col-lg-6 mb-3">
                                             <div class="account-card">
                                                 <div class="account-card-header">
                                                     <div class="account-card-title">
@@ -637,7 +621,7 @@
                                                         <span class="account-info-label">Opened</span>
                                                         <span class="account-info-value">@account.OpenDate.ToString("dd MMM yyyy")</span>
                                                     </div>
-                                                    <div class="mt-3">
+                                                    <div class="mt-2">
                                                         <a href="@Url.Action("Transactions", new { accountId = account.AccountID })" class="btn-action btn-primary-custom w-100">
                                                             <i class="fas fa-list"></i> View Transactions
                                                         </a>
@@ -676,7 +660,7 @@
                                 <h5><i class="fas fa-chart-pie"></i> Transaction Summary</h5>
                             </div>
                             <div class="chart-card-body">
-                                <canvas id="transactionChart" height="200"></canvas>
+                                <canvas id="transactionChart" height="180"></canvas>
                             </div>
                         </div>
                     </div>
@@ -687,7 +671,7 @@
                                 <h5><i class="fas fa-chart-bar"></i> Balance Overview</h5>
                             </div>
                             <div class="chart-card-body">
-                                <canvas id="balanceChart" height="200"></canvas>
+                                <canvas id="balanceChart" height="180"></canvas>
                             </div>
                         </div>
                     </div>
@@ -837,9 +821,9 @@
                             legend: {
                                 position: 'bottom',
                                 labels: {
-                                    padding: 20,
+                                    padding: 15,
                                     font: {
-                                        size: 12,
+                                        size: 11,
                                         weight: '600'
                                     }
                                 }
@@ -861,7 +845,7 @@
                             label: 'Balance (₹)',
                             data: accountBalances,
                             backgroundColor: '#1e3a5f',
-                            borderRadius: 8
+                            borderRadius: 6
                         }]
                     },
                     options: {

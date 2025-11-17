@@ -117,13 +117,18 @@ namespace BankApp.Client.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> RejectApplication(int id, string reason)
+        public async Task<IActionResult> RejectApplication(int id, [FromBody] RejectRequest reasonModel)
         {
             try
             {
+                // Defensive null/empty check for the Reason property
+                if (reasonModel == null || string.IsNullOrWhiteSpace(reasonModel.Reason))
+                {
+                    return Json(new { success = false, message = "Rejection reason is required" });
+                }
+
                 var url = string.Format(ApiConstant.RejectApplication, id);
-                var rejectRequest = new RejectRequest { Reason = reason };
-                var result = await _httpClient.PostAsync<Result<bool>>(url, rejectRequest);
+                var result = await _httpClient.PostAsync<Result<bool>>(url, reasonModel);
 
                 if (result.IsError)
                 {
@@ -132,11 +137,18 @@ namespace BankApp.Client.Controllers
 
                 return Json(new { success = true, message = "Application rejected successfully" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred" });
+                // Optional: log ex.Message or ex.ToString() here
+                return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
+
+        public class RejectRequest
+        {
+            public string Reason { get; set; }
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Transactions()

@@ -6,6 +6,11 @@
 }
 
 <style>
+
+
+
+
+
     :root {
         --bank-primary: #1e3a5f;
         --bank-secondary: #2c5f8d;
@@ -21,55 +26,55 @@
 
     .transactions-container {
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-        padding: 32px 0;
+        min-height: calc(100vh - 56px - 50px);
+        padding: 20px 0;
     }
 
     /* Page Header */
     .page-header {
         background: white;
-        border-radius: 16px;
-        padding: 32px;
-        margin-bottom: 32px;
-        box-shadow: 0 4px 16px var(--bank-shadow);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px var(--bank-shadow);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
     }
 
         .page-header h2 {
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 2rem;
+            font-size: 1.4rem;
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 10px;
         }
 
             .page-header h2 i {
                 color: var(--bank-accent);
-                font-size: 1.8rem;
+                font-size: 1.3rem;
             }
 
     /* Transaction Stats */
     .transaction-stats {
         display: flex;
-        gap: 24px;
-        margin-bottom: 32px;
+        gap: 16px;
+        margin-bottom: 20px;
         flex-wrap: wrap;
     }
 
     .stat-item {
         background: white;
-        border-radius: 12px;
-        padding: 20px 24px;
-        box-shadow: 0 4px 16px var(--bank-shadow);
-        border-left: 4px solid;
+        border-radius: 10px;
+        padding: 14px 18px;
+        box-shadow: 0 2px 10px var(--bank-shadow);
+        border-left: 3px solid;
         flex: 1;
-        min-width: 200px;
+        min-width: 180px;
     }
 
         .stat-item.deposit {
@@ -86,19 +91,19 @@
 
     .stat-item-label {
         color: #6c757d;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
+        letter-spacing: 0.3px;
+        margin-bottom: 6px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .stat-item-value {
         color: var(--bank-primary);
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         font-weight: 700;
         margin: 0;
     }
@@ -106,31 +111,31 @@
     /* Main Card */
     .transactions-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 10px;
         border: 1px solid var(--bank-border);
-        box-shadow: 0 4px 16px var(--bank-shadow);
+        box-shadow: 0 2px 10px var(--bank-shadow);
         overflow: hidden;
     }
 
     .transactions-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
-        padding: 24px 28px;
+        padding: 14px 18px;
         border-bottom: 2px solid var(--bank-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
     }
 
         .transactions-card-header h5 {
             margin: 0;
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.05rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
             .transactions-card-header h5 i {
@@ -138,12 +143,13 @@
             }
 
     .transactions-card-body {
-        padding: 28px;
+        padding: 18px;
     }
 
     /* Transaction Table */
     .transactions-table {
         width: 100%;
+        font-size: 0.85rem;
     }
 
         .transactions-table thead th {
@@ -151,37 +157,34 @@
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            padding: 16px 12px;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            padding: 10px 8px;
             border: none;
             white-space: nowrap;
         }
 
             .transactions-table thead th:first-child {
-                border-top-left-radius: 8px;
+                border-top-left-radius: 6px;
             }
 
             .transactions-table thead th:last-child {
-                border-top-right-radius: 8px;
+                border-top-right-radius: 6px;
             }
 
         .transactions-table tbody tr {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border-bottom: 1px solid var(--bank-border);
         }
 
             .transactions-table tbody tr:hover {
                 background: linear-gradient(90deg, rgba(52, 152, 219, 0.05) 0%, rgba(30, 58, 95, 0.03) 100%);
-                transform: scale(1.005);
-                box-shadow: 0 2px 8px rgba(30, 58, 95, 0.08);
             }
 
         .transactions-table tbody td {
-            padding: 16px 12px;
+            padding: 10px 8px;
             vertical-align: middle;
             color: var(--bank-primary);
-            font-size: 0.95rem;
         }
 
         .transactions-table tbody tr:last-child {
@@ -193,21 +196,23 @@
         font-weight: 600;
         color: var(--bank-accent);
         font-family: 'Courier New', monospace;
+        font-size: 0.8rem;
     }
 
     /* Account Number Styling */
     .account-number {
         font-family: 'Courier New', monospace;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         color: var(--bank-primary);
         font-weight: 500;
+        font-size: 0.8rem;
     }
 
     /* Amount Styling */
     .amount-cell {
         font-weight: 700;
         font-family: 'Courier New', monospace;
-        font-size: 1.05rem;
+        font-size: 0.9rem;
     }
 
     .amount-deposit {
@@ -224,13 +229,13 @@
 
     /* Status Badges */
     .status-badge {
-        padding: 6px 14px;
-        border-radius: 20px;
+        padding: 4px 10px;
+        border-radius: 14px;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         white-space: nowrap;
     }
 
@@ -272,17 +277,17 @@
     /* Back Button */
     .btn-back {
         background: white;
-        border: 2px solid var(--bank-border);
+        border: 1px solid var(--bank-border);
         color: var(--bank-primary);
-        padding: 10px 20px;
-        font-size: 0.95rem;
+        padding: 8px 16px;
+        font-size: 0.85rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 6px;
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
         .btn-back:hover {
@@ -290,66 +295,69 @@
             border-color: var(--bank-secondary);
             color: var(--bank-secondary);
             text-decoration: none;
-            transform: translateX(-4px);
+            transform: translateX(-3px);
         }
 
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 80px 32px;
+        padding: 50px 24px;
     }
 
     .empty-state-icon {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
         background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 24px;
+        margin: 0 auto 16px;
     }
 
         .empty-state-icon i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--bank-accent);
         }
 
     .empty-state h5 {
         color: var(--bank-primary);
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
     }
 
     .empty-state p {
         color: #6c757d;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     /* DataTables Custom Styling */
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
-        border: 2px solid var(--bank-border);
-        border-radius: 8px;
-        padding: 8px 12px;
-        transition: all 0.3s ease;
+        border: 1px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        transition: all 0.2s ease;
+        font-size: 0.85rem;
     }
 
         .dataTables_wrapper .dataTables_length select:focus,
         .dataTables_wrapper .dataTables_filter input:focus {
             border-color: var(--bank-accent);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
         }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
-        border-radius: 8px;
-        padding: 8px 16px;
-        margin: 0 4px;
-        border: 2px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin: 0 3px;
+        border: 1px solid var(--bank-border);
         background: white;
         color: var(--bank-primary);
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        font-size: 0.85rem;
     }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -366,21 +374,31 @@
 
     .dataTables_wrapper .dataTables_info {
         color: #6c757d;
-        font-size: 0.9rem;
-        padding: 12px 0;
+        font-size: 0.8rem;
+        padding: 10px 0;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 12px;
     }
 
     @@media (max-width: 768px) {
-        .page-header
+        .transactions-container
 
     {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 15px 0;
     }
 
-    .page-header h2 {
-        font-size: 1.5rem;
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 16px;
     }
+
+        .page-header h2 {
+            font-size: 1.2rem;
+        }
 
     .transaction-stats {
         flex-direction: column;
@@ -391,8 +409,17 @@
     }
 
     .transactions-card-body {
-        padding: 16px;
+        padding: 12px;
     }
+
+    .transactions-table {
+        font-size: 0.8rem;
+    }
+
+        .transactions-table thead th,
+        .transactions-table tbody td {
+            padding: 8px 6px;
+        }
 
     }
 </style>
@@ -472,7 +499,7 @@
                                                 </td>
                                                 <td>
                                                     <div>@transaction.TransactionDate.ToString("dd MMM yyyy")</div>
-                                                    <small style="color: #6c757d;">@transaction.TransactionDate.ToString("HH:mm")</small>
+                                                    <small style="color: #6c757d; font-size: 0.75rem;">@transaction.TransactionDate.ToString("HH:mm")</small>
                                                 </td>
                                                 <td>
                                                     @switch (transaction.TransactionType)
@@ -512,7 +539,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <span style="color: #6c757d; font-style: italic;">N/A</span>
+                                                        <span style="color: #6c757d; font-style: italic; font-size: 0.8rem;">N/A</span>
                                                     }
                                                 </td>
                                                 <td>
@@ -542,7 +569,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <span style="color: #6c757d; font-style: italic;">No description</span>
+                                                        <span style="color: #6c757d; font-style: italic; font-size: 0.8rem;">No description</span>
                                                     }
                                                 </td>
                                             </tr>
