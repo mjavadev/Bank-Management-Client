@@ -19,72 +19,73 @@
 
     .employees-container {
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-        padding: 32px 0;
+        min-height: calc(100vh - 56px - 50px);
+        padding: 20px 0;
     }
 
     .page-header {
-        margin-bottom: 32px;
+        margin-bottom: 18px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
     }
 
         .page-header h2 {
             color: var(--bank-primary);
             font-weight: 700;
-            font-size: 2rem;
+            font-size: 1.4rem;
             margin: 0;
             display: flex;
             align-items: center;
         }
 
             .page-header h2 i {
-                margin-right: 12px;
+                margin-right: 10px;
                 color: var(--bank-accent);
+                font-size: 1.2rem;
             }
 
     .employee-count-badge {
         background: linear-gradient(135deg, var(--bank-accent) 0%, var(--bank-secondary) 100%);
         color: white;
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.875rem;
+        padding: 4px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
         font-weight: 600;
-        margin-left: 12px;
+        margin-left: 10px;
     }
 
     .btn-add-employee {
         background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
         border: none;
-        padding: 12px 28px;
-        font-size: 1rem;
+        padding: 8px 20px;
+        font-size: 0.92rem;
         font-weight: 600;
         border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px var(--bank-shadow);
         color: white;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
         .btn-add-employee:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(30, 58, 95, 0.3);
             background: linear-gradient(135deg, var(--bank-secondary) 0%, var(--bank-primary) 100%);
             color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(30, 58, 95, 0.21);
             text-decoration: none;
         }
 
     .employees-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 10px;
         border: 1px solid var(--bank-border);
-        box-shadow: 0 4px 16px var(--bank-shadow);
+        box-shadow: 0 2px 8px var(--bank-shadow);
         overflow: hidden;
     }
 
@@ -92,9 +93,36 @@
         padding: 0;
     }
 
+    /* Success Alert */
+    .alert-success {
+        background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+        border-left: 4px solid var(--bank-success);
+        color: var(--bank-primary);
+        padding: 12px 16px;
+        border-radius: 7px;
+        margin-bottom: 16px;
+        font-size: 0.92rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .alert-success i {
+            color: var(--bank-success);
+            font-size: 1.1rem;
+        }
+
+        .alert-success .close-btn {
+            margin-left: auto;
+            cursor: pointer;
+            color: var(--bank-success);
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
     /* DataTable Styling */
     .table-container {
-        padding: 24px;
+        padding: 14px;
     }
 
     #employeesTable {
@@ -108,9 +136,9 @@
             color: white;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
-            padding: 16px 12px;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            padding: 10px 8px;
             border: none;
             position: sticky;
             top: 0;
@@ -118,33 +146,29 @@
         }
 
             #employeesTable thead th:first-child {
-                border-top-left-radius: 8px;
+                border-top-left-radius: 6px;
             }
 
             #employeesTable thead th:last-child {
-                border-top-right-radius: 8px;
+                border-top-right-radius: 6px;
             }
 
         #employeesTable tbody tr {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border-bottom: 1px solid var(--bank-border);
         }
 
             #employeesTable tbody tr:hover {
                 background: linear-gradient(90deg, rgba(52, 152, 219, 0.05) 0%, rgba(30, 58, 95, 0.03) 100%);
                 transform: scale(1.01);
-                box-shadow: 0 2px 8px rgba(30, 58, 95, 0.08);
+                box-shadow: 0 1px 5px rgba(30, 58, 95, 0.06);
             }
 
         #employeesTable tbody td {
-            padding: 16px 12px;
+            padding: 10px 8px;
             vertical-align: middle;
             color: var(--bank-primary);
-            font-size: 0.95rem;
-        }
-
-        #employeesTable tbody tr:last-child {
-            border-bottom: none;
+            font-size: 0.89rem;
         }
 
         /* Column-specific styling */
@@ -156,105 +180,116 @@
     /* Action Buttons */
     .action-buttons {
         display: flex;
-        gap: 8px;
+        gap: 6px;
         justify-content: flex-start;
     }
 
     .btn-action {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
         border: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         cursor: pointer;
-        font-size: 0.875rem;
+        font-size: 0.8rem;
     }
 
     .btn-edit {
-        background: linear-gradient(135deg, rgba(230, 126, 34, 0.15) 0%, rgba(230, 126, 34, 0.25) 100%);
+        background: linear-gradient(135deg, rgba(230, 126, 34, 0.18) 0%, rgba(230, 126, 34, 0.25) 100%);
         color: var(--bank-edit);
     }
 
         .btn-edit:hover {
             background: linear-gradient(135deg, var(--bank-edit) 0%, #d35400 100%);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(230, 126, 34, 0.19);
         }
 
     .btn-delete {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(231, 76, 60, 0.25) 100%);
+        background: linear-gradient(135deg, rgba(231, 76, 60, 0.12) 0%, rgba(231, 76, 60, 0.22) 100%);
         color: var(--bank-danger);
     }
 
         .btn-delete:hover {
             background: linear-gradient(135deg, var(--bank-danger) 0%, #c0392b 100%);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.16);
         }
+
+    .date-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        background: rgba(52, 152, 219, 0.09);
+        border-radius: 5px;
+        font-size: 0.88rem;
+        color: var(--bank-primary);
+    }
 
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 80px 32px;
+        padding: 50px 20px;
     }
 
     .empty-state-icon {
-        width: 100px;
-        height: 100px;
+        width: 70px;
+        height: 70px;
         background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 24px;
+        margin: 0 auto 16px;
     }
 
         .empty-state-icon i {
-            font-size: 3rem;
+            font-size: 2.1rem;
             color: var(--bank-accent);
         }
 
     .empty-state h4 {
         color: var(--bank-primary);
         font-weight: 600;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
+        font-size: 1.05rem;
     }
 
     .empty-state p {
         color: #6c757d;
-        font-size: 1rem;
-        margin-bottom: 24px;
+        font-size: 0.93rem;
+        margin-bottom: 18px;
     }
 
-    /* DataTables Custom Styling */
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
-        border: 2px solid var(--bank-border);
-        border-radius: 8px;
-        padding: 8px 12px;
-        transition: all 0.3s ease;
+        border: 1.5px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 6px 10px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
     }
 
         .dataTables_wrapper .dataTables_length select:focus,
         .dataTables_wrapper .dataTables_filter input:focus {
             border-color: var(--bank-accent);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.09);
         }
 
     .dataTables_wrapper .dataTables_paginate .paginate_button {
-        border-radius: 8px;
-        padding: 8px 16px;
-        margin: 0 4px;
-        border: 2px solid var(--bank-border);
+        border-radius: 7px;
+        padding: 6px 12px;
+        margin: 0 2px;
+        border: 1.5px solid var(--bank-border);
         background: white;
         color: var(--bank-primary);
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
+        font-size: 0.88rem;
     }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -271,35 +306,25 @@
 
     .dataTables_wrapper .dataTables_info {
         color: #6c757d;
-        font-size: 0.9rem;
-        padding: 12px 0;
+        font-size: 0.89rem;
+        padding: 8px 0;
     }
 
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter {
-        padding: 12px 0;
+        padding: 8px 0;
+        font-size: 0.88rem;
     }
 
-    /* Status Badge for Date */
-    .date-badge {
-        display: inline-block;
-        padding: 4px 12px;
-        background: rgba(52, 152, 219, 0.1);
-        border-radius: 6px;
-        font-size: 0.875rem;
-        color: var(--bank-primary);
-    }
-
-    /* Responsive */
     @@media (max-width: 768px) {
         .page-header h2
 
     {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
     }
 
     .table-container {
-        padding: 16px;
+        padding: 8px;
     }
 
     .btn-add-employee {
@@ -311,7 +336,20 @@
 </style>
 
 <div class="employees-container">
-    <div class="container-fluid">
+    <div class="container-fluid px-3">
+        @{
+            var successMessage = TempData["SuccessMessage"] as string;
+        }
+
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            <div id="successAlert" class="alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span>@successMessage</span>
+                <span class="close-btn" onclick="$('#successAlert').fadeOut(300);">&times;</span>
+            </div>
+        }
+
         <div class="page-header">
             <h2>
                 <i class="fas fa-users-cog"></i> All Employees
@@ -403,13 +441,16 @@
 
 @section Scripts {
     <script>
+        var employeesTable; // Global variable to store DataTable instance
+
         $(document).ready(function() {
-            $('#employeesTable').DataTable({
+            // Initialize DataTable
+            employeesTable = $('#employeesTable').DataTable({
                 "pageLength": 25,
                 "order": [[0, "desc"]],
                 "language": {
                     "search": "Search employees:",
-                    "lengthMenu": "Show _MENU_ employees per page",
+                    "lengthMenu": "Show _MENU_ per page",
                     "info": "Showing _START_ to _END_ of _TOTAL_ employees",
                     "infoEmpty": "No employees available",
                     "infoFiltered": "(filtered from _MAX_ total employees)",
@@ -420,13 +461,52 @@
                         "previous": "Prev"
                     }
                 },
-                "responsive": true,
-                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip'
+                "responsive": true
             });
+
+            // Check if success alert exists (meaning update was successful)
+            if ($('#successAlert').length > 0) {
+                // Wait a brief moment, then reload the table data
+                setTimeout(function() {
+                    reloadEmployeesTable();
+                }, 500);
+
+                // Auto-hide success alert after 5 seconds
+                setTimeout(function() {
+                    $('#successAlert').fadeOut(300);
+                }, 5000);
+            }
         });
 
+        function reloadEmployeesTable() {
+            // Reload DataTable without refreshing the entire page
+            $.ajax({
+                url: '@Url.Action("Employees")',
+                type: 'GET',
+                success: function(data) {
+                    // Parse the response to extract just the table rows
+                    var newRows = $(data).find('#employeesTable tbody tr');
+
+                    // Clear existing table data and add new rows
+                    employeesTable.clear();
+                    employeesTable.rows.add(newRows);
+                    employeesTable.draw();
+
+                    // Update employee count badge if it exists
+                    var newCount = newRows.length;
+                    var badgeHtml = newCount > 0 ?
+                        '<span class="employee-count-badge">' + newCount + '</span>' : '';
+
+                    $('.page-header h2 .employee-count-badge').remove();
+                    $('.page-header h2').append(badgeHtml);
+                },
+                error: function() {
+                    toastr.error('Failed to refresh employee list');
+                }
+            });
+        }
+
         function deleteEmployee(id) {
-            // Custom confirmation dialog using SweetAlert2 or similar can be added here
             if(confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
                 $.ajax({
                     url: '@Url.Action("DeleteEmployee")/' + id,
@@ -435,6 +515,7 @@
                         if(response.success) {
                             toastr.success(response.message || 'Employee deleted successfully');
                             setTimeout(function() {
+                                // Reload page to show updated list
                                 location.reload();
                             }, 1500);
                         } else {

@@ -1,5 +1,5 @@
 ﻿@using BankApp.Client.ViewModels
-@model EmployeeViewModel
+@model EditEmployeeViewModel
 
 @{
     ViewData["Title"] = "Edit Employee";
@@ -19,255 +19,201 @@
     }
 
     .edit-form-container {
-        min-height: 100vh;
+        min-height: calc(100vh - 56px - 50px);
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        padding: 40px 0;
+        padding: 22px 0;
     }
 
     .edit-form-card {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px var(--bank-shadow);
+        border-radius: 10px;
+        box-shadow: 0 3px 12px var(--bank-shadow);
         border: 1px solid var(--bank-border);
         overflow: hidden;
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
     }
 
-        .edit-form-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.12);
-        }
+    .edit-form-card:hover {
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 7px 22px rgba(230, 126, 34, 0.19);
+    }
 
     .edit-form-header {
         background: linear-gradient(135deg, var(--bank-edit) 0%, var(--bank-edit-dark) 100%);
-        padding: 32px;
+        padding: 17px 20px 12px 20px;
         position: relative;
         overflow: hidden;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
     }
 
-        .edit-form-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-        }
+    .edit-form-header h4 {
+        font-size: 1.23rem;
+        font-weight: 600;
+        color: white;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        z-index: 1;
+        position: relative;
+    }
 
-        .edit-form-header::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -5%;
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-        }
-
-        .edit-form-header h4 {
-            margin: 0;
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: white;
-            position: relative;
-            z-index: 1;
-        }
-
-        .edit-form-header i {
-            margin-right: 12px;
-            font-size: 1.5rem;
-            vertical-align: middle;
-        }
+    .edit-form-header i {
+        font-size: 1.11rem;
+    }
 
     .edit-badge {
         display: inline-block;
-        background: rgba(255, 255, 255, 0.25);
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.875rem;
+        background: rgba(255, 255, 255, 0.21);
+        padding: 4px 14px;
+        border-radius: 14px;
+        font-size: 0.79rem;
         font-weight: 600;
-        margin-left: 12px;
-        letter-spacing: 0.5px;
+        margin-left: 9px;
+        letter-spacing: 0.4px;
+        color: #fff9ed;
     }
 
     .edit-form-body {
-        padding: 40px;
+        padding: 22px 20px;
     }
 
-    .form-section {
-        margin-bottom: 24px;
+    .form-info-banner {
+        background: linear-gradient(90deg, rgba(230, 126, 34, 0.08) 0%, rgba(211, 84, 0, 0.04) 100%);
+        border-left: 4px solid var(--bank-edit);
+        padding: 12px 16px;
+        border-radius: 7px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-info-banner i {
+        font-size: 1.1rem;
+        color: var(--bank-edit);
+        margin-right: 11px;
+    }
+
+    .form-info-banner p {
+        margin: 0;
+        color: var(--bank-primary);
+        font-size: 0.93rem;
+        line-height: 1.5;
     }
 
     .form-label {
         font-weight: 600;
         color: var(--bank-primary);
-        margin-bottom: 8px;
+        margin-bottom: 5px;
         font-size: 0.95rem;
-        letter-spacing: 0.3px;
+        letter-spacing: 0.2px;
         display: flex;
         align-items: center;
     }
 
-    .info-tooltip {
-        margin-left: 8px;
-        color: var(--bank-accent);
-        cursor: help;
-        font-size: 0.875rem;
-    }
-
     .form-control {
-        border: 2px solid var(--bank-border);
-        border-radius: 8px;
-        padding: 12px 16px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
+        border: 1.5px solid var(--bank-border);
+        border-radius: 6px;
+        padding: 9px 13px;
+        font-size: 0.99rem;
+        margin-bottom: 2px;
         background-color: #fafbfc;
+        transition: border-color 0.17s;
     }
 
-        .form-control:focus {
-            border-color: var(--bank-edit);
-            box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1);
-            outline: none;
-            background-color: white;
-        }
-
-        .form-control:hover {
-            border-color: var(--bank-secondary);
-            background-color: white;
-        }
+    .form-control:focus {
+        border-color: var(--bank-edit);
+        box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.13);
+        background-color: white;
+    }
 
     .text-danger {
-        font-size: 0.875rem;
-        margin-top: 4px;
-        display: block;
+        font-size: 0.85rem;
+        margin-top: 1px;
+    }
+
+    .required-indicator {
+        color: #dc3545;
+        margin-left: 3px;
     }
 
     .validation-summary {
         background: #fff3cd;
         border-left: 4px solid #ffc107;
-        padding: 16px;
-        border-radius: 8px;
-        margin-bottom: 24px;
-    }
-
-    .required-indicator {
-        color: #dc3545;
-        margin-left: 4px;
-    }
-
-    .readonly-note {
-        font-size: 0.875rem;
-        color: #6c757d;
-        margin-top: 4px;
-        font-style: italic;
+        padding: 12px 16px;
+        border-radius: 7px;
+        margin-bottom: 12px;
+        font-size: 0.92rem;
     }
 
     .btn-update {
         background: linear-gradient(135deg, var(--bank-edit) 0%, var(--bank-edit-dark) 100%);
         border: none;
-        padding: 14px 32px;
-        font-size: 1.1rem;
+        padding: 11px 0;
+        font-size: 1rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(230, 126, 34, 0.25);
+        border-radius: 7px;
+        transition: all 0.19s ease;
+        box-shadow: 0 2px 10px rgba(230, 126, 34, 0.14);
         color: white;
+        width: 100%;
     }
 
-        .btn-update:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(230, 126, 34, 0.35);
-            background: linear-gradient(135deg, var(--bank-edit-dark) 0%, var(--bank-edit) 100%);
-            color: white;
-        }
+    .btn-update:hover {
+        background: linear-gradient(135deg, var(--bank-edit-dark) 0%, var(--bank-edit) 100%);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(230, 126, 34, 0.23);
+    }
 
     .btn-back {
         background: white;
-        border: 2px solid var(--bank-border);
+        border: 1.5px solid var(--bank-border);
         color: var(--bank-primary);
-        padding: 14px 32px;
+        padding: 11px 0;
         font-size: 1rem;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        border-radius: 7px;
+        transition: all 0.17s ease;
+        width: 100%;
         text-decoration: none;
         display: inline-block;
     }
 
-        .btn-back:hover {
-            background: var(--bank-light);
-            border-color: var(--bank-secondary);
-            color: var(--bank-secondary);
-            text-decoration: none;
-        }
+    .btn-back:hover {
+        background: var(--bank-light);
+        border-color: var(--bank-secondary);
+        color: var(--bank-secondary);
+        text-decoration: none;
+    }
 
     .btn-group-actions {
         display: flex;
-        gap: 16px;
-        margin-top: 32px;
+        gap: 12px;
+        margin-top: 18px;
     }
 
-        .btn-group-actions button,
-        .btn-group-actions a {
-            flex: 1;
-            text-align: center;
-        }
-
-    .form-info-banner {
-        background: linear-gradient(90deg, rgba(230, 126, 34, 0.1) 0%, rgba(211, 84, 0, 0.05) 100%);
-        border-left: 4px solid var(--bank-edit);
-        padding: 16px 20px;
-        border-radius: 8px;
-        margin-bottom: 32px;
-        display: flex;
-        align-items: center;
+    .btn-group-actions button,
+    .btn-group-actions a {
+        flex: 1;
+        text-align: center;
+        min-width: 0;
     }
-
-        .form-info-banner i {
-            font-size: 1.5rem;
-            color: var(--bank-edit);
-            margin-right: 16px;
-        }
-
-        .form-info-banner p {
-            margin: 0;
-            color: var(--bank-primary);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
 
     @@media (max-width: 768px) {
-        .edit-form-body
-
-    {
-        padding: 24px;
-    }
-
-    .edit-form-header {
-        padding: 24px;
-    }
-
-    .btn-group-actions {
-        flex-direction: column;
-    }
-
-    .edit-badge {
-        display: block;
-        margin-left: 0;
-        margin-top: 8px;
-        text-align: center;
-    }
-
+        .edit-form-body { padding: 11px 7px 15px 7px; }
+        .edit-form-header { padding: 11px 7px 8px 7px; }
+        .btn-group-actions { flex-direction: column; gap: 8px; }
+        .edit-form-card { border-radius: 8px; }
+        .edit-form-header { border-radius: 8px 8px 0 0; }
     }
 </style>
 
 <div class="edit-form-container">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-9 col-md-10">
+            <div class="col-lg-7 col-md-10">
                 <div class="edit-form-card">
                     <div class="edit-form-header">
                         <h4>
@@ -280,20 +226,21 @@
                             <i class="fas fa-info-circle"></i>
                             <p>You are modifying existing employee information. All changes will be saved immediately upon submission.</p>
                         </div>
-
                         <form asp-action="EditEmployee" asp-route-id="@employeeId" method="post">
+                            @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="ApplicationUserId" />
                             <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
 
                             <div class="row">
-                                <div class="col-md-6 form-section">
+                                <div class="col-md-6 mb-3">
                                     <label asp-for="UserName" class="form-label">
                                         Username<span class="required-indicator">*</span>
                                     </label>
-                                    <input asp-for="UserName" class="form-control" placeholder="Enter username" />
+                                    <input asp-for="UserName" class="form-control" placeholder="Enter username" readonly/>
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
 
-                                <div class="col-md-6 form-section">
+                                <div class="col-md-6 mb-3">
                                     <label asp-for="FullName" class="form-label">
                                         Full Name<span class="required-indicator">*</span>
                                     </label>
@@ -303,15 +250,14 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-6 form-section">
+                                <div class="col-md-6 mb-3">
                                     <label asp-for="StaffCode" class="form-label">
                                         Staff Code<span class="required-indicator">*</span>
                                     </label>
                                     <input asp-for="StaffCode" class="form-control" placeholder="Enter staff code" />
                                     <span asp-validation-for="StaffCode" class="text-danger"></span>
                                 </div>
-
-                                <div class="col-md-6 form-section">
+                                <div class="col-md-6 mb-3">
                                     <label asp-for="JobTitle" class="form-label">
                                         Job Title<span class="required-indicator">*</span>
                                     </label>
@@ -320,7 +266,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-section">
+                            <div class="mb-3">
                                 <label asp-for="DateHired" class="form-label">
                                     Date Hired<span class="required-indicator">*</span>
                                 </label>
@@ -330,10 +276,10 @@
 
                             <div class="btn-group-actions">
                                 <button type="submit" class="btn btn-update">
-                                    <i class="fas fa-save"></i> Update Employee
+                                    <i class="fas fa-save"></i> Update
                                 </button>
                                 <a href="@Url.Action("Employees")" class="btn btn-back">
-                                    <i class="fas fa-arrow-left"></i> Back to Employees
+                                    <i class="fas fa-arrow-left"></i> Back
                                 </a>
                             </div>
                         </form>

@@ -21,55 +21,61 @@
 
     .dashboard-container {
         background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
-        min-height: 100vh;
-        padding: 32px 0;
+        min-height: calc(100vh - 56px - 50px);
+        padding: 20px 0;
     }
 
     .dashboard-header {
-        margin-bottom: 32px;
-        padding-bottom: 16px;
-        border-bottom: 3px solid var(--bank-primary);
+        margin-bottom: 20px;
+        padding: 16px 20px;
+        background: white;
+        border-radius: 10px;
+        border-left: 6px solid var(--bank-primary);
+        box-shadow: 0 2px 8px var(--bank-shadow);
     }
 
-        .dashboard-header h2 {
-            color: var(--bank-primary);
-            font-weight: 700;
-            font-size: 2rem;
-            margin: 0;
-        }
+    .dashboard-header h2 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .dashboard-header i {
-            margin-right: 12px;
-            color: var(--bank-accent);
-        }
+    .dashboard-header h2 i {
+        color: var(--bank-accent);
+        font-size: 1.3rem;
+    }
 
-    /* Statistics Cards */
+    /* Compact Statistics Cards */
     .stat-card {
-        border-radius: 16px;
+        border-radius: 10px;
         border: none;
         overflow: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 16px var(--bank-shadow);
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px var(--bank-shadow);
         height: 100%;
         position: relative;
     }
 
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.15);
-        }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
+    }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: translate(30%, -30%);
-        }
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transform: translate(30%, -30%);
+    }
 
     .stat-card-primary {
         background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-secondary) 100%);
@@ -87,40 +93,41 @@
     }
 
     .stat-card .card-body {
-        padding: 28px;
+        padding: 20px;
         position: relative;
         z-index: 1;
     }
 
     .stat-label {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
         opacity: 0.9;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .stat-value {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
-        margin-bottom: 0;
+        margin-bottom: 12px;
         line-height: 1;
     }
 
     .stat-icon {
-        font-size: 3.5rem;
+        font-size: 2.5rem;
         opacity: 0.3;
     }
 
     .stat-card .btn-light {
         background: rgba(255, 255, 255, 0.95);
         border: none;
-        padding: 10px 20px;
+        padding: 8px 16px;
         font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        font-size: 0.85rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .stat-card-primary .btn-light {
@@ -137,84 +144,88 @@
 
     .stat-card .btn-light:hover {
         background: white;
-        transform: translateX(4px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateX(2px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     }
 
-    /* Action Cards */
+    /* Compact Action Cards */
     .action-card {
         background: white;
-        border-radius: 16px;
+        border-radius: 10px;
         border: 1px solid var(--bank-border);
-        box-shadow: 0 4px 16px var(--bank-shadow);
-        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px var(--bank-shadow);
+        transition: all 0.2s ease;
         height: 100%;
         overflow: hidden;
     }
 
-        .action-card:hover {
-            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.12);
-        }
+    .action-card:hover {
+        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.12);
+    }
 
     .action-card-header {
         background: linear-gradient(135deg, var(--bank-light) 0%, #ffffff 100%);
-        padding: 20px 24px;
+        padding: 14px 18px;
         border-bottom: 2px solid var(--bank-border);
     }
 
-        .action-card-header h5 {
-            margin: 0;
-            color: var(--bank-primary);
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
+    .action-card-header h5 {
+        margin: 0;
+        color: var(--bank-primary);
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .action-card-header i {
-            margin-right: 10px;
-            color: var(--bank-accent);
-        }
+    .action-card-header h5 i {
+        color: var(--bank-accent);
+        font-size: 1rem;
+    }
 
     .action-card .card-body {
         padding: 0;
     }
 
-    /* Action List Items */
+    /* Compact Action List Items */
     .action-list-item {
         border: none;
         border-bottom: 1px solid var(--bank-border);
-        padding: 18px 24px;
-        transition: all 0.3s ease;
+        padding: 14px 18px;
+        transition: all 0.2s ease;
         display: flex;
         align-items: center;
         color: var(--bank-primary);
         text-decoration: none;
+        font-size: 0.9rem;
     }
 
-        .action-list-item:last-child {
-            border-bottom: none;
-        }
+    .action-list-item:last-child {
+        border-bottom: none;
+    }
 
-        .action-list-item:hover {
-            background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
-            padding-left: 32px;
-            color: var(--bank-accent);
-        }
+    .action-list-item:hover {
+        background: linear-gradient(90deg, #f8f9fa 0%, #ffffff 100%);
+        padding-left: 24px;
+        color: var(--bank-accent);
+    }
 
-        .action-list-item i {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            margin-right: 16px;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
+    .action-list-item i {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        margin-right: 12px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
 
-        .action-list-item:hover i {
-            transform: scale(1.1);
-        }
+    .action-list-item:hover i {
+        transform: scale(1.1);
+    }
 
     .icon-primary {
         background: rgba(30, 58, 95, 0.1);
@@ -236,7 +247,7 @@
         color: var(--bank-warning);
     }
 
-    /* Admin Info Card */
+    /* Compact Admin Info Card */
     .admin-info-card {
         background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         border: 2px solid var(--bank-border);
@@ -245,60 +256,71 @@
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 48px 32px;
+        padding: 32px 24px;
     }
 
-        .admin-info-card .shield-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-accent) 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.2);
-        }
+    .admin-info-card .shield-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--bank-primary) 0%, var(--bank-accent) 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+    }
 
-            .admin-info-card .shield-icon i {
-                font-size: 3rem;
-                color: white;
-            }
+    .admin-info-card .shield-icon i {
+        font-size: 2.2rem;
+        color: white;
+    }
 
-        .admin-info-card h4 {
-            color: var(--bank-primary);
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
+    .admin-info-card h4 {
+        color: var(--bank-primary);
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 1.15rem;
+    }
 
-        .admin-info-card p {
-            color: var(--bank-text-muted);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin: 0;
-        }
+    .admin-info-card p {
+        color: var(--bank-text-muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0;
+    }
 
     /* Responsive */
     @@media (max-width: 768px) {
-        .stat-value
+        .stat-value {
+            font-size: 1.6rem;
+        }
 
-    {
-        font-size: 2rem;
-    }
+        .stat-icon {
+            font-size: 2rem;
+        }
 
-    .stat-icon {
-        font-size: 2.5rem;
-    }
+        .dashboard-header h2 {
+            font-size: 1.2rem;
+        }
 
-    .dashboard-header h2 {
-        font-size: 1.5rem;
-    }
+        .admin-info-card {
+            padding: 24px 18px;
+        }
 
+        .admin-info-card .shield-icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        .admin-info-card .shield-icon i {
+            font-size: 2rem;
+        }
     }
 </style>
 
 <div class="dashboard-container">
-    <div class="container-fluid">
+    <div class="container-fluid px-3">
         <div class="row">
             <div class="col-12">
                 <div class="dashboard-header">
@@ -307,11 +329,11 @@
             </div>
         </div>
 
-        <div class="row mb-4 g-4">
+        <div class="row mb-3 g-3">
             <div class="col-md-4">
                 <div class="stat-card stat-card-primary">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <div class="stat-label">Total Employees</div>
                                 <h3 class="stat-value">@totalEmployees</h3>
@@ -321,7 +343,7 @@
                             </div>
                         </div>
                         <a href="@Url.Action("Employees")" class="btn btn-light">
-                            Manage Employees <i class="fas fa-arrow-right ms-2"></i>
+                            Manage Employees <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -330,7 +352,7 @@
             <div class="col-md-4">
                 <div class="stat-card stat-card-success">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <div class="stat-label">Total Customers</div>
                                 <h3 class="stat-value">@totalCustomers</h3>
@@ -340,7 +362,7 @@
                             </div>
                         </div>
                         <a href="@Url.Action("Customers", "Manager")" class="btn btn-light">
-                            View Customers <i class="fas fa-arrow-right ms-2"></i>
+                            View Customers <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -349,7 +371,7 @@
             <div class="col-md-4">
                 <div class="stat-card stat-card-warning">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
                                 <div class="stat-label">Pending Applications</div>
                                 <h3 class="stat-value">@pendingApplications</h3>
@@ -359,14 +381,14 @@
                             </div>
                         </div>
                         <a href="@Url.Action("PendingApplications", "Manager")" class="btn btn-light">
-                            Review Applications <i class="fas fa-arrow-right ms-2"></i>
+                            Review Applications <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-3">
             <div class="col-lg-6">
                 <div class="action-card">
                     <div class="action-card-header">
