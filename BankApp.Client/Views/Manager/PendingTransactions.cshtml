@@ -352,7 +352,7 @@
         font-size: 0.9rem;
     }
 
-    /* Compact Modal */
+    /* Compact Modal Styling */
     .modal-content {
         border: none;
         border-radius: 12px;
@@ -360,31 +360,31 @@
     }
 
     .modal-header {
-        padding: 16px 20px;
+        padding: 14px 18px;
         border-bottom: none;
-    }
-
-    .modal-header.bg-info {
         background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%) !important;
     }
 
     .modal-header .modal-title {
         font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         display: flex;
         align-items: center;
         gap: 8px;
+        color: white;
     }
 
     .modal-body {
-        padding: 20px;
+        padding: 18px;
+        background: #f8f9fa;
     }
 
     .transaction-detail-card {
-        background: linear-gradient(135deg, var(--bank-light) 0%, #e9ecef 100%);
-        border: 2px solid var(--bank-border);
-        border-radius: 10px;
-        padding: 18px;
+        background: white;
+        border: 1px solid var(--bank-border);
+        border-radius: 8px;
+        padding: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .transaction-detail-card dl.row {
@@ -395,38 +395,51 @@
         color: #6c757d;
         font-size: 0.8rem;
         font-weight: 600;
-        padding: 8px 0;
+        padding: 6px 0;
+        text-align: left;
     }
 
     .transaction-detail-card dd {
         color: var(--bank-primary);
         font-weight: 600;
-        padding: 8px 0;
-        font-size: 0.95rem;
+        padding: 6px 0;
+        font-size: 0.9rem;
+        text-align: left;
     }
 
     .transaction-detail-card dd code {
-        background: white;
+        background: linear-gradient(135deg, #f0f2f5 0%, #e9ecef 100%);
         color: var(--bank-primary);
-        padding: 5px 10px;
+        padding: 4px 10px;
         border-radius: 5px;
         font-family: 'Courier New', monospace;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        border: 1px solid var(--bank-border);
     }
 
     .modal-footer {
-        padding: 14px 20px;
-        background: #f8f9fa;
-        border-top: 2px solid var(--bank-border);
+        padding: 12px 18px;
+        background: white;
+        border-top: 1px solid var(--bank-border);
     }
 
     .modal-footer .btn {
         padding: 8px 18px;
         font-weight: 600;
         border-radius: 6px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         transition: all 0.2s ease;
+    }
+
+    .modal-footer .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        border: none;
+    }
+
+    .modal-footer .btn-secondary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
     }
 
     /* DataTables Custom Styling */
@@ -682,7 +695,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-info text-white">
-                <h5 class="modal-title"><i class="fas fa-receipt"></i> Transaction Details</h5>
+                <h5 class="modal-title">
+                    <i class="fas fa-receipt"></i> Transaction Details
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="transactionDetails">
@@ -750,17 +765,17 @@
 
                         var html = '<div class="transaction-detail-card">';
                         html += '<dl class="row">';
-                        html += '<dt class="col-sm-5">Transaction ID:</dt><dd class="col-sm-7"><code>#' + txn.transactionID + '</code></dd>';
-                        html += '<dt class="col-sm-5">Type:</dt><dd class="col-sm-7"><span class="transaction-type-badge badge-' + (typeText.toLowerCase()) + '"><i class="fas fa-' + typeIcon + '"></i> ' + typeText + '</span></dd>';
-                        html += '<dt class="col-sm-5">Account:</dt><dd class="col-sm-7"><code>' + txn.accountNumber + '</code></dd>';
-                        html += '<dt class="col-sm-5">Amount:</dt><dd class="col-sm-7"><strong style="color: var(--bank-' + typeColor + '); font-size: 1.2rem; font-family: Courier New;">₹' + txn.amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</strong></dd>';
+                        html += '<dt class="col-5">Transaction ID:</dt><dd class="col-7"><code>#' + txn.transactionID + '</code></dd>';
+                        html += '<dt class="col-5">Type:</dt><dd class="col-7"><span class="transaction-type-badge badge-' + (typeText.toLowerCase()) + '"><i class="fas fa-' + typeIcon + '"></i> ' + typeText + '</span></dd>';
+                        html += '<dt class="col-5">Account:</dt><dd class="col-7"><code>' + txn.accountNumber + '</code></dd>';
+                        html += '<dt class="col-5">Amount:</dt><dd class="col-7"><strong style="color: var(--bank-' + typeColor + '); font-size: 1.1rem; font-family: Courier New;">₹' + txn.amount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</strong></dd>';
 
                         if(txn.recipientAccountNumber) {
-                            html += '<dt class="col-sm-5">Recipient:</dt><dd class="col-sm-7"><code>' + txn.recipientAccountNumber + '</code></dd>';
+                            html += '<dt class="col-5">Recipient:</dt><dd class="col-7"><code>' + txn.recipientAccountNumber + '</code></dd>';
                         }
 
-                        html += '<dt class="col-sm-5">Description:</dt><dd class="col-sm-7">' + (txn.description || '<em style="color: #6c757d;">No description provided</em>') + '</dd>';
-                        html += '<dt class="col-sm-5">Date & Time:</dt><dd class="col-sm-7"><i class="far fa-calendar-alt"></i> ' + new Date(txn.transactionDate).toLocaleString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) + '</dd>';
+                        html += '<dt class="col-5">Description:</dt><dd class="col-7">' + (txn.description || '<em style="color: #6c757d; font-size: 0.85rem;">No description provided</em>') + '</dd>';
+                        html += '<dt class="col-5">Date & Time:</dt><dd class="col-7"><i class="far fa-calendar-alt" style="color: var(--bank-info); margin-right: 5px;"></i>' + new Date(txn.transactionDate).toLocaleString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'}) + '</dd>';
                         html += '</dl>';
                         html += '</div>';
 
