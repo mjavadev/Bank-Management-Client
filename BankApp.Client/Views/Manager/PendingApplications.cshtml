@@ -1310,7 +1310,10 @@
                             $('#modalPassword').text(response.password);
                             $('#modalFullName').text(response.fullName);
                             $('#approvalModal').modal('show');
-                            setTimeout(function () { location.reload(); }, 5000);
+                           // setTimeout(function () { location.reload(); }, 5000);
+                            $('#approvalModal').on('hidden.bs.modal', function () {
+                                location.reload();
+                            });
                         } else {
                             toastr.error(response.message || 'Failed to approve application');
                         }
