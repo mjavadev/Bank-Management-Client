@@ -848,62 +848,15 @@
 
     }
     /* Compact Approval Modal Styling */
-    .approval-modal .modal-dialog {
-        max-width: 500px;
-    }
-
-    .approval-modal .modal-header {
-        padding: 14px 20px;
-        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-    }
-
-    .approval-modal .modal-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
-
-    .approval-modal .modal-body {
-        padding: 20px 20px 10px 20px;
-    }
-
-    .approval-success-alert {
-        background: #eafaf1;
-        border-left: 4px solid #27ae60;
-        border-radius: 6px;
-        padding: 12px 16px;
-        margin-bottom: 14px;
-        text-align: center;
-    }
-
-        .approval-success-alert h5 {
-            color: #229954;
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0;
-        }
-
-    .credentials-card {
-        background: white;
-        border: 1px solid #e1e8ed;
-        border-radius: 8px;
-        padding: 14px 14px 10px 14px;
-        margin-bottom: 0;
-    }
-
-        .credentials-card .badge {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            font-family: 'Courier New', monospace;
-        }
-
-    .security-warning {
-        background: #fff8e1;
-        border-left: 3px solid #f6c343;
-        border-radius: 5px;
-        padding: 9px 13px;
-        margin-top: 10px;
-        font-size: 0.83rem;
-    }
+.approval-modal .modal-dialog { max-width: 500px; }
+.approval-modal .modal-header { padding: 14px 20px; background: linear-gradient(135deg, #27ae60 0%, #229954 100%);}
+.approval-modal .modal-title { font-size: 1.1rem; font-weight: bold; }
+.approval-modal .modal-body { padding: 20px 20px 10px 20px; }
+.approval-success-alert { background: #eafaf1; border-left: 4px solid #27ae60; border-radius: 6px; padding: 12px 16px; margin-bottom: 14px; text-align: center; }
+.approval-success-alert h5 { color: #229954; font-weight: 700; font-size: 1rem; margin-bottom: 0; }
+.credentials-card { background: white; border: 1px solid #e1e8ed; border-radius: 8px; padding: 14px 14px 10px 14px; margin-bottom: 0; }
+.credentials-card .badge { padding: 6px 12px; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+.security-warning { background: #fff8e1; border-left: 3px solid #f6c343; border-radius: 5px; padding: 9px 13px; margin-top: 10px; font-size: 0.83rem; }
 
 </style>
 
@@ -1159,130 +1112,252 @@
 </div>
 
 
-
 @section Scripts {
     <script>
         $(document).ready(function () {
-          $('#applicationsTable').DataTable({
-            "pageLength": 25,
-            "order": [[8, "desc"]],
-            "language": {
-              "search": "Search applications:",
-              "lengthMenu": "Show _MENU_ applications per page",
-              "info": "Showing _START_ to _END_ of _TOTAL_ pending applications",
-              "infoEmpty": "No pending applications",
-              "paginate": {
-                "first": "First",
-                "last": "Last",
-                "next": "Next",
-                "previous": "Prev"
-              }
-            },
-            "columnDefs": [
-              { "orderable": false, "targets": [1, 9] }
-            ]
-          });
+            $('#applicationsTable').DataTable({
+                "pageLength": 25,
+                "order": [[8, "desc"]],
+                "language": {
+                    "search": "Search applications:",
+                    "lengthMenu": "Show _MENU_ applications per page",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ pending applications",
+                    "infoEmpty": "No pending applications",
+                    "paginate": {
+                        "first": "First",
+                        "last": "Last",
+                        "next": "Next",
+                        "previous": "Prev"
+                    }
+                },
+                "columnDefs": [
+                    { "orderable": false, "targets": [1, 9] }
+                ]
+            });
 
-          // Live validation: at least 10 NON-WHITESPACE characters required for rejection reason
-          $(document).on('input', '#rejectionReason', function () {
-            var val = $(this).val().trim();
-            if (val.length >= 10) {
-              $(this).removeClass('is-invalid').addClass('is-valid');
-            } else {
-              $(this).removeClass('is-valid').addClass('is-invalid');
-            }
-          });
+            // Live validation for rejection reason
+            $(document).on('input', '#rejectionReason', function () {
+                var val = $(this).val().trim();
+                if (val.length >= 10) {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                } else {
+                    $(this).removeClass('is-valid').addClass('is-invalid');
+                }
+            });
 
-          // Rejection button handler (uses ID to prevent duplicate events)
-          $(document).on('click', '#btnConfirmReject', function () {
-            confirmReject();
-          });
+            // Rejection button handler
+            $(document).on('click', '#btnConfirmReject', function () {
+                confirmReject();
+            });
         });
 
         function viewApplication(id) {
-          $('#viewModal').modal('show');
-          $('#applicationDetailsBody').html(`
-            <div class="modal-loading">
-              <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem;">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p style="margin-top: 12px; color: #6c757d; font-size: 0.9rem;">Loading application details...</p>
-            </div>
-          `);
-          $('#approveFromModal').hide();
-          $('#rejectFromModal').hide();
+            $('#viewModal').modal('show');
+            $('#applicationDetailsBody').html(`
+                <div class="modal-loading">
+                    <div class="spinner-border text-primary" role="status" style="width: 2.5rem; height: 2.5rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p style="margin-top: 12px; color: #6c757d; font-size: 0.9rem;">Loading application details...</p>
+                </div>
+            `);
 
-          $.ajax({
-            url: '@Url.Action("GetApplicationDetails", "Manager")/' + id,
-            type: 'GET',
-            success: function (response) {
-              if (response.success && response.application) {
-                var app = response.application;
-                // ... rest of your rendering code
-              }
-            }
-          });
+            $('#approveFromModal').hide();
+            $('#rejectFromModal').hide();
+
+            $.ajax({
+                url: '@Url.Action("GetApplicationDetails", "Manager")/' + id,
+                type: 'GET',
+                success: function (response) {
+                    if (response.success && response.application) {
+                        var app = response.application;
+
+                        var accountTypeBadge = '';
+                        if (app.accountTypeID == 1) {
+                            accountTypeBadge = '<span class="badge bg-primary" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-piggy-bank"></i> Savings</span>';
+                        } else if (app.accountTypeID == 2) {
+                            accountTypeBadge = '<span class="badge bg-success" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-briefcase"></i> Current</span>';
+                        } else if (app.accountTypeID == 3) {
+                            accountTypeBadge = '<span class="badge bg-warning text-dark" style="padding: 4px 10px; font-size: 0.8rem;"><i class="fas fa-lock"></i> Fixed Deposit</span>';
+                        }
+
+                        var photoSection = '';
+                        if (app.customerImageURL) {
+                            photoSection = `
+                                <div class="col-md-4 mb-3">
+                                    <div class="photo-detail-card" style="height: 100%;">
+                                        <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
+                                            <i class="fas fa-camera"></i> Customer Photo
+                                        </div>
+                                        <div class="card-body" style="padding: 14px; display: flex; align-items: center; justify-content: center;">
+                                            <img src="http://localhost:5266/${app.customerImageURL}"
+                                                 alt="Customer Photo"
+                                                 class="img-fluid application-detail-photo"
+                                                 style="width: 100%; max-height: 200px; object-fit: contain; border-radius: 8px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            photoSection = `
+                                <div class="col-md-4 mb-3">
+                                    <div class="photo-detail-card" style="height: 100%;">
+                                        <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
+                                            <i class="fas fa-camera"></i> Customer Photo
+                                        </div>
+                                        <div class="card-body" style="padding: 14px; display: flex; align-items: center; justify-content: center;">
+                                            <div class="no-photo-placeholder" style="padding: 20px 12px; text-align: center;">
+                                                <i class="fas fa-user-circle" style="font-size: 3rem; color: #cbd5e0;"></i>
+                                                <p style="font-size: 0.85rem; margin: 8px 0 0 0; color: #6c757d;">No photo uploaded</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                        var html = `
+                            <div class="row">
+                                ${photoSection}
+                                <div class="${app.customerImageURL ? 'col-md-8' : 'col-md-12'}">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="application-detail-card border-primary">
+                                                <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
+                                                    <i class="fas fa-user"></i> Personal Information
+                                                </div>
+                                                <div class="card-body" style="padding: 14px;">
+                                                    <dl class="row mb-0">
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Application ID:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><span class="badge bg-secondary" style="padding: 4px 10px; font-size: 0.75rem;">#${app.applicationID}</span></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Full Name:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><strong style="color: var(--bank-primary); font-size: 0.95rem;">${app.fullName}</strong></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Date of Birth:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${new Date(app.dateOfBirth).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Gender:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${app.gender}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Occupation:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${app.occupation || '<em class="text-muted" style="font-size: 0.75rem;">Not specified</em>'}</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="application-detail-card border-success">
+                                                <div class="card-header" style="padding: 10px 14px; font-size: 0.85rem;">
+                                                    <i class="fas fa-id-card"></i> Contact & Documents
+                                                </div>
+                                                <div class="card-body" style="padding: 14px;">
+                                                    <dl class="row mb-0">
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Mobile Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><i class="fas fa-phone" style="color: var(--bank-success); font-size: 0.75rem;"></i> ${app.mobileNumber}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Aadhar Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><code style="font-size: 0.75rem; padding: 3px 7px;">${app.aadharNumber}</code></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">PAN Number:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><code style="font-size: 0.75rem; padding: 3px 7px;">${app.pan}</code></dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Account Type:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;">${accountTypeBadge}</dd>
+                                                        <dt class="col-sm-5" style="font-size: 0.75rem; padding: 5px 0;">Applied On:</dt>
+                                                        <dd class="col-sm-7" style="font-size: 0.8rem; padding: 5px 0;"><i class="far fa-calendar-alt" style="font-size: 0.75rem;"></i> ${new Date(app.applicationDate).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        $('#applicationDetailsBody').html(html);
+
+                        if (app.status == 1) {
+                            $('#approveFromModal').show().off('click').on('click', function () {
+                                $('#viewModal').modal('hide');
+                                approveApplication(app.applicationID);
+                            });
+
+                            $('#rejectFromModal').show().off('click').on('click', function () {
+                                $('#viewModal').modal('hide');
+                                rejectApplication(app.applicationID);
+                            });
+                        }
+                    } else {
+                        $('#applicationDetailsBody').html(`
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle"></i> Failed to load application details.
+                            </div>
+                        `);
+                    }
+                },
+                error: function () {
+                    $('#applicationDetailsBody').html(`
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i> An error occurred while loading application details.
+                        </div>
+                    `);
+                }
+            });
         }
 
         function approveApplication(id) {
-          if (confirm('Are you sure you want to approve this application? This will create a customer account.')) {
-            $.ajax({
-              url: '@Url.Action("ApproveApplication", "Manager")/' + id,
-              type: 'POST',
-              success: function (response) {
-                if (response.success) {
-                  $('#modalUsername').text(response.userName);
-                  $('#modalPassword').text(response.password);
-                  $('#modalFullName').text(response.fullName);
-                  $('#approvalModal').modal('show');
-                  setTimeout(function () { location.reload(); }, 5000);
-                } else {
-                  toastr.error(response.message || 'Failed to approve application');
-                }
-              },
-              error: function () {
-                toastr.error('An error occurred while approving the application');
-              }
-            });
-          }
+            if (confirm('Are you sure you want to approve this application? This will create a customer account.')) {
+                $.ajax({
+                    url: '@Url.Action("ApproveApplication", "Manager")/' + id,
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#modalUsername').text(response.userName);
+                            $('#modalPassword').text(response.password);
+                            $('#modalFullName').text(response.fullName);
+                            $('#approvalModal').modal('show');
+                            setTimeout(function () { location.reload(); }, 5000);
+                        } else {
+                            toastr.error(response.message || 'Failed to approve application');
+                        }
+                    },
+                    error: function () {
+                        toastr.error('An error occurred while approving the application');
+                    }
+                });
+            }
         }
 
         function rejectApplication(id) {
-          $('#rejectApplicationId').val(id);
-          $('#rejectionReason').val('').removeClass('is-valid is-invalid');
-          $('#rejectModal').modal('show');
-          setTimeout(function () { $('#rejectionReason').focus(); }, 500);
+            $('#rejectApplicationId').val(id);
+            $('#rejectionReason').val('').removeClass('is-valid is-invalid');
+            $('#rejectModal').modal('show');
+            setTimeout(function () { $('#rejectionReason').focus(); }, 500);
         }
 
         function confirmReject() {
-          var id = $('#rejectApplicationId').val();
-          var reason = $('#rejectionReason').val().trim();
+            var id = $('#rejectApplicationId').val();
+            var reason = $('#rejectionReason').val().trim();
 
-          // Enforce minimum length validation here, not just live input
-          if (!reason || reason.length < 10) {
-            toastr.warning('Rejection reason must be at least 10 characters', 'Validation Error');
-            $('#rejectionReason').removeClass('is-valid').addClass('is-invalid').focus();
-            return;
-          }
-
-          $.ajax({
-            url: '@Url.Action("RejectApplication", "Manager")/' + id,
-            type: 'POST',
-            data: JSON.stringify({ reason: reason }),
-            contentType: 'application/json',
-            success: function (response) {
-              if (response.success) {
-                toastr.success(response.message || 'Application rejected successfully');
-                $('#rejectModal').modal('hide');
-                setTimeout(function () { location.reload(); }, 1500);
-              } else {
-                toastr.error(response.message || 'Failed to reject application');
-              }
-            },
-            error: function () {
-              toastr.error('An error occurred while rejecting the application');
+            if (!reason || reason.length < 10) {
+                toastr.warning('Rejection reason must be at least 10 characters', 'Validation Error');
+                $('#rejectionReason').removeClass('is-valid').addClass('is-invalid').focus();
+                return;
             }
-          });
+
+            $.ajax({
+                url: '@Url.Action("RejectApplication", "Manager")/' + id,
+                type: 'POST',
+                data: JSON.stringify({ reason: reason }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message || 'Application rejected successfully');
+                        $('#rejectModal').modal('hide');
+                        setTimeout(function () { location.reload(); }, 1500);
+                    } else {
+                        toastr.error(response.message || 'Failed to reject application');
+                    }
+                },
+                error: function () {
+                    toastr.error('An error occurred while rejecting the application');
+                }
+            });
         }
     </script>
 }
+
