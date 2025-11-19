@@ -805,17 +805,17 @@
                 });
             }
 
-            // Transaction Chart - ALWAYS initialize
+            // Transaction Chart - ONLY COUNT APPROVED TRANSACTIONS (Status = 2)
             var transactionCtx = document.getElementById('transactionChart');
             if (transactionCtx) {
-                var deposits = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 1) ?? 0);
-                var withdrawals = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 2) ?? 0);
-                var transfers = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 3) ?? 0);
+                var deposits = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 1 && t.Status == 2) ?? 0);
+                var withdrawals = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 2 && t.Status == 2) ?? 0);
+                var transfers = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 3 && t.Status == 2) ?? 0);
 
                 new Chart(transactionCtx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
-                        labels: ['Deposits', 'Withdrawals', 'Transfers'],
+                        labels: ['Deposits', 'Approved', 'Withdrawals', 'Transfers'],
                         datasets: [{
                             data: [deposits, withdrawals, transfers],
                             backgroundColor: ['#27ae60', '#e74c3c', '#3498db'],
