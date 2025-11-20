@@ -298,6 +298,33 @@ namespace BankApp.Client.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleAccountStatus(int accountId, int customerId)
+        {
+            try
+            {
+                var url = string.Format(ApiConstant.ToggleAccountStatus, accountId);
+                var result = await _httpClient.PutAsync<Result<bool>>(url, null);
+
+                if (result.IsError)
+                {
+                    TempData["ErrorMessage"] = "Failed to toggle account status.";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Account status updated successfully!";
+                }
+
+                return RedirectToAction("CustomerAccounts", new { customerId = customerId });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating account status.";
+                return RedirectToAction("CustomerAccounts", new { customerId = customerId });
+            }
+        }
+
     }
 
 }
