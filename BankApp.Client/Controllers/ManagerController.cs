@@ -325,6 +325,50 @@ namespace BankApp.Client.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditCustomer(int id)
+        {
+            var result = await _httpClient.GetAsync<Result<CustomerDto>>(string.Format(ApiConstant.GetCustomerById, id));
+            if (result.IsError || result.Response == null)
+            {
+                TempData["ErrorMessage"] = "Customer not found.";
+                return RedirectToAction("Customers");
+            }
+
+            var dto = new EditCustomerDto
+            {
+                CustomerID = result.Response.CustomerID,
+                FullName = result.Response.FullName,
+                DateOfBirth = result.Response.DateOfBirth,
+                Gender = result.Response.Gender,
+                Occupation = result.Response.Occupation,
+                MobileNumber = result.Response.MobileNumber,
+                AadharNumber = result.Response.AadharNumber,
+                PAN = result.Response.PAN,
+                UserName = result.Response.UserName,
+                ApplicationUserID = result.Response.ApplicationUserID
+            };
+            return View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCustomer(EditCustomerDto model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _httpClient.PutAsync<Result<bool>>(string.Format(ApiConstant.UpdateCustomer, model.CustomerID), model);
+            if (result.IsError || result.Response == false)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to update customer details.");
+                return View(model);
+            }
+            TempData["SuccessMessage"] = "Customer details updated successfully.";
+            return RedirectToAction("Customers");
+        }
+
+
     }
 
 }
