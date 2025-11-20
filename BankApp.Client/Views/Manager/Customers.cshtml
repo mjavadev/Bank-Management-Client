@@ -261,6 +261,34 @@
         color: #6c757d;
     }
 
+    /* Action Buttons */
+    .action-btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .btn-view-accounts {
+        background: linear-gradient(135deg, var(--bank-accent) 0%, #2980b9 100%);
+        color: white;
+    }
+
+        .btn-view-accounts:hover {
+            background: linear-gradient(135deg, #2980b9 0%, var(--bank-accent) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            color: white;
+        }
+
     /* Empty State */
     .empty-state {
         text-align: center;
@@ -460,6 +488,7 @@
                                             <th>PAN</th>
                                             <th>Approval Date</th>
                                             <th>Status</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -516,6 +545,13 @@
                                                         </span>
                                                     }
                                                 </td>
+                                                <td>
+                                                    <a href="@Url.Action("CustomerAccounts", "Manager", new { customerId = customer.CustomerID })"
+                                                       class="action-btn btn-view-accounts"
+                                                       title="View all accounts for @customer.FullName">
+                                                        <i class="fas fa-wallet"></i> View Accounts
+                                                    </a>
+                                                </td>
                                             </tr>
                                         }
                                     </tbody>
@@ -559,7 +595,10 @@
                     }
                 },
                 "responsive": true,
-                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip'
+                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip',
+                "columnDefs": [
+                    { "orderable": false, "targets": 8 } // Disable sorting on Actions column
+                ]
             });
         });
     </script>

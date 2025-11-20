@@ -254,6 +254,50 @@ namespace BankApp.Client.Controllers
                 return View(new List<CustomerDto>());
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CustomerAccounts(int customerId)
+        {
+            try
+            {
+                // Get customer details
+                var customerUrl = string.Format(ApiConstant.GetCustomerById, customerId);
+                var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
+
+                if (customerResult.IsError || customerResult.Response == null)
+                {
+                    TempData["ErrorMessage"] = "Unable to fetch customer details.";
+                    return RedirectToAction("Index"); // Redirect back to customers list
+                }
+
+                var customer = customerResult.Response;
+
+                // Get accounts for this customer
+                var accountsUrl = string.Format(ApiConstant.GetAccountsByCustomerId, customerId);
+                var accountsResult = await _httpClient.GetAsync<Result<List<AccountDto>>>(accountsUrl);
+
+                if (accountsResult.IsError || accountsResult.Response == null)
+                {
+                    TempData["ErrorMessage"] = "Unable to fetch accounts for this customer.";
+                    return RedirectToAction("Index");
+                }
+
+                var accounts = accountsResult.Response;
+
+                // Pass customer info via ViewBag
+                ViewBag.CustomerName = customer.FullName;
+                ViewBag.CustomerID = customer.CustomerID;
+                ViewBag.CustomerUsername = customer.UserName;
+
+                return View(accounts);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching customer accounts.";
+                return RedirectToAction("Index");
+            }
+        }
+
     }
 
 }
