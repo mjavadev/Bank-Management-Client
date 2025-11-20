@@ -578,8 +578,8 @@
                 </div>
             </div>
 
-            <!-- Charts Section - MOVED BEFORE ACCOUNTS -->
-            <div class="row">
+            <!-- Charts Section -->
+            <div class="row mt-4">
                 <div class="col-lg-6">
                     <div class="chart-card">
                         <div class="chart-card-header">
@@ -815,7 +815,7 @@
                 new Chart(transactionCtx.getContext('2d'), {
                     type: 'doughnut',
                     data: {
-                        labels: ['Deposits', 'Approved', 'Withdrawals', 'Transfers'],
+                        labels: ['Deposits', 'Withdrawals', 'Transfers'],
                         datasets: [{
                             data: [deposits, withdrawals, transfers],
                             backgroundColor: ['#27ae60', '#e74c3c', '#3498db'],
@@ -854,7 +854,7 @@
                 });
             }
 
-            // Balance Chart - ALWAYS initialize
+            // Balance Chart
             var balanceCtx = document.getElementById('balanceChart');
             if (balanceCtx) {
                 @if (Model?.Accounts != null && Model.Accounts.Any())
