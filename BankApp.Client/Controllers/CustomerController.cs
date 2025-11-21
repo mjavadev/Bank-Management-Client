@@ -291,12 +291,9 @@ namespace BankApp.Client.Controllers
                 var existingAccountTypeIds = existingAccounts.Select(a => a.AccountTypeID).ToList();
 
                 // ⭐ Only 3 account types: Savings, Current, Fixed Deposit
-                var allAccountTypes = new List<AccountTypeDto>
-        {
-            new AccountTypeDto { AccountTypeID = 1, TypeName = "Savings Account" },
-            new AccountTypeDto { AccountTypeID = 2, TypeName = "Current Account" },
-            new AccountTypeDto { AccountTypeID = 3, TypeName = "Fixed Deposit Account" }
-        };
+                var allAccountTypes = await _httpClient.GetAsync<List<AccountTypeDto>>(ApiConstant.GetAccountTypes) ?? new List<AccountTypeDto>();
+
+
 
                 // Filter out account types customer already has
                 var availableAccountTypes = allAccountTypes
@@ -343,13 +340,8 @@ namespace BankApp.Client.Controllers
                     var existingAccounts = accountsResult?.Response ?? new List<AccountDto>();
                     var existingAccountTypeIds = existingAccounts.Select(a => a.AccountTypeID).ToList();
 
-                    // ⭐ Only 3 account types
-                    var allAccountTypes = new List<AccountTypeDto>
-            {
-                new AccountTypeDto { AccountTypeID = 1, TypeName = "Savings Account" },
-                new AccountTypeDto { AccountTypeID = 2, TypeName = "Current Account" },
-                new AccountTypeDto { AccountTypeID = 3, TypeName = "Fixed Deposit Account" }
-            };
+                    var allAccountTypes = await _httpClient.GetAsync<List<AccountTypeDto>>(ApiConstant.GetAccountTypes) ?? new List<AccountTypeDto>();
+
 
                     model.AvailableAccountTypes = allAccountTypes
                         .Where(at => !existingAccountTypeIds.Contains(at.AccountTypeID))
@@ -389,13 +381,8 @@ namespace BankApp.Client.Controllers
                         var existingAccounts = accountsResult?.Response ?? new List<AccountDto>();
                         var existingAccountTypeIds = existingAccounts.Select(a => a.AccountTypeID).ToList();
 
-                        // ⭐ Only 3 account types
-                        var allAccountTypes = new List<AccountTypeDto>
-                {
-                    new AccountTypeDto { AccountTypeID = 1, TypeName = "Savings Account" },
-                    new AccountTypeDto { AccountTypeID = 2, TypeName = "Current Account" },
-                    new AccountTypeDto { AccountTypeID = 3, TypeName = "Fixed Deposit Account" }
-                };
+                        var allAccountTypes = await _httpClient.GetAsync<List<AccountTypeDto>>(ApiConstant.GetAccountTypes) ?? new List<AccountTypeDto>();
+
 
                         model.AvailableAccountTypes = allAccountTypes
                             .Where(at => !existingAccountTypeIds.Contains(at.AccountTypeID))
@@ -411,6 +398,28 @@ namespace BankApp.Client.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+
+                // Reload available account types for error case
+                var userId = User.FindFirst("UserId")?.Value;
+                var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
+                var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
+
+                if (customerResult != null && !customerResult.IsError && customerResult.Response != null)
+                {
+                    var accountsUrl = string.Format(ApiConstant.GetAccountsByCustomerId, customerResult.Response.CustomerID);
+                    var accountsResult = await _httpClient.GetAsync<Result<List<AccountDto>>>(accountsUrl);
+
+                    var existingAccounts = accountsResult?.Response ?? new List<AccountDto>();
+                    var existingAccountTypeIds = existingAccounts.Select(a => a.AccountTypeID).ToList();
+
+                    var allAccountTypes = await _httpClient.GetAsync<List<AccountTypeDto>>(ApiConstant.GetAccountTypes) ?? new List<AccountTypeDto>();
+
+
+                    model.AvailableAccountTypes = allAccountTypes
+                        .Where(at => !existingAccountTypeIds.Contains(at.AccountTypeID))
+                        .ToList();
+                }
+
                 return View(model);
             }
         }

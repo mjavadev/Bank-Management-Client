@@ -52,7 +52,9 @@
         public const string RejectTransaction = "Transaction/reject/{0}";
         #endregion
 
-        public static string ToggleAccountStatus = "BankAccount/toggle-status/{0}"; 
+        public static string ToggleAccountStatus = "BankAccount/toggle-status/{0}";
+        public const string GetAccountTypes = "AccountType";
+
 
     }
 
