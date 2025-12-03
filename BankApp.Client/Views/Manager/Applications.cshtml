@@ -24,7 +24,6 @@
         padding: 20px 0;
     }
 
-    /* Page Header */
     .page-header {
         background: white;
         border-radius: 10px;
@@ -55,7 +54,6 @@
         font-size: 0.85rem;
     }
 
-    /* Statistics Overview */
     .stats-overview {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -112,7 +110,6 @@
         margin: 0;
     }
 
-    /* Main Card */
     .applications-card {
         background: white;
         border-radius: 10px;
@@ -145,7 +142,6 @@
         padding: 18px;
     }
 
-    /* Applications Table */
     .applications-table {
         width: 100%;
         font-size: 0.85rem;
@@ -190,7 +186,6 @@
             border-bottom: none;
         }
 
-    /* Application ID Styling */
     .application-id {
         font-weight: 600;
         color: var(--bank-accent);
@@ -198,7 +193,6 @@
         font-size: 0.8rem;
     }
 
-    /* Sensitive Data Styling */
     .sensitive-data {
         font-family: 'Courier New', monospace;
         letter-spacing: 0.5px;
@@ -207,7 +201,6 @@
         font-size: 0.8rem;
     }
 
-    /* Status Badges */
     .status-badge {
         padding: 4px 10px;
         border-radius: 14px;
@@ -234,7 +227,6 @@
         color: var(--bank-danger);
     }
 
-    /* Account Type Badge */
     .account-type-badge {
         padding: 4px 10px;
         border-radius: 6px;
@@ -255,7 +247,6 @@
         color: var(--bank-success);
     }
 
-    /* Action Button */
     .btn-view {
         background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%);
         border: none;
@@ -278,7 +269,6 @@
             text-decoration: none;
         }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 50px 24px;
@@ -312,7 +302,6 @@
         font-size: 0.9rem;
     }
 
-    /* DataTables Custom Styling */
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
         border: 1px solid var(--bank-border);
@@ -397,7 +386,6 @@
 
 <div class="applications-container">
     <div class="container-fluid">
-        <!-- Page Header -->
         <div class="page-header">
             <h2>
                 <i class="fas fa-folder-open"></i>
@@ -406,7 +394,6 @@
             <p class="page-subtitle">Review and manage all customer account applications</p>
         </div>
 
-        <!-- Statistics Overview -->
         @if (Model.Any())
         {
             var pendingCount = Model.Count(a => a.Status == 1);
@@ -442,7 +429,6 @@
             </div>
         }
 
-        <!-- Main Applications Card -->
         <div class="row">
             <div class="col-12">
                 <div class="applications-card">

@@ -36,12 +36,6 @@ namespace BankApp.Client.HttpClients
 
         }
 
-        /// <summary>
-
-        /// Gets JWT token from user claims or requests new token from API
-
-        /// </summary>
-
         private async Task<string> GetToken()
 
         {
@@ -49,8 +43,6 @@ namespace BankApp.Client.HttpClients
             try
 
             {
-
-                // Try to get token from user claims (stored during login)
 
                 var jwtToken = _httpContextAccessor.HttpContext?.User.FindFirst("jwttoken")?.Value;
 
@@ -61,10 +53,6 @@ namespace BankApp.Client.HttpClients
                     return jwtToken;
 
                 }
-
-                // If no token in claims, get machine-to-machine token using ClientId/ClientSecret
-
-                // This is used for anonymous endpoints or when user is not logged in
 
                 string clientId = _configuration["ApiSetting:ClientId"];
 
@@ -136,13 +124,6 @@ namespace BankApp.Client.HttpClients
             }
 
         }
-
-        /// <summary>
-
-        /// Adds JWT Bearer token to request headers
-
-        /// </summary>
-
         private async Task AddAuthorizationHeader()
 
         {
@@ -158,8 +139,6 @@ namespace BankApp.Client.HttpClients
             }
 
         }
-
-        // ===== GET Methods =====
 
         public async Task<T> GetAsync<T>(string url)
 
@@ -188,8 +167,6 @@ namespace BankApp.Client.HttpClients
             });
 
         }
-
-        // ===== POST Methods =====
 
         public async Task<T> PostAsync<T>(string url, object data)
 
@@ -279,8 +256,6 @@ namespace BankApp.Client.HttpClients
 
         }
 
-        // ===== PUT Method =====
-
         public async Task<T> PutAsync<T>(string url, object data)
 
         {
@@ -312,8 +287,6 @@ namespace BankApp.Client.HttpClients
             });
 
         }
-
-        // ===== DELETE Method =====
 
         public async Task<T> DeleteAsync<T>(string url)
 

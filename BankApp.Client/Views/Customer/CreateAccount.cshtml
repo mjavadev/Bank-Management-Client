@@ -67,7 +67,6 @@
         padding: 24px;
     }
 
-    /* Information Banner */
     .info-banner {
         background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
         border-left: 3px solid var(--bank-accent);
@@ -110,7 +109,6 @@
             font-size: 0.85rem;
         }
 
-    /* Section Title */
     .section-title {
         color: var(--bank-primary);
         font-weight: 700;
@@ -126,7 +124,6 @@
             font-size: 1rem;
         }
 
-    /* Account Type Cards */
     .account-type-wrapper {
         cursor: pointer;
         display: block;
@@ -167,7 +164,6 @@
                 opacity: 1;
             }
 
-    /* Selected State */
     .form-check-input:checked ~ .account-type-card,
     .account-type-wrapper:has(input:checked) .account-type-card {
         border-color: var(--bank-success);
@@ -181,14 +177,12 @@
             opacity: 1;
         }
 
-    /* Card Body */
     .account-type-card .card-body {
         padding: 20px 16px;
         position: relative;
         z-index: 1;
     }
 
-    /* Icon Container */
     .icon-container {
         width: 70px;
         height: 70px;
@@ -234,7 +228,6 @@
         color: white;
     }
 
-    /* Card Title */
     .account-type-card .card-title {
         color: var(--bank-primary);
         font-weight: 700;
@@ -242,7 +235,6 @@
         margin-bottom: 8px;
     }
 
-    /* Card Description */
     .account-description {
         color: #6c757d;
         font-size: 0.8rem;
@@ -251,7 +243,6 @@
         min-height: 38px;
     }
 
-    /* Features List */
     .features-list {
         list-style: none;
         padding: 0;
@@ -281,7 +272,6 @@
             flex-shrink: 0;
         }
 
-    /* Selection Badge */
     .selection-badge {
         display: inline-flex;
         align-items: center;
@@ -310,7 +300,6 @@
         font-size: 0.9rem;
     }
 
-    /* No Available Types Warning */
     .no-types-warning {
         background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
         border-left: 3px solid #f39c12;
@@ -333,7 +322,6 @@
             font-weight: 500;
         }
 
-    /* Action Buttons */
     .btn-create {
         background: linear-gradient(135deg, var(--bank-success) 0%, var(--bank-success-dark) 100%);
         border: none;
@@ -553,14 +541,13 @@
 
     <script>
         $(document).ready(function() {
-            // Make entire card clickable
+            
             $('.account-type-wrapper').click(function(e) {
                 if (e.target.tagName !== 'INPUT') {
                     $(this).find('input[type="radio"]').prop('checked', true).trigger('change');
                 }
             });
 
-            // Update UI on radio change
             $('input[type="radio"][name="AccountTypeID"]').change(function() {
                 $('.account-type-card').removeClass('selected');
                 if($(this).is(':checked')) {
@@ -569,7 +556,6 @@
                 }
             });
 
-            // Highlight pre-selected card on page load
             $('input[type="radio"]:checked').trigger('change');
         });
     </script>

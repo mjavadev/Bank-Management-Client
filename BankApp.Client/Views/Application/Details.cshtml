@@ -107,7 +107,6 @@
         padding: 40px;
     }
 
-    /* Status Card */
     .status-overview-card {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         border-radius: 12px;
@@ -179,7 +178,6 @@
             color: var(--bank-info);
         }
 
-    /* Section Dividers */
     .section-divider {
         display: flex;
         align-items: center;
@@ -214,7 +212,6 @@
             color: var(--bank-info);
         }
 
-    /* Detail Items */
     .detail-row {
         margin-bottom: 24px;
     }
@@ -259,7 +256,6 @@
         word-wrap: break-word;
     }
 
-    /* Special Styling for Sensitive Data */
     .sensitive-data {
         font-family: 'Courier New', monospace;
         letter-spacing: 1px;
@@ -269,7 +265,6 @@
         display: inline-block;
     }
 
-    /* Rejection Alert */
     .rejection-alert {
         background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
         border-left: 4px solid var(--bank-danger);
@@ -311,7 +306,6 @@
         padding-left: 52px;
     }
 
-    /* Action Buttons */
     .btn-back {
         background: white;
         border: 2px solid var(--bank-border);
@@ -334,7 +328,6 @@
             text-decoration: none;
         }
 
-    /* Responsive */
     @@media (max-width: 768px) {
         .details-body
 
@@ -379,7 +372,6 @@
                         </div>
                     </div>
                     <div class="details-body">
-                        <!-- Status Overview -->
                         <div class="status-overview-card">
                             <div class="status-overview-header">
                                 <h5><i class="fas fa-clipboard-check"></i> Application Status</h5>
@@ -414,7 +406,6 @@
                             </div>
                         </div>
 
-                        <!-- Personal Information Section -->
                         <div class="section-divider">
                             <span class="section-title">
                                 <i class="fas fa-user"></i> Personal Information
@@ -459,7 +450,6 @@
                             </div>
                         </div>
 
-                        <!-- Contact & Identification Section -->
                         <div class="section-divider">
                             <span class="section-title">
                                 <i class="fas fa-id-card"></i> Contact & Identification
@@ -510,7 +500,6 @@
                             </div>
                         </div>
 
-                        <!-- Rejection Reason (if applicable) -->
                         @if (Model.Status == 3 && !string.IsNullOrEmpty(Model.RejectionReason))
                         {
                             <div class="rejection-alert">
@@ -526,7 +515,6 @@
                             </div>
                         }
 
-                        <!-- Action Button -->
                         <div class="mt-4">
                             <a href="@Url.Action("PendingApplications", "Manager")" class="btn-back">
                                 <i class="fas fa-arrow-left"></i> Back to Applications

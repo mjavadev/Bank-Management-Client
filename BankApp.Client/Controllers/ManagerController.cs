@@ -121,7 +121,6 @@ namespace BankApp.Client.Controllers
         {
             try
             {
-                // Defensive null/empty check for the Reason property
                 if (reasonModel == null || string.IsNullOrWhiteSpace(reasonModel.Reason))
                 {
                     return Json(new { success = false, message = "Rejection reason is required" });
@@ -139,7 +138,6 @@ namespace BankApp.Client.Controllers
             }
             catch (Exception ex)
             {
-                // Optional: log ex.Message or ex.ToString() here
                 return Json(new { success = false, message = "An error occurred: " + ex.Message });
             }
         }
@@ -260,19 +258,17 @@ namespace BankApp.Client.Controllers
         {
             try
             {
-                // Get customer details
                 var customerUrl = string.Format(ApiConstant.GetCustomerById, customerId);
                 var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
 
                 if (customerResult.IsError || customerResult.Response == null)
                 {
                     TempData["ErrorMessage"] = "Unable to fetch customer details.";
-                    return RedirectToAction("Index"); // Redirect back to customers list
+                    return RedirectToAction("Index");
                 }
 
                 var customer = customerResult.Response;
 
-                // Get accounts for this customer
                 var accountsUrl = string.Format(ApiConstant.GetAccountsByCustomerId, customerId);
                 var accountsResult = await _httpClient.GetAsync<Result<List<AccountDto>>>(accountsUrl);
 
@@ -284,7 +280,6 @@ namespace BankApp.Client.Controllers
 
                 var accounts = accountsResult.Response;
 
-                // Pass customer info via ViewBag
                 ViewBag.CustomerName = customer.FullName;
                 ViewBag.CustomerID = customer.CustomerID;
                 ViewBag.CustomerUsername = customer.UserName;

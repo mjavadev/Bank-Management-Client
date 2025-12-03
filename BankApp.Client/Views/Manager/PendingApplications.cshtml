@@ -24,8 +24,6 @@
         padding: 20px 0;
     }
 
-
-    /* Page Header */
     .page-header {
         background: white;
         border-radius: 10px;
@@ -90,7 +88,6 @@
         gap: 10px;
     }
 
-    /* Main Card */
     .pending-card {
         background: white;
         border-radius: 16px;
@@ -123,7 +120,6 @@
         padding: 28px;
     }
 
-    /* Applications Table */
     .applications-table {
         width: 100%;
         font-size: 0.85rem;
@@ -167,7 +163,6 @@
             font-size: 0.95rem;
         }
 
-    /* Customer Photo */
     .customer-photo {
         width: 42px;
         height: 42px;
@@ -195,14 +190,12 @@
             transform: scale(1.1);
         }
 
-    /* Application ID */
     .application-id {
         font-weight: 600;
         color: var(--bank-accent);
         font-family: 'Courier New', monospace;
     }
 
-    /* Account Type Badges */
     .account-type-badge {
         padding: 4px 10px;
         border-radius: 14px;
@@ -228,7 +221,6 @@
         color: var(--bank-warning);
     }
 
-    /* Sensitive Data */
     .sensitive-data {
         font-family: 'Courier New', monospace;
         letter-spacing: 1px;
@@ -236,7 +228,6 @@
         font-weight: 500;
     }
 
-    /* Action Buttons */
     .action-buttons {
         display: flex;
         gap: 6px;
@@ -291,7 +282,6 @@
             box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
         }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 50px 24px;
@@ -324,7 +314,6 @@
         font-size: 1.05rem;
     }
 
-    /* Modal Enhancements */
     .modal-header.bg-info {
         background: linear-gradient(135deg, var(--bank-info) 0%, #138d75 100%) !important;
     }
@@ -373,17 +362,12 @@
 </style>
 
 <style>
-    /* ... your existing styles ... */
 
-    /* ========== ENHANCED MODAL STYLING ========== */
-
-    /* Modal Overlay */
     .modal-backdrop.show {
         backdrop-filter: blur(4px);
         background-color: rgba(30, 58, 95, 0.5);
     }
 
-    /* Modal Container */
     .modal-content {
         border: none;
         border-radius: 16px;
@@ -391,7 +375,6 @@
         overflow: hidden;
     }
 
-    /* Modal Headers */
     .modal-header {
         padding: 16px 24px;
         border-bottom: none;
@@ -430,7 +413,6 @@
             opacity: 1;
         }
 
-    /* View Details Modal */
     .modal-xl .modal-body {
         padding: 24px;
         background: #f8f9fa;
@@ -476,7 +458,6 @@
             border-bottom-color: var(--bank-success);
         }
 
-    /* Photo Card in Modal */
     .photo-detail-card {
         background: white;
         border: 2px solid var(--bank-border);
@@ -530,7 +511,6 @@
             margin: 0;
         }
 
-    /* Detail List Styling */
     .application-detail-card dl.row {
         margin-bottom: 0;
     }
@@ -558,7 +538,6 @@
             font-size: 0.95rem;
         }
 
-    /* Loading State in Modal */
     .modal-loading {
         padding: 60px 40px;
         text-align: center;
@@ -576,7 +555,6 @@
             font-size: 1.1rem;
         }
 
-    /* Modal Footer */
     .modal-footer {
         padding: 20px 32px;
         background: #f8f9fa;
@@ -625,7 +603,6 @@
                 color: var(--bank-secondary);
             }
 
-    /* Approval Success Modal */
     .approval-success-alert {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
         border: 2px solid var(--bank-success);
@@ -743,7 +720,6 @@
         margin-bottom: 4px;
     }
 
-    /* Reject Modal Enhancements */
     .reject-modal-body {
         padding: 32px;
     }
@@ -795,7 +771,6 @@
                 font-size: 0.85rem;
             }
 
-    /* Badge Enhancements in Details */
     .modal-body .badge {
         padding: 8px 16px;
         font-weight: 600;
@@ -821,7 +796,6 @@
             background: linear-gradient(135deg, var(--bank-warning) 0%, #e67e22 100%) !important;
         }
 
-    /* Responsive Modal */
     @@media (max-width: 768px) {
         .modal-header
 
@@ -847,7 +821,7 @@
         }
 
     }
-    /* Compact Approval Modal Styling */
+
 .approval-modal .modal-dialog { max-width: 500px; }
 .approval-modal .modal-header { padding: 14px 20px; background: linear-gradient(135deg, #27ae60 0%, #229954 100%);}
 .approval-modal .modal-title { font-size: 1.1rem; font-weight: bold; }
@@ -863,7 +837,7 @@
 
 <div class="pending-container">
     <div class="container-fluid">
-        <!-- Page Header -->
+
         <div class="page-header">
             <div class="page-header-content">
                 <h2>
@@ -881,7 +855,6 @@
             }
         </div>
 
-        <!-- Main Pending Card -->
         <div class="row">
             <div class="col-12">
                 <div class="pending-card">
@@ -1007,7 +980,6 @@
     </div>
 </div>
 
-<!-- Enhanced View Application Modal -->
 <div class="modal fade" id="viewModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1016,7 +988,6 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="applicationDetailsBody">
-                <!-- Content loaded via AJAX -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -1033,7 +1004,6 @@
     </div>
 </div>
 
-<!-- Enhanced Approval Success Modal -->
 <div class="modal fade approval-modal" id="approvalModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -1071,8 +1041,6 @@
 </div>
 
 
-<!-- Enhanced Reject Modal -->
-<!-- Reject Modal -->
 <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -1135,7 +1103,6 @@
                 ]
             });
 
-            // Live validation for rejection reason
             $(document).on('input', '#rejectionReason', function () {
                 var val = $(this).val().trim();
                 if (val.length >= 10) {
@@ -1145,7 +1112,6 @@
                 }
             });
 
-            // Rejection button handler
             $(document).on('click', '#btnConfirmReject', function () {
                 confirmReject();
             });

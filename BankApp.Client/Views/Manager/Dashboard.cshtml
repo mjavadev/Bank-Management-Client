@@ -24,7 +24,6 @@
         padding: 20px 0;
     }
 
-    /* Welcome Header */
     .dashboard-welcome {
         background: white;
         border-radius: 10px;
@@ -55,7 +54,6 @@
         font-size: 0.85rem;
     }
 
-    /* Action Cards Grid */
     .action-cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -182,7 +180,6 @@
         text-decoration: none;
     }
 
-    /* Quick Actions Section */
     .quick-actions-section {
         background: white;
         border-radius: 12px;
@@ -223,7 +220,6 @@
         margin: 0 auto 20px;
     }
 
-    /* Quick Links */
     .quick-links {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -288,7 +284,6 @@
         color: var(--bank-accent);
     }
 
-    /* Alert Badge */
     .alert-badge {
         position: absolute;
         top: 12px;
@@ -339,7 +334,6 @@
 
 <div class="manager-dashboard-container">
     <div class="container-fluid">
-        <!-- Welcome Header -->
         <div class="dashboard-welcome">
             <h2>
                 <i class="fas fa-tachometer-alt"></i>
@@ -348,7 +342,6 @@
             <p class="welcome-subtitle">Oversee applications, transactions, and customer management operations</p>
         </div>
 
-        <!-- Action Cards -->
         <div class="action-cards-grid">
             <div class="action-card action-card-warning">
                 @if (pendingApplications > 0)
@@ -427,7 +420,6 @@
             </div>
         </div>
 
-        <!-- Quick Actions Section -->
         <div class="row">
             <div class="col-12">
                 <div class="quick-actions-section">

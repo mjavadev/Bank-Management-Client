@@ -104,7 +104,7 @@ namespace BankApp.Client.Controllers
                 if (result.IsError)
                 {
                     TempData["ErrorMessage"] = "Application not found.";
-                    return RedirectToAction("Dashboard", "Manager");
+                    return RedirectToRoleBasedDashboard();
                 }
 
                 return View(result.Response);
@@ -112,9 +112,26 @@ namespace BankApp.Client.Controllers
             catch
             {
                 TempData["ErrorMessage"] = "An error occurred while fetching application details.";
-                return RedirectToAction("Dashboard", "Manager");
+                return RedirectToRoleBasedDashboard();
             }
         }
+
+        private IActionResult RedirectToRoleBasedDashboard()
+        {
+            if (User.IsInRole("Manager"))
+            {
+                return RedirectToAction("Dashboard", "Manager");
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Dashboard", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("Account", "AccessDenied");
+            }
+        }
+
 
         [Authorize(Roles = "Manager,Admin")]
         [HttpGet]
@@ -128,7 +145,7 @@ namespace BankApp.Client.Controllers
                 if (result.IsError || result.Response == null)
                 {
                     TempData["ErrorMessage"] = "Application not found.";
-                    return RedirectToAction("Dashboard", "Manager");
+                    return RedirectToRoleBasedDashboard();
                 }
 
                 var viewModel = new ApplicationViewModel
@@ -149,7 +166,7 @@ namespace BankApp.Client.Controllers
             catch
             {
                 TempData["ErrorMessage"] = "An error occurred while fetching application details.";
-                return RedirectToAction("Dashboard", "Manager");
+                return RedirectToRoleBasedDashboard();
             }
         }
 
@@ -195,7 +212,7 @@ namespace BankApp.Client.Controllers
                 }
 
                 TempData["SuccessMessage"] = "Application updated successfully.";
-                return RedirectToAction("Dashboard", "Manager");
+                return RedirectToRoleBasedDashboard();
             }
             catch
             {

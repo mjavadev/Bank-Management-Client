@@ -41,8 +41,6 @@ namespace BankApp.Client.Dto
         [Required]
         public string ApplicationUserID { get; set; }
 
-
-        // ---- Custom attribute for Aadhar ----
         public class AadharValidationAttribute : ValidationAttribute
         {
             protected override ValidationResult IsValid(object value, ValidationContext validationContext)

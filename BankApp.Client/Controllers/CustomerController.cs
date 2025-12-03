@@ -24,7 +24,6 @@ namespace BankApp.Client.Controllers
             {
                 var userId = User.FindFirst("UserId")?.Value;
 
-                // Get customer details
                 var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
                 var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
 
@@ -36,13 +35,11 @@ namespace BankApp.Client.Controllers
 
                 var customer = customerResult.Response;
 
-                // Get accounts
                 var accountsUrl = string.Format(ApiConstant.GetAccountsByCustomerId, customer.CustomerID);
                 var accountsResult = await _httpClient.GetAsync<Result<List<AccountDto>>>(accountsUrl);
 
                 var accounts = accountsResult.IsError ? new List<AccountDto>() : accountsResult.Response;
 
-                // Get recent transactions from the first account
                 var recentTransactions = new List<TransactionDto>();
                 if (accounts.Any())
                 {
@@ -136,8 +133,6 @@ namespace BankApp.Client.Controllers
 
         {
 
-            //  Custom validation for Transfer transactions
-
             if (model.TransactionType == 3 && string.IsNullOrWhiteSpace(model.RecipientAccountNumber))
 
             {
@@ -186,11 +181,9 @@ namespace BankApp.Client.Controllers
 
                     Description = model.Description,
 
-                    Status = 1 // Pending
+                    Status = 1
 
                 };
-
-                // ⭐ Only set recipient for transfer transactions
 
                 if (model.TransactionType == 3 && !string.IsNullOrEmpty(model.RecipientAccountNumber))
 
@@ -242,8 +235,6 @@ namespace BankApp.Client.Controllers
 
                 ModelState.AddModelError(string.Empty, "An error occurred while creating the transaction.");
 
-                // ⭐ Reload accounts on error
-
                 var userId = User.FindFirst("UserId")?.Value;
 
                 var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
@@ -279,7 +270,6 @@ namespace BankApp.Client.Controllers
 
                 var customer = customerResult.Response;
 
-                // Get existing accounts
                 var accountsUrl = string.Format(ApiConstant.GetAccountsByCustomerId, customer.CustomerID);
                 var accountsResult = await _httpClient.GetAsync<Result<List<AccountDto>>>(accountsUrl);
 
@@ -287,15 +277,10 @@ namespace BankApp.Client.Controllers
                     ? accountsResult.Response
                     : new List<AccountDto>();
 
-                // Get existing account type IDs
                 var existingAccountTypeIds = existingAccounts.Select(a => a.AccountTypeID).ToList();
 
-                // ⭐ Only 3 account types: Savings, Current, Fixed Deposit
                 var allAccountTypes = await _httpClient.GetAsync<List<AccountTypeDto>>(ApiConstant.GetAccountTypes) ?? new List<AccountTypeDto>();
 
-
-
-                // Filter out account types customer already has
                 var availableAccountTypes = allAccountTypes
                     .Where(at => !existingAccountTypeIds.Contains(at.AccountTypeID))
                     .ToList();
@@ -327,7 +312,6 @@ namespace BankApp.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // Reload available account types
                 var userId = User.FindFirst("UserId")?.Value;
                 var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
                 var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
@@ -368,7 +352,6 @@ namespace BankApp.Client.Controllers
                         ModelState.AddModelError(string.Empty, error.ErrorMessage);
                     }
 
-                    // Reload available account types
                     var userId = User.FindFirst("UserId")?.Value;
                     var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
                     var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);
@@ -399,7 +382,6 @@ namespace BankApp.Client.Controllers
             {
                 ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
 
-                // Reload available account types for error case
                 var userId = User.FindFirst("UserId")?.Value;
                 var customerUrl = string.Format(ApiConstant.GetCustomerByUserId, userId);
                 var customerResult = await _httpClient.GetAsync<Result<CustomerDto>>(customerUrl);

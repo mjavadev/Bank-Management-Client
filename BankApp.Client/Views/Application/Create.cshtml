@@ -76,7 +76,6 @@
         padding: 20px 24px;
     }
 
-    /* Compact Progress Indicator */
     .form-progress {
         background: linear-gradient(90deg, rgba(39, 174, 96, 0.1) 0%, rgba(34, 153, 84, 0.05) 100%);
         border-left: 3px solid var(--bank-success);
@@ -107,7 +106,6 @@
         line-height: 1.4;
     }
 
-    /* Compact Form Sections */
     .form-section-divider {
         display: flex;
         align-items: center;
@@ -182,7 +180,6 @@
         background-size: 12px;
     }
 
-    /* Compact File Upload */
     .file-upload-label {
         display: block;
         padding: 10px;
@@ -222,7 +219,6 @@
         display: none;
     }
 
-    /* Profile Picture Preview Styles */
     .image-preview-container {
         display: none;
         align-items: center;
@@ -247,7 +243,6 @@
         display: none;
     }
 
-    /* Compact Helper Text */
     .field-helper {
         font-size: 0.7rem;
         color: #6c757d;
@@ -282,7 +277,6 @@
         font-size: 0.8rem;
     }
 
-    /* Compact Buttons */
     .btn-submit {
         background: linear-gradient(135deg, var(--bank-success) 0%, var(--bank-success-dark) 100%);
         border: none;
@@ -333,7 +327,6 @@
             text-align: center;
         }
 
-    /* Multi-column layout for fields */
     .row-compact {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -393,7 +386,6 @@
                         <form asp-action="Create" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="validation-summary text-danger"></div>
 
-                            <!-- Personal Information -->
                             <div class="form-section-divider">
                                 <span class="form-section-title">
                                     <i class="fas fa-user"></i> Personal Information
@@ -449,7 +441,6 @@
                                 </div>
                             </div>
 
-                            <!-- Contact & Identification -->
                             <div class="form-section-divider">
                                 <span class="form-section-title">
                                     <i class="fas fa-id-card"></i> Identification
@@ -493,7 +484,6 @@
                                 </div>
                             </div>
 
-                            <!-- Document Upload -->
                             <div class="form-section-divider">
                                 <span class="form-section-title">
                                     <i class="fas fa-upload"></i> Document Upload
@@ -543,19 +533,14 @@
     <script>
         $(document).ready(function() {
 
-            // ===================================
-            // AADHAR NUMBER AUTO-FORMATTING
-            // ===================================
             $('#aadharInput').on('input', function(e) {
-                let value = $(this).val().replace(/\s+/g, ''); // Remove all spaces
-                let numericValue = value.replace(/\D/g, ''); // Keep only digits
+                let value = $(this).val().replace(/\s+/g, '');
+                let numericValue = value.replace(/\D/g, '');
 
-                // Limit to 12 digits
                 if (numericValue.length > 12) {
                     numericValue = numericValue.substring(0, 12);
                 }
 
-                // Format as XXXX XXXX XXXX
                 let formatted = '';
                 for (let i = 0; i < numericValue.length; i++) {
                     if (i > 0 && i % 4 === 0) {
@@ -567,18 +552,11 @@
                 $(this).val(formatted);
             });
 
-            // ===================================
-            // REMOVE SPACES BEFORE FORM SUBMISSION
-            // ===================================
             $('form').on('submit', function() {
-                // Remove spaces from Aadhar before submitting
                 let aadharValue = $('#aadharInput').val().replace(/\s+/g, '');
                 $('#aadharInput').val(aadharValue);
             });
 
-            // ===================================
-            // PAN AUTO-UPPERCASE CONVERSION
-            // ===================================
             $('input[asp-for="PAN"]').on('input', function() {
                 let value = $(this).val().toUpperCase().replace(/[^A-Z0-9]/g, '');
                 if (value.length > 10) {
@@ -587,42 +565,32 @@
                 $(this).val(value);
             });
 
-            // ===================================
-            // MOBILE NUMBER VALIDATION (10 DIGITS)
-            // ===================================
             $('input[asp-for="MobileNumber"]').on('input', function() {
-                let value = $(this).val().replace(/\D/g, ''); // Keep only digits
+                let value = $(this).val().replace(/\D/g, '');
                 if (value.length > 10) {
                     value = value.substring(0, 10);
                 }
                 $(this).val(value);
             });
 
-            // ===================================
-            // IMAGE FILE UPLOAD AND PREVIEW
-            // ===================================
             $('#imageFile').on('change', function(e) {
                 var file = e.target.files[0];
 
                 if (file) {
-                    // Validate file size (5MB max)
                     if (file.size > 5 * 1024 * 1024) {
                         alert('File size must be less than 5MB');
                         $(this).val('');
                         return;
                     }
 
-                    // Validate file type
                     if (!file.type.startsWith('image/')) {
                         alert('Please select a valid image file (PNG, JPG, JPEG)');
                         $(this).val('');
                         return;
                     }
 
-                    // Update upload label text to show filename
                     $('.file-upload-text').text(file.name);
 
-                    // Show image preview
                     var reader = new FileReader();
 
                     reader.onload = function(event) {
@@ -634,7 +602,6 @@
                     reader.readAsDataURL(file);
 
                 } else {
-                    // Reset if no file selected
                     $('#previewContainer').hide();
                     $('#previewLabel').hide();
                     $('#imagePreview').attr('src', '');
@@ -642,13 +609,8 @@
                 }
             });
 
-            // ===================================
-            // FORM VALIDATION ENHANCEMENT
-            // ===================================
             $('form').on('submit', function(e) {
                 let isValid = true;
-
-                // Validate Aadhar (12 digits after removing spaces)
                 let aadhar = $('#aadharInput').val().replace(/\s+/g, '');
                 if (aadhar.length !== 12 || !/^\d{12}$/.test(aadhar)) {
                     alert('Please enter a valid 12-digit Aadhar number');
@@ -657,7 +619,6 @@
                     return false;
                 }
 
-                // Validate Mobile (10 digits)
                 let mobile = $('input[asp-for="MobileNumber"]').val();
                 if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
                     alert('Please enter a valid 10-digit mobile number');
@@ -666,7 +627,6 @@
                     return false;
                 }
 
-                // Validate PAN (10 characters)
                 let pan = $('input[asp-for="PAN"]').val();
                 if (pan.length !== 10 || !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan)) {
                     alert('Please enter a valid PAN number (e.g., ABCDE1234F)');
@@ -678,11 +638,6 @@
                 return isValid;
             });
 
-            // ===================================
-            // REAL-TIME VALIDATION FEEDBACK
-            // ===================================
-
-            // Aadhar validation feedback
             $('#aadharInput').on('blur', function() {
                 let value = $(this).val().replace(/\s+/g, '');
                 if (value.length > 0 && value.length !== 12) {
@@ -694,7 +649,6 @@
                 }
             });
 
-            // Mobile validation feedback
             $('input[asp-for="MobileNumber"]').on('blur', function() {
                 let value = $(this).val();
                 if (value.length > 0 && value.length !== 10) {
@@ -706,7 +660,6 @@
                 }
             });
 
-            // PAN validation feedback
             $('input[asp-for="PAN"]').on('blur', function() {
                 let value = $(this).val();
                 let panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;

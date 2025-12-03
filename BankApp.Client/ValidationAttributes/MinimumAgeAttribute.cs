@@ -19,7 +19,6 @@ namespace BankApp.Client.ValidationAttributes
                 var today = DateTime.Today;
                 var age = today.Year - dateOfBirth.Year;
 
-                // Adjust if birthday hasn't occurred this year
                 if (dateOfBirth.Date > today.AddYears(-age))
                 {
                     age--;

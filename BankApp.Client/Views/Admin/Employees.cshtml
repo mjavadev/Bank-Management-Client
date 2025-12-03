@@ -171,13 +171,11 @@
             font-size: 0.89rem;
         }
 
-        /* Column-specific styling */
         #employeesTable td:first-child {
             font-weight: 600;
             color: var(--bank-accent);
         }
 
-    /* Action Buttons */
     .action-buttons {
         display: flex;
         gap: 6px;
@@ -230,7 +228,6 @@
         color: var(--bank-primary);
     }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 50px 20px;
@@ -441,10 +438,10 @@
 
 @section Scripts {
     <script>
-        var employeesTable; // Global variable to store DataTable instance
+        var employeesTable;
 
         $(document).ready(function() {
-            // Initialize DataTable
+
             employeesTable = $('#employeesTable').DataTable({
                 "pageLength": 25,
                 "order": [[0, "desc"]],
@@ -464,14 +461,12 @@
                 "responsive": true
             });
 
-            // Check if success alert exists (meaning update was successful)
             if ($('#successAlert').length > 0) {
-                // Wait a brief moment, then reload the table data
+                
                 setTimeout(function() {
                     reloadEmployeesTable();
                 }, 500);
 
-                // Auto-hide success alert after 5 seconds
                 setTimeout(function() {
                     $('#successAlert').fadeOut(300);
                 }, 5000);
@@ -479,20 +474,18 @@
         });
 
         function reloadEmployeesTable() {
-            // Reload DataTable without refreshing the entire page
+
             $.ajax({
                 url: '@Url.Action("Employees")',
                 type: 'GET',
                 success: function(data) {
-                    // Parse the response to extract just the table rows
+
                     var newRows = $(data).find('#employeesTable tbody tr');
 
-                    // Clear existing table data and add new rows
                     employeesTable.clear();
                     employeesTable.rows.add(newRows);
                     employeesTable.draw();
 
-                    // Update employee count badge if it exists
                     var newCount = newRows.length;
                     var badgeHtml = newCount > 0 ?
                         '<span class="employee-count-badge">' + newCount + '</span>' : '';
@@ -515,7 +508,6 @@
                         if(response.success) {
                             toastr.success(response.message || 'Employee deleted successfully');
                             setTimeout(function() {
-                                // Reload page to show updated list
                                 location.reload();
                             }, 1500);
                         } else {

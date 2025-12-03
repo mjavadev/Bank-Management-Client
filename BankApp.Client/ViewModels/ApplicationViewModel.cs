@@ -1,6 +1,6 @@
 ﻿using BankApp.Client.Dto;
 using System.ComponentModel.DataAnnotations;
-using System.Linq; // ✅ ADD THIS LINE
+using System.Linq;
 
 namespace BankApp.Client.ViewModels
 {
@@ -41,7 +41,6 @@ namespace BankApp.Client.ViewModels
 
         public List<AccountTypeDto> AvailableAccountTypes { get; set; } = new List<AccountTypeDto>();
 
-        // Custom validation attribute for Aadhar
         public class AadharValidationAttribute : ValidationAttribute
         {
             protected override ValidationResult IsValid(object value, ValidationContext validationContext)

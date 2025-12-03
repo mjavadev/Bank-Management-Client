@@ -24,7 +24,6 @@
         padding: 20px 0;
     }
 
-    /* Compact Page Header */
     .page-header {
         background: white;
         border-radius: 10px;
@@ -85,7 +84,6 @@
         gap: 8px;
     }
 
-    /* Compact Statistics */
     .transaction-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -130,7 +128,6 @@
         margin: 0;
     }
 
-    /* Compact Main Card */
     .pending-card {
         background: white;
         border-radius: 10px;
@@ -164,7 +161,6 @@
         padding: 18px;
     }
 
-    /* Compact Table */
     .transactions-table {
         width: 100%;
         font-size: 0.9rem;
@@ -206,7 +202,6 @@
         font-size: 0.85rem;
     }
 
-    /* Transaction ID */
     .transaction-id {
         font-weight: 600;
         color: var(--bank-accent);
@@ -214,7 +209,6 @@
         font-size: 0.85rem;
     }
 
-    /* Account Number */
     .account-number {
         font-family: 'Courier New', monospace;
         letter-spacing: 0.5px;
@@ -223,7 +217,6 @@
         font-size: 0.82rem;
     }
 
-    /* Amount Styling */
     .amount-cell {
         font-weight: 700;
         font-family: 'Courier New', monospace;
@@ -234,7 +227,6 @@
     .amount-withdrawal { color: var(--bank-danger); }
     .amount-transfer { color: var(--bank-accent); }
 
-    /* Compact Badges */
     .transaction-type-badge {
         padding: 4px 10px;
         border-radius: 12px;
@@ -261,7 +253,6 @@
         color: var(--bank-accent);
     }
 
-    /* Compact Action Buttons */
     .action-buttons {
         display: flex;
         gap: 4px;
@@ -318,7 +309,6 @@
         box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
     }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 60px 20px;
@@ -352,7 +342,6 @@
         font-size: 0.9rem;
     }
 
-    /* Compact Modal Styling */
     .modal-content {
         border: none;
         border-radius: 12px;
@@ -442,7 +431,6 @@
         box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
     }
 
-    /* DataTables Custom Styling */
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
         border: 1px solid var(--bank-border);
@@ -524,7 +512,7 @@
 
 <div class="pending-transactions-container">
     <div class="container-fluid px-3">
-        <!-- Page Header -->
+
         <div class="page-header">
             <div class="page-header-content">
                 <h2>
@@ -542,7 +530,6 @@
             }
         </div>
 
-        <!-- Transaction Statistics -->
         @if (Model.Any())
         {
             var deposits = Model.Where(t => t.TransactionType == 1).Count();
@@ -571,7 +558,6 @@
             </div>
         }
 
-        <!-- Main Pending Card -->
         <div class="row">
             <div class="col-12">
                 <div class="pending-card">
@@ -690,7 +676,6 @@
     </div>
 </div>
 
-<!-- Transaction Details Modal -->
 <div class="modal fade" id="transactionModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -701,7 +686,6 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="transactionDetails">
-                <!-- Details will be loaded here -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

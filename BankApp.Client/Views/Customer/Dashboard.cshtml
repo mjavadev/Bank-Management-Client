@@ -25,7 +25,6 @@
         padding: 20px 0;
     }
 
-    /* Welcome Header */
     .dashboard-welcome {
         background: white;
         border-radius: 10px;
@@ -56,7 +55,6 @@
         font-size: 0.85rem;
     }
 
-    /* Alert Styling */
     .custom-alert {
         border-radius: 8px;
         border: none;
@@ -90,7 +88,6 @@
         color: #0c5460;
     }
 
-    /* Statistics Cards */
     .stat-card {
         border-radius: 10px;
         border: none;
@@ -154,7 +151,6 @@
         opacity: 0.3;
     }
 
-    /* Section Cards */
     .section-card {
         background: white;
         border-radius: 10px;
@@ -193,7 +189,6 @@
         padding: 16px;
     }
 
-    /* Account Cards */
     .account-card {
         border: 2px solid var(--bank-border);
         border-radius: 10px;
@@ -266,7 +261,6 @@
         font-size: 0.85rem;
     }
 
-    /* Status Badges */
     .status-badge {
         padding: 4px 10px;
         border-radius: 16px;
@@ -302,7 +296,6 @@
         color: #6c757d;
     }
 
-    /* Action Buttons */
     .btn-action {
         padding: 8px 16px;
         border-radius: 6px;
@@ -338,7 +331,6 @@
             color: white;
         }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 40px 20px;
@@ -373,7 +365,6 @@
         font-size: 0.9rem;
     }
 
-    /* Transaction Table */
     .transactions-table {
         width: 100%;
         font-size: 0.85rem;
@@ -405,7 +396,6 @@
             color: var(--bank-primary);
         }
 
-    /* Chart Cards */
     .chart-card {
         background: white;
         border-radius: 10px;
@@ -472,7 +462,6 @@
 
 <div class="dashboard-container">
     <div class="container-fluid">
-        <!-- Welcome Header -->
         <div class="dashboard-welcome">
             <h2>
                 <i class="fas fa-tachometer-alt"></i>
@@ -481,7 +470,6 @@
             <p class="welcome-subtitle">Here's an overview of your banking activity and accounts</p>
         </div>
 
-        <!-- Alert Messages -->
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="custom-alert alert-success alert-dismissible fade show" role="alert">
@@ -511,7 +499,6 @@
 
         @if (Model?.Customer != null)
         {
-            <!-- Statistics Cards -->
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="stat-card stat-card-primary">
@@ -578,7 +565,6 @@
                 </div>
             </div>
 
-            <!-- Charts Section -->
             <div class="row mt-4">
                 <div class="col-lg-6">
                     <div class="chart-card">
@@ -603,7 +589,6 @@
                 </div>
             </div>
 
-            <!-- My Accounts Section -->
             <div class="row">
                 <div class="col-12">
                     <div class="section-card">
@@ -686,7 +671,6 @@
                 </div>
             </div>
 
-            <!-- Recent Transactions -->
             <div class="row">
                 <div class="col-12">
                     <div class="section-card">
@@ -787,7 +771,7 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
-            // Initialize DataTable if table exists
+
             if ($('#transactionsTable').length) {
                 $('#transactionsTable').DataTable({
                     "pageLength": 10,
@@ -805,7 +789,6 @@
                 });
             }
 
-            // Transaction Chart - ONLY COUNT APPROVED TRANSACTIONS (Status = 2)
             var transactionCtx = document.getElementById('transactionChart');
             if (transactionCtx) {
                 var deposits = @(Model?.RecentTransactions?.Count(t => t.TransactionType == 1 && t.Status == 2) ?? 0);
@@ -854,7 +837,6 @@
                 });
             }
 
-            // Balance Chart
             var balanceCtx = document.getElementById('balanceChart');
             if (balanceCtx) {
                 @if (Model?.Accounts != null && Model.Accounts.Any())

@@ -24,7 +24,6 @@
         padding: 20px 0;
     }
 
-    /* Compact Page Header */
     .page-header {
         background: white;
         border-radius: 10px;
@@ -55,7 +54,6 @@
         font-size: 0.85rem;
     }
 
-    /* Compact Statistics */
     .transaction-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -103,7 +101,6 @@
         margin: 0;
     }
 
-    /* Compact Main Card */
     .transactions-card {
         background: white;
         border-radius: 10px;
@@ -137,7 +134,6 @@
         padding: 18px;
     }
 
-    /* Compact Table */
     .transactions-table {
         width: 100%;
         font-size: 0.9rem;
@@ -183,7 +179,6 @@
         border-bottom: none;
     }
 
-    /* Transaction ID */
     .transaction-id {
         font-weight: 600;
         color: var(--bank-accent);
@@ -191,7 +186,6 @@
         font-size: 0.85rem;
     }
 
-    /* Account Number */
     .account-number {
         font-family: 'Courier New', monospace;
         letter-spacing: 0.5px;
@@ -200,7 +194,6 @@
         font-size: 0.82rem;
     }
 
-    /* Amount Styling */
     .amount-cell {
         font-weight: 700;
         font-family: 'Courier New', monospace;
@@ -211,7 +204,6 @@
     .amount-withdrawal { color: var(--bank-danger); }
     .amount-transfer { color: var(--bank-accent); }
 
-    /* Compact Badges */
     .transaction-type-badge {
         padding: 4px 10px;
         border-radius: 12px;
@@ -264,7 +256,6 @@
         color: var(--bank-danger);
     }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 60px 20px;
@@ -298,7 +289,6 @@
         font-size: 0.9rem;
     }
 
-    /* DataTables Custom Styling */
     .dataTables_wrapper .dataTables_length select,
     .dataTables_wrapper .dataTables_filter input {
         border: 1px solid var(--bank-border);
@@ -374,7 +364,6 @@
 
 <div class="all-transactions-container">
     <div class="container-fluid px-3">
-        <!-- Page Header -->
         <div class="page-header">
             <h2>
                 <i class="fas fa-exchange-alt"></i>
@@ -383,7 +372,6 @@
             <p class="page-subtitle">Complete transaction history across all customer accounts</p>
         </div>
 
-        <!-- Transaction Statistics -->
         @if (Model.Any())
         {
             var totalCount = Model.Count();
@@ -433,7 +421,6 @@
             </div>
         }
 
-        <!-- Main Transactions Card -->
         <div class="row">
             <div class="col-12">
                 <div class="transactions-card">
