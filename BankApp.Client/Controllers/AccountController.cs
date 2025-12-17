@@ -40,7 +40,7 @@ namespace BankApp.Client.Controllers
 
         {
 
-            if (User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated == true)
 
             {
 
@@ -344,7 +344,7 @@ namespace BankApp.Client.Controllers
 
             }
 
-            catch (Exception ex)
+            catch (Exception)
 
             {
 

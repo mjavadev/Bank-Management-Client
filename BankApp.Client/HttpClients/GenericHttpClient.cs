@@ -256,7 +256,7 @@ namespace BankApp.Client.HttpClients
 
         }
 
-        public async Task<T> PutAsync<T>(string url, object data)
+        public async Task<T> PutAsync<T>(string url, object? data)
 
         {
 

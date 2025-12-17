@@ -67,7 +67,7 @@ namespace BankApp.Client.Controllers
 
                 return View(viewModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["ErrorMessage"] = "An error occurred while loading dashboard.";
                 return View(new DashboardViewModel());
@@ -229,7 +229,7 @@ namespace BankApp.Client.Controllers
 
             }
 
-            catch (Exception ex)
+            catch (Exception)
 
             {
 

@@ -144,7 +144,7 @@ namespace BankApp.Client.Controllers
 
         public class RejectRequest
         {
-            public string Reason { get; set; }
+            public string? Reason { get; set; }
         }
 
 
@@ -286,7 +286,7 @@ namespace BankApp.Client.Controllers
 
                 return View(accounts);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["ErrorMessage"] = "An error occurred while fetching customer accounts.";
                 return RedirectToAction("Index");
@@ -313,7 +313,7 @@ namespace BankApp.Client.Controllers
 
                 return RedirectToAction("CustomerAccounts", new { customerId = customerId });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["ErrorMessage"] = "An error occurred while updating account status.";
                 return RedirectToAction("CustomerAccounts", new { customerId = customerId });
@@ -333,7 +333,7 @@ namespace BankApp.Client.Controllers
             var dto = new EditCustomerDto
             {
                 CustomerID = result.Response.CustomerID,
-                FullName = result.Response.FullName,
+                FullName = result.Response?.FullName ?? string.Empty,
                 DateOfBirth = result.Response.DateOfBirth,
                 Gender = result.Response.Gender,
                 Occupation = result.Response.Occupation,

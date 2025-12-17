@@ -10,17 +10,17 @@ namespace BankApp.Client.Dto
 
         [Required(ErrorMessage = "Full name is required")]
         [MaxLength(100)]
-        public string FullName { get; set; }
+        public required string FullName { get; set; }
 
         [Required(ErrorMessage = "Date of birth is required")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Gender is required")]
-        public string Gender { get; set; }
+        public required string Gender { get; set; }
 
         [Required(ErrorMessage = "Occupation is required")]
-        public string Occupation { get; set; }
+        public required string Occupation { get; set; }
 
         [Required(ErrorMessage = "Mobile number is required")]
         [Phone(ErrorMessage = "Invalid phone number")]
