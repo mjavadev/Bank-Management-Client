@@ -43,18 +43,29 @@ namespace BankApp.Client.Controllers
                 var recentTransactions = new List<TransactionDto>();
                 if (accounts.Any())
                 {
-                    var firstAccountId = accounts.First().AccountID;
-                    var transactionsUrl = string.Format(ApiConstant.GetTransactionsByAccountId, firstAccountId);
-                    var transactionsResult = await _httpClient.GetAsync<Result<List<TransactionDto>>>(transactionsUrl);
+                    // Get ALL transactions across ALL customer accounts
+                    var allTransactions = new List<TransactionDto>();
 
-                    if (!transactionsResult.IsError && transactionsResult.Response != null)
+                    foreach (var account in accounts)
                     {
-                        recentTransactions = transactionsResult.Response
-                            .OrderByDescending(t => t.TransactionDate)
-                            .Take(10)
-                            .ToList();
+                        var transactionsUrl = string.Format(ApiConstant.GetTransactionsByAccountId, account.AccountID);
+                        var transactionsResult = await _httpClient.GetAsync<Result<List<TransactionDto>>>(transactionsUrl);
+
+                        if (!transactionsResult.IsError && transactionsResult.Response != null)
+                        {
+                            allTransactions.AddRange(transactionsResult.Response);
+                        }
                     }
+
+                    // Take top 10 most recent from ALL accounts in last 30 days
+                    recentTransactions = allTransactions
+                        .Where(t => t.TransactionDate >= DateTime.Now.AddDays(-30))  // Last 30 days
+                        .OrderByDescending(t => t.TransactionDate)
+                        .Take(10)
+                        .ToList();
                 }
+
+
 
                 var viewModel = new DashboardViewModel
                 {
